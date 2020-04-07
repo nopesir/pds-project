@@ -5,9 +5,12 @@ qtHaveModule(printsupport): QT += printsupport
 TEMPLATE        = app
 TARGET          = textedit
 
-HEADERS         = textedit.h
+HEADERS         = textedit.h \
+    startwindow.h
 SOURCES         = textedit.cpp \
-                  main.cpp
+                  main.cpp \
+                  startwindow.cpp
+FORMS           += startwindow.ui
 
 RESOURCES += textedit.qrc
 build_all:!build_pass {
@@ -20,3 +23,6 @@ EXAMPLE_FILES = textedit.qdoc
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/widgets/richtext/textedit
 INSTALLS += target
+
+FORMS += \
+    startwindow.ui
