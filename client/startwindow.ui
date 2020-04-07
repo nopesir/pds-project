@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>StartWindow</class>
  <widget class="QMainWindow" name="StartWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,6 +24,15 @@
     <width>640</width>
     <height>480</height>
    </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="tabletTracking">
+   <bool>true</bool>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -57,7 +69,7 @@
      <number>0</number>
     </property>
     <widget class="QWidget" name="loginPage">
-     <widget class="QLineEdit" name="lineEdit_2">
+     <widget class="QLineEdit" name="lineUser">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -74,7 +86,7 @@ background-color: rgb(255, 255, 255);</string>
        <string> Username</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_3">
+     <widget class="QLineEdit" name="linePassword">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -87,11 +99,14 @@ background-color: rgb(255, 255, 255);</string>
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
       </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
       <property name="placeholderText">
        <string> Password</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="loginButton">
       <property name="geometry">
        <rect>
         <x>260</x>
@@ -113,7 +128,7 @@ color: rgb(255, 255, 255);</string>
        <string>Accedi</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushBtton_2">
+     <widget class="QPushButton" name="regButton">
       <property name="geometry">
        <rect>
         <x>260</x>
@@ -137,7 +152,7 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </widget>
     <widget class="QWidget" name="regPage">
-     <widget class="QLineEdit" name="lineEdit_5">
+     <widget class="QLineEdit" name="lineButtonForm">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -154,7 +169,7 @@ background-color: rgb(255, 255, 255);</string>
        <string> Username</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="buttonBack">
       <property name="geometry">
        <rect>
         <x>260</x>
@@ -176,7 +191,7 @@ color: rgb(255, 255, 255);</string>
        <string>Indietro</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="buttonReg">
       <property name="geometry">
        <rect>
         <x>260</x>
@@ -198,7 +213,7 @@ color: rgb(255, 255, 255);</string>
        <string>Registrati</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
+     <widget class="QLineEdit" name="mailButton">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -215,7 +230,7 @@ background-color: rgb(255, 255, 255);</string>
        <string> Email</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_6">
+     <widget class="QLineEdit" name="linePasswordForm">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -234,7 +249,7 @@ background-color: rgb(255, 255, 255);</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="labelName">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -262,18 +277,22 @@ color: rgb(238, 238, 236);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="exitButton">
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>10</y>
+      <y>20</y>
       <width>40</width>
       <height>40</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>20</pointsize>
+      <pointsize>17</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+      <strikeout>false</strikeout>
      </font>
     </property>
     <property name="styleSheet">

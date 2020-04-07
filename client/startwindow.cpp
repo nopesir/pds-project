@@ -36,24 +36,17 @@ StartWindow::~StartWindow() {
 }
 
 
-
-
-void StartWindow::on_pushBtton_2_clicked()
+void StartWindow::on_regButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1);
+   ui->stackedWidget->setCurrentIndex(1);
 }
 
-void StartWindow::on_pushButton_3_clicked()
+void StartWindow::on_buttonBack_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+   ui->stackedWidget->setCurrentIndex(0);
 }
 
-void StartWindow::on_pushButton_2_clicked()
+void StartWindow::on_exitButton_clicked()
 {
-    QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(this, "Uscita", "Vuoi uscire?",
-                                    QMessageBox::Yes|QMessageBox::No);
-      if (reply == QMessageBox::Yes) {
-        QApplication::exit();
-      }
+    QApplication::exit();
 }
