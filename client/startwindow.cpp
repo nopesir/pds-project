@@ -97,3 +97,30 @@ void StartWindow::on_exitButton_clicked()
 {
     QApplication::exit();
 }
+
+void StartWindow::on_loginButton_clicked()
+{
+    if(_client->getStatus()==false){
+        QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server!\n"
+                                                        "Riprova più tardi");
+    } else {
+        //Get data from the form
+        QString user = ui->lineUser->text();
+        QByteArray ba_user = user.toLocal8Bit();
+        const char *c_user = ba_user.data();
+        QString pass = ui->linePassword->text();
+        QByteArray ba_pass = pass.toLocal8Bit();
+        const char *c_pass = ba_pass.data();
+
+        //update client data
+        _client->setUsername(user);
+
+        //Serialize data
+        json j;
+        Jsonize::to_json(j, "LOGIN_REQUEST", c_user, c_pass);
+        const std::string req = j.dump();
+
+        //Send data (header and body)
+        _client->sendRequestMsg(req);
+    }
+}
