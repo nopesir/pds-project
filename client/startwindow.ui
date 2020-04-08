@@ -66,7 +66,7 @@
      <string notr="true">background-color: rgb(85, 87, 83);</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="loginPage">
      <widget class="QLineEdit" name="lineUser">
@@ -173,7 +173,7 @@ background-color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>260</x>
-        <y>320</y>
+        <y>330</y>
         <width>121</width>
         <height>60</height>
        </rect>
@@ -195,7 +195,7 @@ color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>260</x>
-        <y>250</y>
+        <y>260</y>
         <width>121</width>
         <height>60</height>
        </rect>
@@ -245,6 +245,34 @@ background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="placeholderText">
        <string> Password</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelError">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>230</y>
+        <width>201</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(193, 125, 17);</string>
+      </property>
+      <property name="text">
+       <string>Campi invalidi! Riprova.</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>

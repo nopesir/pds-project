@@ -6,9 +6,9 @@
 //#include <boost/asio.hpp>
 #include <deque>
 //#include "versioninfo.h"
-//#include "myClient.h"
-//#include "json.hpp"
-//#include "jsonUtility.h"
+#include "clientproc.h"
+#include "json.hpp"
+#include "jsonize.h"
 
 namespace Ui {class StartWindow;}
 
@@ -48,17 +48,17 @@ private slots:
     void on_exitButton_clicked();
 
 public slots:
-    /*void setStatus(bool newStatus);
+    void setStatus(bool newStatus);
     void showPopupSuccess(QString result);
     void showPopupFailure(QString result);
-    void showJsonPopupFailure(QString windowName,QString msg);*/
+    void showJsonPopupFailure(QString windowName,QString msg);
 
 private:
     Ui::StartWindow *ui;            //"ui" (user interface)
     QPoint oldPos;                  //This "oldPos" object is used to save the old position of the windows for the translation of windows
     //VersionInfo version;
     //QString qstr = version.getVersion();
-    //myClient *_client;
+    ClientProc *_client;
     bool regMat;
 
 protected:

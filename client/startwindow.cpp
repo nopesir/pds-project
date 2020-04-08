@@ -6,9 +6,9 @@
 #include <thread>
 #include <QInputDialog>
 //#include "userprofile.h"
-//#include "jsonUtility.h"
+#include "jsonize.h"
 //#include "editorwindow.h"
-//#include "message.h"
+#include "message.h"
 #include <QDesktopWidget>
 
 //using json = nlohmann::json;
@@ -17,9 +17,9 @@
 
 //CONSTRUCTOR
 StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint),
-    ui(new Ui::StartWindow)
+    ui(new Ui::StartWindow), _client(new ClientProc())
 {
-    /*QRect screenGeometry = QApplication::desktop()->screenGeometry();
+    QRect screenGeometry = QApplication::desktop()->screenGeometry();
     double width = screenGeometry.width();
     int minWidth = 1920;
     double scale = width / minWidth;
@@ -27,30 +27,55 @@ StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWind
     QByteArray scaleAsQByteArray(scaleAsString.c_str(), scaleAsString.length());
     qputenv("QT_SCALE_FACTOR", scaleAsQByteArray);
 
-    ui->setupUi(this);  //IS AN HALF HELP WITH THE DPI-Related-BUG - DON'T DELETE ME FOR NOW*/
-    QDesktopWidget *desktop = QApplication::desktop();
-
-    int screenWidth, width;
-    int screenHeight, height;
-    int x, y;
-    QSize windowSize;
-
-    screenWidth = desktop->width(); // get width of screen
-    screenHeight = desktop->height(); // get height of screen
-
-    windowSize = size(); // size of our application window
-    width = windowSize.width();
-    height = windowSize.height();
-
-    // little computations
-    x = (screenWidth - width) / 2;
-    y = (screenHeight - height) / 2;
-    y -= 50;
-
-    // move window to desired coordinates
-    move ( x, y );
     ui->setupUi(this);
+    //ui->version->setText(qstr);
+    ui->loginPage->setFocus();
+    ui->labelError->hide();
+
+    setStatus(_client->getStatus());
+    connect(_client, &ClientProc::statusChanged, this, &StartWindow::setStatus);
+    connect(_client, &ClientProc::formResultSuccess, this, &StartWindow::showPopupSuccess);
+    connect(_client, &ClientProc::formResultFailure, this, &StartWindow::showPopupFailure);
+    connect(_client, &ClientProc::jsonMsgFailure, this, &StartWindow::showJsonPopupFailure);
+    setFixedSize(size());   //IS AN HALF HELP WITH THE DPI-Related-BUG - DON'T DELETE ME FOR NOW
 }
+
+
+void StartWindow::setStatus(bool newStatus) {
+    //if(newStatus)
+        //ui->label_status->setText(tr("<font color=\"green\">CONNECTED</font>"));
+    //else
+        //ui->label_status->setText(tr("<font color=\"red\">DISCONNECTED</font>"));
+}
+
+void StartWindow::showPopupSuccess(QString result) {
+    if(result == "LOGIN_SUCCESS") {
+        //MenuWindow *m = new MenuWindow(_client);
+        //this->close(); //this startWindow will be then created (new) when user press Logout button on menuWindow
+        //m->show();
+    } else if(result == "SIGNUP_SUCCESS") {
+        QMessageBox::information(this,"Complimenti", "La registrazione è avvenuta correttamente!");
+        ui->stackedWidget->setCurrentIndex(0);
+    }
+}
+
+void StartWindow::showPopupFailure(QString result) {
+    if(result == "LOGIN_FAILURE") {
+       QMessageBox::critical(this,"Errore", "Il login non è stato completato correttamente! Riprova!");                                 //Stay in the same window
+    } else if(result == "SIGNUP_FAILURE") {
+        QMessageBox::critical(this,"Errore", "La registrazione non è avvenuta correttamente! Riprova!");                                //Stay in the same window
+    } else {
+        QMessageBox::information(nullptr, "Attenzione", "Qualcosa è andato storto! Riprova!");
+    }
+}
+
+void StartWindow::showJsonPopupFailure(QString windowName,QString msg) {
+    if(windowName == "StartWindow") {
+        QMessageBox::critical(this, "Errore", msg);
+        QApplication::exit();
+    }
+}
+
 
 //DESTRUCTOR
 StartWindow::~StartWindow() {

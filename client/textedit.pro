@@ -6,10 +6,25 @@ TEMPLATE        = app
 TARGET          = textedit
 
 HEADERS         = textedit.h \
-    startwindow.h
+    clientproc.h \
+    file.h \
+    json.hpp \
+    jsonize.h \
+    message.h \
+    sstyle.h \
+    startwindow.h \
+    symbol.h \
+    tsymbol.h
 SOURCES         = textedit.cpp \
+                  clientproc.cpp \
+                  file.cpp \
+                  jsonize.cpp \
                   main.cpp \
-                  startwindow.cpp
+                  message.cpp \
+                  sstyle.cpp \
+                  startwindow.cpp \
+                  symbol.cpp \
+                  tsymbol.cpp
 FORMS           += startwindow.ui
 
 RESOURCES += textedit.qrc
