@@ -25,7 +25,8 @@ SOURCES         = textedit.cpp \
                   startwindow.cpp \
                   symbol.cpp \
                   tsymbol.cpp
-FORMS           += startwindow.ui
+FORMS           += startwindow.ui \
+    homewindow.ui
 
 RESOURCES += textedit.qrc
 build_all:!build_pass {
