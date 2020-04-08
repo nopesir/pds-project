@@ -51,6 +51,8 @@ private slots:
 
     void on_buttonReg_clicked();
 
+    void on_hideButton_clicked();
+
 public slots:
     void setStatus(bool newStatus);
     void showPopupSuccess(QString result);
@@ -60,6 +62,7 @@ public slots:
 private:
     Ui::StartWindow *ui;            //"ui" (user interface)
     QPoint oldPos;                  //This "oldPos" object is used to save the old position of the windows for the translation of windows
+    bool hidePass;
     //VersionInfo version;
     //QString qstr = version.getVersion();
     ClientProc *_client;

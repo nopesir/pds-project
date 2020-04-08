@@ -17,15 +17,8 @@
 
 //CONSTRUCTOR
 StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint),
-    ui(new Ui::StartWindow), _client(new ClientProc())
+    ui(new Ui::StartWindow), hidePass(true), _client(new ClientProc())
 {
-    QRect screenGeometry = QApplication::desktop()->screenGeometry();
-    double width = screenGeometry.width();
-    int minWidth = 1920;
-    double scale = width / minWidth;
-    std::string scaleAsString = std::to_string(scale);
-    QByteArray scaleAsQByteArray(scaleAsString.c_str(), scaleAsString.length());
-    qputenv("QT_SCALE_FACTOR", scaleAsQByteArray);
 
     ui->setupUi(this);
     //ui->version->setText(qstr);
@@ -37,7 +30,28 @@ StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWind
     connect(_client, &ClientProc::formResultSuccess, this, &StartWindow::showPopupSuccess);
     connect(_client, &ClientProc::formResultFailure, this, &StartWindow::showPopupFailure);
     connect(_client, &ClientProc::jsonMsgFailure, this, &StartWindow::showJsonPopupFailure);
-    setFixedSize(size());   //IS AN HALF HELP WITH THE DPI-Related-BUG - DON'T DELETE ME FOR NOW
+
+    QDesktopWidget *desktop = QApplication::desktop();
+
+    int screenWidth, width;
+    int screenHeight, height;
+    int x, y;
+    QSize windowSize;
+
+    screenWidth = desktop->width(); // get width of screen
+    screenHeight = desktop->height(); // get height of screen
+
+    windowSize = size(); // size of our application window
+    width = windowSize.width();
+    height = windowSize.height();
+
+    // little computations
+    x = (screenWidth - width) / 2;
+    y = (screenHeight - height) / 2;
+    y -= 50;
+
+    // move window to desired coordinates
+    move ( x, y );
 }
 
 
@@ -172,4 +186,18 @@ void StartWindow::on_buttonReg_clicked()
         }
     }
 
+}
+
+void StartWindow::on_hideButton_clicked()
+{
+    if(hidePass){
+        ui->linePassword->setEchoMode(QLineEdit::Normal);
+        ui->hideButton->setStyleSheet("background-color: rgb(255, 255, 255); border-image: url(:/images/show.png);");
+        hidePass=false;
+    }
+    else {
+        ui->linePassword->setEchoMode(QLineEdit::Password);
+        ui->hideButton->setStyleSheet("background-color: rgb(255, 255, 255); border-image: url(:images/hide.png);");
+        hidePass=true;
+    }
 }

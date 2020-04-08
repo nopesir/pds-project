@@ -41,5 +41,9 @@
         <file>images/win/zoomout.png</file>
         <file>example.html</file>
         <file>pencil-edit-writer-art-512.png</file>
+        <file>images/hidePassword.png</file>
+        <file>images/showPassword.png</file>
+        <file>images/hide.png</file>
+        <file>images/show.png</file>
     </qresource>
 </RCC>

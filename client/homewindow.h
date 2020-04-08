@@ -1,16 +1,11 @@
 #ifndef HOMEWINDOW_H
 #define HOMEWINDOW_H
 
-#include <QMainWindow>
 
-class HomeWindow : public QMainWindow
+class HomeWindow
 {
-    Q_OBJECT
 public:
-    explicit HomeWindow(QWidget *parent = nullptr);
-
-signals:
-
+    HomeWindow();
 };
 
 #endif // HOMEWINDOW_H

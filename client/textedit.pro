@@ -8,6 +8,7 @@ TARGET          = textedit
 HEADERS         = textedit.h \
     clientproc.h \
     file.h \
+    homewindow.h \
     json.hpp \
     jsonize.h \
     message.h \
@@ -18,6 +19,7 @@ HEADERS         = textedit.h \
 SOURCES         = textedit.cpp \
                   clientproc.cpp \
                   file.cpp \
+                  homewindow.cpp \
                   jsonize.cpp \
                   main.cpp \
                   message.cpp \
