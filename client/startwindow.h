@@ -49,6 +49,8 @@ private slots:
 
     void on_loginButton_clicked();
 
+    void on_buttonReg_clicked();
+
 public slots:
     void setStatus(bool newStatus);
     void showPopupSuccess(QString result);

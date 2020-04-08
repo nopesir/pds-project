@@ -152,7 +152,7 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </widget>
     <widget class="QWidget" name="regPage">
-     <widget class="QLineEdit" name="lineButtonForm">
+     <widget class="QLineEdit" name="lineUserForm">
       <property name="geometry">
        <rect>
         <x>220</x>
@@ -213,7 +213,7 @@ color: rgb(255, 255, 255);</string>
        <string>Registrati</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="mailButton">
+     <widget class="QLineEdit" name="lineMailForm">
       <property name="geometry">
        <rect>
         <x>220</x>

@@ -124,3 +124,52 @@ void StartWindow::on_loginButton_clicked()
         _client->sendRequestMsg(req);
     }
 }
+
+void StartWindow::on_buttonReg_clicked()
+{
+    if(_client->getStatus()==false) {
+        QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server!\n"
+                                                    "Riprova più tardi");
+    } else {
+        if (ui->lineUserForm->text().isEmpty()) {
+            ui->labelError->show();
+        } else {
+            ui->labelError->hide();
+
+            if (ui->linePasswordForm->text().length() < 6) {
+                ui->labelError->show();
+            } else {
+                ui->labelError->hide();
+
+                QRegularExpression mailREX("^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$");
+                regMat = mailREX.match(ui->lineMailForm->text()).hasMatch();
+
+                if (!regMat) {
+                    ui->labelError->show();
+                } else {
+                    ui->labelError->hide();
+
+                    //Get data from the form
+                    QString user = ui->lineUserForm->text();
+                    QByteArray ba_user = user.toLocal8Bit();
+                    const char *c_user = ba_user.data();
+                    QString pass = ui->linePasswordForm->text();
+                    QByteArray ba_pass = pass.toLocal8Bit();
+                    const char *c_pass = ba_pass.data();
+                    QString email = ui->lineMailForm->text();
+                    QByteArray ba_email = email.toLocal8Bit();
+                    const char *c_email = ba_email.data();
+
+                    //Serialize data
+                    json j;
+                    Jsonize::to_json(j, "SIGNUP_REQUEST", c_user, c_pass, c_email);
+                    const std::string req = j.dump();
+
+                    //Send data (header and body)
+                    _client->sendRequestMsg(req);
+                }
+            }
+        }
+    }
+
+}
