@@ -471,3 +471,36 @@ void HomeWindow::handleTheConnectionLoss() {
         QApplication::exit(-1000);
     }
 }*/
+
+void HomeWindow::on_newFile_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->newFile->setStyleSheet("#newFile {color: rgb(0, 0, 0); background-color: rgb(211, 215, 207); border: transparent;}");
+    ui->labelNew->setStyleSheet("background-color: rgb(211, 215, 207);");
+    ui->openFiles->setStyleSheet("#openFiles {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182);border: transparent;} #openFiles:hover {border: 2px solid rgb(164, 0, 0);}");
+    ui->labelOpen->setStyleSheet("background-color: rgb(186, 189, 182);");
+    ui->sharedFiles->setStyleSheet("#sharedFiles {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182);border: transparent;} #sharedFiles:hover {border: 2px solid rgb(164, 0, 0);}");
+    ui->labelShare->setStyleSheet("background-color: rgb(186, 189, 182);");
+}
+
+void HomeWindow::on_openFiles_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+    ui->newFile->setStyleSheet("#newFile {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182); border: transparent;} #newFile:hover {border: 2px solid rgb(164, 0, 0);}");
+    ui->labelNew->setStyleSheet("background-color: rgb(186, 189, 182);");
+    ui->openFiles->setStyleSheet("#openFiles {color: rgb(0, 0, 0); background-color: rgb(211, 215, 207); border: transparent;}");
+    ui->labelOpen->setStyleSheet("background-color: rgb(211, 215, 207);");
+    ui->sharedFiles->setStyleSheet("#sharedFiles {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182);border: transparent;} #sharedFiles:hover {border: 2px solid rgb(164, 0, 0);}");
+    ui->labelShare->setStyleSheet("background-color: rgb(186, 189, 182);");
+}
+
+void HomeWindow::on_sharedFiles_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(2);
+    ui->newFile->setStyleSheet("#newFile {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182); border: transparent;} #newFile:hover {border: 2px solid rgb(164, 0, 0);}");
+    ui->labelNew->setStyleSheet("background-color: rgb(186, 189, 182);");
+    ui->openFiles->setStyleSheet("#openFiles {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182); border: transparent;} #openFiles:hover {border: 2px solid rgb(164, 0, 0);}");
+    ui->labelOpen->setStyleSheet("background-color: rgb(186, 189, 182);");
+    ui->sharedFiles->setStyleSheet("#sharedFiles {color: rgb(0, 0, 0); background-color: rgb(211, 215, 207);border: transparent;}");
+    ui->labelShare->setStyleSheet("background-color: rgb(211, 215, 207);");
+}

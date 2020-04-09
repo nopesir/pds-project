@@ -46,5 +46,6 @@
         <file>images/hide.png</file>
         <file>images/show.png</file>
         <file>images/open.png</file>
+        <file>images/share.png</file>
     </qresource>
 </RCC>

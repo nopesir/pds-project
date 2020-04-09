@@ -63,14 +63,14 @@ void StartWindow::setStatus(bool newStatus) {
 }
 
 void StartWindow::showPopupSuccess(QString result) {
-    if(result == "LOGIN_SUCCESS") {
+    //if(result == "LOGIN_SUCCESS") {
         HomeWindow *m = new HomeWindow(_client);
         this->close(); //this startWindow will be then created (new) when user press Logout button on HomeWindow
         m->show();
-    } else if(result == "SIGNUP_SUCCESS") {
-        QMessageBox::information(this,"Complimenti", "La registrazione è avvenuta correttamente!");
-        ui->stackedWidget->setCurrentIndex(0);
-    }
+    //} else if(result == "SIGNUP_SUCCESS") {
+    //    QMessageBox::information(this,"Complimenti", "La registrazione è avvenuta correttamente!");
+    //    ui->stackedWidget->setCurrentIndex(0);
+    //}
 }
 
 void StartWindow::showPopupFailure(QString result) {
@@ -114,12 +114,12 @@ void StartWindow::on_exitButton_clicked()
 
 void StartWindow::on_loginButton_clicked()
 {
-    if(_client->getStatus()==false){
-        QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server!\n"
-                                                        "Riprova più tardi");
-    } else {
+    //if(_client->getStatus()==false){
+    //    QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server!\n"
+    //                                                    "Riprova più tardi");
+    //} else {
         //Get data from the form
-        QString user = ui->lineUser->text();
+    /*    QString user = ui->lineUser->text();
         QByteArray ba_user = user.toLocal8Bit();
         const char *c_user = ba_user.data();
         QString pass = ui->linePassword->text();
@@ -135,8 +135,9 @@ void StartWindow::on_loginButton_clicked()
         const std::string req = j.dump();
 
         //Send data (header and body)
-        _client->sendRequestMsg(req);
-    }
+        _client->sendRequestMsg(req);*/
+     showPopupSuccess("a");
+    //}
 }
 
 void StartWindow::on_buttonReg_clicked()

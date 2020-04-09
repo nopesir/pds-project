@@ -30,6 +30,12 @@ private slots:
     //void RapidUserLogout();
     //void handleTheConnectionLoss();
 
+    void on_newFile_clicked();
+
+    void on_openFiles_clicked();
+
+    void on_sharedFiles_clicked();
+
 public slots:
     //void showPopupSuccess(QString result);
     //void showPopupFailure(QString result);
