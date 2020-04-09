@@ -16,6 +16,7 @@ HomeWindow::HomeWindow(ClientProc* client, QWidget *parent) : QMainWindow(parent
     //connect(_client, &ClientProc::backToHomeWindow,this, &HomeWindow::resumeWindow);
 
     this->show();
+    ui->logoutButton->setToolTip("Esci dalla sessione");
     setFixedSize(size());   //IS AN HALF HELP WITH THE DPI-Related-BUG - DON'T DELETE ME FOR NOW
     qRegisterMetaType<std::vector<File>>("std::vector<File>");
 
@@ -90,7 +91,7 @@ void HomeWindow::on_LogoutButton_clicked(){
         }
     }
 }
-
+*/
 void HomeWindow::mousePressEvent(QMouseEvent *evt){
     oldPos = evt->globalPos();
 }
@@ -100,7 +101,7 @@ void HomeWindow::mouseMoveEvent(QMouseEvent *evt){
     move(x()+delta.x(), y()+delta.y());
     oldPos = evt->globalPos();
 }
-
+/*
 //USERNAME BUTTON
 void HomeWindow::on_Username_clicked(){
     if(_client->getStatus()==false){
@@ -512,3 +513,4 @@ void HomeWindow::on_pushButton_clicked()
     this->close();
     s->show();
 }
+

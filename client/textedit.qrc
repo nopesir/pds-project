@@ -49,5 +49,6 @@
         <file>images/share.png</file>
         <file>images/doc.png</file>
         <file>images/doc-share.png</file>
+        <file>images/logout.png</file>
     </qresource>
 </RCC>

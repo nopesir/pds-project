@@ -332,17 +332,29 @@ color: rgb(238, 238, 236);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="logoutButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>750</x>
       <y>20</y>
-      <width>70</width>
+      <width>30</width>
       <height>30</height>
      </rect>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="statusTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string/>
+    </property>
+    <property name="accessibleName">
+     <string/>
+    </property>
+    <property name="accessibleDescription">
+     <string/>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(164, 0, 0);
@@ -350,7 +362,20 @@ color: rgb(211, 215, 207);
 border: transparent;</string>
     </property>
     <property name="text">
-     <string>LOGOUT</string>
+     <string extracomment="aaaaaaaaa"/>
+    </property>
+    <property name="icon">
+     <iconset resource="textedit.qrc">
+      <normaloff>:/images/logout.png</normaloff>
+      <normalon>:/images/logout.png</normalon>
+      <disabledoff>:/images/logout.png</disabledoff>
+      <disabledon>:/images/logout.png</disabledon>:/images/logout.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
     </property>
    </widget>
   </widget>

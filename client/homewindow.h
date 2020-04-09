@@ -58,8 +58,8 @@ private:
 
 protected:
     //Function for mouse related event
-    //void mousePressEvent(QMouseEvent *evt);
-    //void mouseMoveEvent(QMouseEvent *evt);
+    void mousePressEvent(QMouseEvent *evt);
+    void mouseMoveEvent(QMouseEvent *evt);
 
 };
 
