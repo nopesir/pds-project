@@ -1,6 +1,6 @@
 #include "startwindow.h"
 #include "ui_startwindow.h"
-//#include "menuwindow.h"
+#include "homewindow.h"
 #include <QMessageBox>
 #include <iostream>
 #include <thread>
@@ -64,9 +64,9 @@ void StartWindow::setStatus(bool newStatus) {
 
 void StartWindow::showPopupSuccess(QString result) {
     if(result == "LOGIN_SUCCESS") {
-        //MenuWindow *m = new MenuWindow(_client);
-        //this->close(); //this startWindow will be then created (new) when user press Logout button on menuWindow
-        //m->show();
+        HomeWindow *m = new HomeWindow(_client);
+        this->close(); //this startWindow will be then created (new) when user press Logout button on HomeWindow
+        m->show();
     } else if(result == "SIGNUP_SUCCESS") {
         QMessageBox::information(this,"Complimenti", "La registrazione è avvenuta correttamente!");
         ui->stackedWidget->setCurrentIndex(0);

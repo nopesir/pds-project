@@ -45,5 +45,6 @@
         <file>images/showPassword.png</file>
         <file>images/hide.png</file>
         <file>images/show.png</file>
+        <file>images/open.png</file>
     </qresource>
 </RCC>
