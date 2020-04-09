@@ -10,27 +10,27 @@
 
 HomeWindow::HomeWindow(ClientProc* client, QWidget *parent) : QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint), ui(new Ui::HomeWindow()), _client(client) {
     ui->setupUi(this);
-    //connect(_client, &ClientProc::opResultSuccess, this, &HomeWindow::showPopupSuccess);
-    //connect(_client, &ClientProc::opResultFailure, this, &HomeWindow::showPopupFailure);
-    //connect(_client, &ClientProc::listFileResult, this, &HomeWindow::showListFile);
+    connect(_client, &ClientProc::opResultSuccess, this, &HomeWindow::showPopupSuccess);
+    connect(_client, &ClientProc::opResultFailure, this, &HomeWindow::showPopupFailure);
+    connect(_client, &ClientProc::listFileResult, this, &HomeWindow::showListFile);
     //connect(_client, &ClientProc::backToHomeWindow,this, &HomeWindow::resumeWindow);
 
     this->show();
     setFixedSize(size());   //IS AN HALF HELP WITH THE DPI-Related-BUG - DON'T DELETE ME FOR NOW
     qRegisterMetaType<std::vector<File>>("std::vector<File>");
 
-    //ui->listWidget->setViewMode(QListView::IconMode);
-    //ui->listWidget->setGridSize(QSize(100,100));
-    //ui->listWidget->setIconSize(QSize(60,60));
-    //ui->listWidget->setFlow(QListView::LeftToRight);
-    /*ui->listWidget->setWrapping(true);
+    ui->listWidget->setViewMode(QListView::IconMode);
+    ui->listWidget->setGridSize(QSize(100,100));
+    ui->listWidget->setIconSize(QSize(60,60));
+    ui->listWidget->setFlow(QListView::LeftToRight);
+    ui->listWidget->setWrapping(true);
     ui->listWidget->setWordWrap(true);
     ui->listWidget->setResizeMode(QListView::Adjust);
     ui->listWidget->setAlternatingRowColors(false);
     ui->listWidget->setMovement(QListView::Static);
     ui->listWidget->setTextElideMode(Qt::ElideRight);
-    */
-    //on_listFiles_clicked(); //See note on showPopupSuccess() function.
+
+    on_listFiles_clicked(); //See note on showPopupSuccess() function.
 }
 
 //DESTRUCTOR
@@ -218,7 +218,7 @@ void HomeWindow::on_newDoc_clicked(){
         }
     }
 }
-
+*/
 void HomeWindow::on_listFiles_clicked() {
     //close userProfile Window if it was opened;
     if(!profile_closed){
@@ -245,7 +245,7 @@ void HomeWindow::on_listFiles_clicked() {
 
     }
 }
-
+/*
 void HomeWindow::on_uriDoc_clicked() {
     //close userProfile Window if it was opened;
     if(!profile_closed){
@@ -331,7 +331,7 @@ void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
     double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
     std::cout << "ITEM DOUBLE CLICKED - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
-
+*/
 void HomeWindow::showPopupSuccess(QString result) {
     if(result == "DISCONNECT_SUCCESS") {
         StartWindow *s = new StartWindow();
@@ -355,11 +355,11 @@ void HomeWindow::showPopupSuccess(QString result) {
         if(profile) {
             profile = false;
         } else {
-            /*
-             * Note: First I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
-             * Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
-             * In this way, when user clicks on his profile button, he can see how many files has.
-             * On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
+
+             //* Note: First I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
+             //* Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
+             //* In this way, when user clicks on his profile button, he can see how many files has.
+             //* On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
 
             if(FirstTimeWindowOpens==true){
                 FirstTimeWindowOpens=false;
@@ -385,13 +385,13 @@ void HomeWindow::showPopupFailure(QString result) {
     } else if(result == "LISTFILE_FAILURE") {
         QMessageBox::critical(this,"Errore", "Listfile non completata!");         //Stay in the same window (HomeWindow(1))
     } else if(result == "LISTFILE_FAILURE_LISTNOTEXIST") {
-        //QMessageBox::warning(this,"Attenzione", "Non hai ancora nessun un documento!");  //Stay in the same window (HomeWindow(1))
+        QMessageBox::warning(this,"Attenzione", "Non hai ancora nessun un documento!");  //Stay in the same window (HomeWindow(1))
 
-        /*
-         * Note: If the user has no file, then first I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
-         * Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
-         * In this way, when user clicks on his profile button, he can see how many files has.
-         * On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
+
+         //* Note: If the user has no file, then first I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
+         //* Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
+         //* In this way, when user clicks on his profile button, he can see how many files has.
+         //* On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
 
         if(FirstTimeWindowOpens==true){
             FirstTimeWindowOpens=false;
@@ -410,6 +410,7 @@ void HomeWindow::showPopupFailure(QString result) {
     }
 }
 
+
 void HomeWindow::showListFile(std::vector<File> files) {
     if(_client->getStatus()==false) {
         handleTheConnectionLoss();
@@ -420,7 +421,7 @@ void HomeWindow::showListFile(std::vector<File> files) {
         QString itemString;
         QList<QListWidgetItem*> fileItem;
 
-        //ui->listWidget->clear();
+        ui->listWidget->clear();
         foreach (File f, files) {
             //in filename the conversion .toLatin1() because the conversion is already done by the server
             filename  = QString::fromUtf8(f.getfilename().c_str());
@@ -430,10 +431,10 @@ void HomeWindow::showListFile(std::vector<File> files) {
 
             itemString = filename;
             if(user == owner){
-                //item = new QListWidgetItem(QIcon(":/image/document-own.png"), itemString, ui->listWidget);
+                item = new QListWidgetItem(QIcon(":/images/doc.png"), itemString, ui->listWidget);
             }
             else{
-                //item = new QListWidgetItem(QIcon(":/image/document-col.png"), itemString, ui->listWidget);
+                item = new QListWidgetItem(QIcon(":/images/doc-share.png"), itemString, ui->listWidget);
 
             }
             std::vector<QString> uriAndFilename;
@@ -447,14 +448,14 @@ void HomeWindow::showListFile(std::vector<File> files) {
 
             item->setToolTip("Nome: "+filename+"\nAutore: "+owner+"\nCreato il: "+timestamp);
         }
-        //if(ui->listWidget->count()==0){
-        //    ui->noFile->show();
-        //}else{
-        //    ui->noFile->hide();
-        //}
+        if(ui->listWidget->count()==0){
+            ui->noFile->show();
+        }else{
+            ui->noFile->hide();
+        }
     }
 }
-
+/*
 void HomeWindow::resumeWindow() {
     this->show();
     //ui->stackedWidget->setCurrentIndex(0);
@@ -463,14 +464,14 @@ void HomeWindow::resumeWindow() {
 void HomeWindow:: setUserProfileClosed(){
     profile_closed = true;
 }
-
+*/
 void HomeWindow::handleTheConnectionLoss() {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::warning(nullptr, "Warning", "Cannot reach the server!\nDo you want to quit?",  QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         QApplication::exit(-1000);
     }
-}*/
+}
 
 void HomeWindow::on_newFile_clicked()
 {
@@ -503,4 +504,11 @@ void HomeWindow::on_sharedFiles_clicked()
     ui->labelOpen->setStyleSheet("background-color: rgb(186, 189, 182);");
     ui->sharedFiles->setStyleSheet("#sharedFiles {color: rgb(0, 0, 0); background-color: rgb(211, 215, 207);border: transparent;}");
     ui->labelShare->setStyleSheet("background-color: rgb(211, 215, 207);");
+}
+
+void HomeWindow::on_pushButton_clicked()
+{
+    StartWindow *s = new StartWindow();
+    this->close();
+    s->show();
 }

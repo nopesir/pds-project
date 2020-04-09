@@ -47,5 +47,7 @@
         <file>images/show.png</file>
         <file>images/open.png</file>
         <file>images/share.png</file>
+        <file>images/doc.png</file>
+        <file>images/doc-share.png</file>
     </qresource>
 </RCC>

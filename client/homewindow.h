@@ -23,12 +23,12 @@ private slots:
     //void on_newDoc_clicked();
     //void on_uriDoc_clicked();
     //void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-    //void on_listFiles_clicked();
+    void on_listFiles_clicked();
     //void on_exitButton_clicked();
     //void on_backButton_clicked();
     //void closeEvent(QCloseEvent * event);
     //void RapidUserLogout();
-    //void handleTheConnectionLoss();
+    void handleTheConnectionLoss();
 
     void on_newFile_clicked();
 
@@ -36,10 +36,12 @@ private slots:
 
     void on_sharedFiles_clicked();
 
+    void on_pushButton_clicked();
+
 public slots:
-    //void showPopupSuccess(QString result);
-    //void showPopupFailure(QString result);
-    //void showListFile(std::vector<File> files);
+    void showPopupSuccess(QString result);
+    void showPopupFailure(QString result);
+    void showListFile(std::vector<File> files);
     //void resumeWindow();
     //void setUserProfileClosed();
 
