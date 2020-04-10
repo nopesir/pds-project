@@ -4,7 +4,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
-//#include "editorwindow.h"
+#include "editorwindow.h"
 #include "clientproc.h"
 //#include "userprofile.h"
 
@@ -49,7 +49,7 @@ private:
     Ui::HomeWindow *ui;
     QPoint oldPos; //This "oldPos" object is used to save the old position of the windows for the translation of windows
     ClientProc *_client;
-    //EditorWindow *_ew;
+    EditorWindow *_ew;
     bool Logout = false;
     bool profile = false;
     bool FirstTimeWindowOpens=true;

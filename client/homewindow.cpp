@@ -3,7 +3,7 @@
 #include <boost/asio.hpp>
 #include <QMessageBox>
 #include <QInputDialog>
-//#include "editorwindow.h"
+#include "editorwindow.h"
 #include "startwindow.h"
 #include <iostream>
 #include <QListWidgetItem>
@@ -341,9 +341,9 @@ void HomeWindow::showPopupSuccess(QString result) {
     } else if(result == "LOGOUT_SUCCESS") {
         QApplication::exit();
     } else if(result == "NEWFILE_SUCCESS") {
-        //_ew = new EditorWindow(_client);
+        _ew = new EditorWindow(_client);
         this->hide();
-        //_ew->showMaximized();
+        _ew->showMaximized();
     } else if(result == "OPENFILE_SUCCESS") {
         //_ew = new EditorWindow(_client);
         this->hide();
@@ -483,7 +483,48 @@ void HomeWindow::on_newFile_clicked()
     ui->labelOpen->setStyleSheet("background-color: rgb(186, 189, 182);");
     ui->sharedFiles->setStyleSheet("#sharedFiles {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182);border: transparent;} #sharedFiles:hover {border: 2px solid rgb(164, 0, 0);}");
     ui->labelShare->setStyleSheet("background-color: rgb(186, 189, 182);");
+
+    if(_client->getStatus()==false){
+        handleTheConnectionLoss();
+    }else{
+        bool ok;
+        QString text = QInputDialog::getText(this, tr("Titolo documento"),
+                                             tr("Inserisci un nome per il nuovo documento:"), QLineEdit::Normal,
+                                             "", &ok);
+        if (ok && !text.isEmpty() && text.size()<=25){
+
+            //Get data from the form
+            QString user = _client->getUsername();
+            QByteArray ba_user = user.toLocal8Bit();
+            const char *c_user = ba_user.data();
+
+            QString filename = QLatin1String(text.toUtf8());
+            QByteArray ba_filename = filename.toLocal8Bit();
+            const char *c_filename = ba_filename.data();
+
+            //Serialize data
+            json j;
+            Jsonize::to_jsonFilename(j, "NEWFILE_REQUEST", c_user, c_filename);
+            const std::string req = j.dump();
+
+            //update client data
+            _client->setUsername(user);
+            _client->setFilename(filename);
+
+            //Send data (header and body)
+            _client->sendRequestMsg(req);
+        }
+        else if (ok && !text.isEmpty() && text.size()>25) {
+            QMessageBox::critical(this,"Errore", "Inserire un nome minore di 25 caratteri!");
+            on_newFile_clicked();
+        }
+        else if (ok && text.isEmpty()) {
+            QMessageBox::critical(this,"Errore", "Inserire il nome del documento!");
+            on_newFile_clicked();
+        }
+    }
 }
+
 
 void HomeWindow::on_openFiles_clicked()
 {

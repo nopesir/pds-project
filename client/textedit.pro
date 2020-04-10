@@ -5,8 +5,10 @@ qtHaveModule(printsupport): QT += printsupport
 TEMPLATE        = app
 TARGET          = textedit
 
-HEADERS         = textedit.h \
+HEADERS         = \
+    MyQTextEdit.h \
     clientproc.h \
+    editorwindow.h \
     file.h \
     homewindow.h \
     json.hpp \
@@ -16,8 +18,10 @@ HEADERS         = textedit.h \
     startwindow.h \
     symbol.h \
     tsymbol.h
-SOURCES         = textedit.cpp \
+SOURCES         = \
+                  MyQTextEdit.cpp \
                   clientproc.cpp \
+                  editorwindow.cpp \
                   file.cpp \
                   homewindow.cpp \
                   jsonize.cpp \
@@ -28,6 +32,8 @@ SOURCES         = textedit.cpp \
                   symbol.cpp \
                   tsymbol.cpp
 FORMS           += startwindow.ui \
+    editor.ui \
+    editorwindow.ui \
     homewindow.ui
 
 RESOURCES += textedit.qrc
@@ -44,3 +50,5 @@ INSTALLS += target
 
 FORMS += \
     startwindow.ui
+
+DISTFILES +=

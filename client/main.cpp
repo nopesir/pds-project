@@ -48,7 +48,7 @@
 **
 ****************************************************************************/
 
-#include "textedit.h"
+//#include "texteditor.h"
 #include "startwindow.h"
 #include <QApplication>
 #include <QDesktopWidget>
