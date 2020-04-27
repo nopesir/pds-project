@@ -9,12 +9,13 @@
 //#include <room.h>
 
 #include <boost/asio/ip/tcp.hpp>
+#include "SharedEditor.h"
 
 class Server {
 
 private:
     boost::asio::ip::tcp::acceptor acceptor;
-    //room room;
+    SharedEditor _se;
     int editor_counter;
     void accept_connection();
 

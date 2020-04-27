@@ -9,13 +9,13 @@
 #include <boost/asio/ip/tcp.hpp>
 #include "User.h"
 
-//enable_shared_from_this allows the session to pass its shared ptr to someone i guess
-class Session: public std::enable_shared_from_this<Session>{
+#include "SharedEditor.h"
+
+class Session: public Client{
 private:
     boost::asio::ip::tcp::socket _socket;
-    User _user;
+    SharedEditor& _se;
     /*
-     room& room_;
     message read_msg_;
     message_queue write_msgs_;
     std::string fullBody;
@@ -28,7 +28,8 @@ private:
     void sendMsgAll(const std::string& response, const int& edId, const std::string& curFile, bool includeThisEditor=false); //send msg to all the clients except client with id 'edId' having the curFile opened
      */
 public:
-    Session(boost::asio::ip::tcp::socket socket, int id);
+    Session(boost::asio::ip::tcp::socket socket, SharedEditor &se, int id);
+
     void session_start();
     /*
     void deliver(const message& msg);

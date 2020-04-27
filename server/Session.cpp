@@ -3,12 +3,14 @@
 //
 
 #include "Session.h"
+#include "SharedEditor.h"
 
-Session::Session(boost::asio::ip::tcp::socket socket, int id): _socket(std::move(socket)),
-_user(User(id, "temporary_name")){
+Session::Session(boost::asio::ip::tcp::socket socket, SharedEditor &se, int id)
+        : Client(id), _socket(std::move(socket)), _se(se) {
     session_start();
 }
 
 void Session::session_start() {
-    shared_from_this()->_user.setFile("");
+    std::shared_ptr<Client> sp(this);
+    _se.join(sp);
 }
