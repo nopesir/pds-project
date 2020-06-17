@@ -187,7 +187,7 @@ void ClientProc::do_read_body() {
                         Jsonize::from_json_symbols(jdata_in, symbolsJSON);
 
                         //Update client data
-                        this->setVector(symbolsJSON);
+                        this->crdt.setSymbols(symbolsJSON);
 
                         auto t_end1 = std::chrono::high_resolution_clock::now();
                         double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
@@ -196,7 +196,7 @@ void ClientProc::do_read_body() {
                         emit opResultSuccess("OPENFILE_SUCCESS");
                     } else if(db_responseJSON == "OPENFILE_FILE_EMPTY") {
                         //Update client data
-                        this->setVector(std::vector<Symbol>());
+                        this->crdt.setSymbols(std::vector<Symbol>());
                         emit opResultSuccess("OPENFILE_SUCCESS");
                     } else
                         emit opResultFailure("OPENFILE_FAILURE");
@@ -220,7 +220,7 @@ void ClientProc::do_read_body() {
 
                         //Update client data
                         this->setFilename(QString::fromStdString(filenameJSON));
-                        this->setVector(symbolsJSON);
+                        this->crdt.setSymbols(symbolsJSON);
 
                         qDebug() << "OPENWITHURI success" << endl;
                         emit opResultSuccess("OPENWITHURI_SUCCESS");
@@ -230,7 +230,7 @@ void ClientProc::do_read_body() {
 
                         //Update client data
                         this->setFilename(QString::fromStdString(filenameJSON));
-                        this->setVector(std::vector<Symbol>());
+                        this->crdt.setSymbols(std::vector<Symbol>());
                         emit opResultSuccess("OPENFILE_SUCCESS");
                     } else {
                         qDebug() << "Something went wrong" << endl;
