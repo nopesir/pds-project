@@ -94,12 +94,9 @@ void ClientProc::do_read_body() {
                         this->setUsername(name_qstring);
                         this->setColor(color_qstring);
                         this->setMail(mail_qstring);
-                        this->crdt.setSiteId(idJSON)
+                        this->crdt.setSiteId(idJSON);
 
-                        /*
-                        emit changeTextUsername(this->getUsername());
-                        emit changeTextMail(this->getMail());
-                        */
+
                         emit formResultSuccess("LOGIN_SUCCESS");
                     } else {
                         qDebug() << "Wrong user or password" << endl;
@@ -174,7 +171,7 @@ void ClientProc::do_read_body() {
 
                         //Update client data
                         this->setFileURI(uriQString);
-                        this->setVector(std::vector<Symbol>());
+                        this->crdt.setSymbols(std::vector<Symbol>());
                         emit opResultSuccess("NEWFILE_SUCCESS");
                     } else
                         emit opResultFailure("NEWFILE_FAILURE");
