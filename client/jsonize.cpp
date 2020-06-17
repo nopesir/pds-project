@@ -175,10 +175,6 @@ void Jsonize::from_json_resp(const json &j, std::string &resp) {
     resp = j.at("content").at("response").get<std::string>();
 }
 
-void Jsonize::from_json_formatting_symbols(const json &j, std::vector<json>& jsonSymbols) {
-    jsonSymbols = j.at("formattingSymVector").get<std::vector<json>>();
-}
-
 /* We need to use this 'from_json' to deserialize std::vector<symbol> (see function from_json_symbols) */
 void from_json(const json& j, Symbol& s) {
     wchar_t letter = j.at("letter").get<wchar_t>();
@@ -244,20 +240,6 @@ Symbol* Jsonize::from_json_symbol(const json &j) {
 
     //now create the symbol
     Symbol *s = new Symbol(letter, id, pos, style);
-    return s;
-}
-
-TemplateSymbol* Jsonize::from_json_formatting_symbol(const json &j) {
-
-    //get symbol values from json
-    int index = j.at("index").get<int>();
-    wchar_t letter = j.at("letter").get<wchar_t>();
-    SymbolStyle style(j.at("isBold").get<bool>(), j.at("isItalic").get<bool>(),j.at("isUnderlined").get<bool>(),
-                      j.at("fontFamily").get<std::string>(), j.at("fontSize").get<int>(), j.at("alignment").get<int>(),
-                      j.at("color").get<std::string>());
-
-    //now create the symbol
-    TemplateSymbol *s = new TemplateSymbol(index, letter, style);
     return s;
 }
 
@@ -354,8 +336,9 @@ void Jsonize::from_json_fontsize_change(const json &j, std::vector<sId>& symbols
     fontSize = j.at("fontSize").get<int>();
 }
 
-void Jsonize::from_json_alignment_change(const json &j, std::vector<sId>& symbolsId, int& alignment) {
-    symbolsId = j.at("symbolsId").get<std::vector<sId>>();
+void Jsonize::from_json_alignment_change(const json &j, int& startBlock, int& endBlock, int& alignment) {
+    startBlock = j.at("startBlock").get<int>();
+    endBlock = j.at("endBlock").get<int>();
     alignment = j.at("alignment").get<int>();
 }
 
@@ -364,17 +347,18 @@ void Jsonize::from_json_fontfamily_change(const json &j, std::vector<sId>& symbo
     fontFamily = j.at("fontFamily").get<std::string>();
 }
 
-void Jsonize::to_json_FormattingSymbol(json &j, const TemplateSymbol &symbol) {
+void Jsonize::to_json_FormattingSymbol(json &j, const Symbol &symbol) {
     j = json{
-            {"index", symbol.getIndex()},
-            {"letter", symbol.getLetter()},
-            {"isBold", symbol.getStyle().isBold()},
-            {"isItalic", symbol.getStyle().isItalic()},
-            {"isUnderlined", symbol.getStyle().isUnderlined()},
-            {"fontFamily", symbol.getStyle().getFontFamily()},
-            {"fontSize", symbol.getStyle().getFontSize()},
-            {"alignment", symbol.getStyle().getAlignment()},
-            {"color", symbol.getStyle().getColor()}
+        {"id", symbol.getId()},
+        {"pos", symbol.getPos()},
+        {"letter", symbol.getLetter()},
+        {"isBold", symbol.getStyle().isBold()},
+        {"isItalic", symbol.getStyle().isItalic()},
+        {"isUnderlined", symbol.getStyle().isUnderlined()},
+        {"fontFamily", symbol.getStyle().getFontFamily()},
+        {"fontSize", symbol.getStyle().getFontSize()},
+        {"alignment", symbol.getStyle().getAlignment()},
+        {"color", symbol.getStyle().getColor()}
     };
 }
 

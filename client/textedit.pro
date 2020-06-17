@@ -17,8 +17,7 @@ HEADERS         = \
     message.h \
     sstyle.h \
     startwindow.h \
-    symbol.h \
-    tsymbol.h
+    symbol.h
 SOURCES         = \
                   MyQTextEdit.cpp \
                   clientproc.cpp \
@@ -31,8 +30,7 @@ SOURCES         = \
                   message.cpp \
                   sstyle.cpp \
                   startwindow.cpp \
-                  symbol.cpp \
-                  tsymbol.cpp
+                  symbol.cpp
 FORMS           += startwindow.ui \
     editor.ui \
     editorwindow.ui \

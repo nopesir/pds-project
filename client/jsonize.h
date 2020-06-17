@@ -5,7 +5,6 @@
 #include <iostream>
 #include "json.hpp"
 #include "symbol.h"
-#include "tsymbol.h"
 #include "file.h"
 
 using nlohmann::json;
@@ -34,7 +33,7 @@ public:
     static void to_json_alignment_change(json &j, const std::string &op, const int &startBlock, const int &endBlock, const int &alignment);
     static void to_json_fontfamily_change(json &j, const std::string &op, const int &startIndex, const int &endIndex, const std::string &fontFamily);
     static void to_json_insertion_range(json &j, const std::string &op, const std::vector<json> &symVector);
-    static void to_json_FormattingSymbol(json &j, const TemplateSymbol &symbol);
+    static void to_json_FormattingSymbol(json &j, const Symbol &symbol);
     static void to_jsonUser(json &j, const std::string &op, const std::string &user);
     static void to_json_collab_colors(json &j, const std::string &op, const std::string &uri);
     static void from_json(const json& j, std::string& op);
@@ -42,13 +41,11 @@ public:
     static void from_json_rename_file(const json &j, std::string &resp, std::string& filename);
     static void from_json_resp(const json &j, std::string &resp);
     static void from_json_symbols(const json &j, std::vector<Symbol> &symbols);
-    static void from_json_formatting_symbols(const json &j, std::vector<json>& jsonSymbols);
     static void from_json_symbolsAndFilename(const json &j, std::vector<Symbol> &symbols, std::string& filename);
     static void from_json_filename(const json &j, std::string& filename);
     static void from_json_files(const json &j, std::vector<json> &jsonFiles);
     static File* from_json_file(const json &j);
     static Symbol* from_json_symbol(const json &j);
-    static TemplateSymbol* from_json_formatting_symbol(const json &j);
     static void from_json_collab_colors_map(const json &j, std::string &op);
     static void from_json_usernameLogin(const json &j, std::string &name, std::string &color, std::string &mail, int &siteId);
     static void from_jsonUri(const json& j, std::string& uri);
@@ -63,9 +60,9 @@ public:
     static void from_json_removal_range(const json &j, std::vector<sId>& symbolsId);
     static void from_json_format_range(const json &j, std::vector<sId>& symbolsId, int& format);
     static void from_json_fontsize_change(const json &j, std::vector<sId>& symbolsId, int& fontSize);
-    static void from_json_alignment_change(const json &j, std::vector<sId>& symbolsId, int& alignment);
+    static void from_json_alignment_change(const json &j, int& startBlock, int& endBlock, int& alignment);
     static void from_json_fontfamily_change(const json &j, std::vector<sId>& symbolsId, std::string& fontFamily);
-    static std::vector<json> fromFormattingSymToJson(const std::vector<TemplateSymbol>& symbols);
+    static std::vector<json> fromFormattingSymToJson(const std::vector<Symbol>& symbols);
 };
 
 #endif // JSONIZE_H
