@@ -287,7 +287,8 @@ void ClientProc::do_read_body() {
                     int newIndex = this->crdt.process(0, indexEditorJSON, symbolJSON);
 
                     std::pair<int, wchar_t> tuple = std::make_pair(newIndex, symbolJSON.getLetter());
-                    emit insertSymbol(tuple, symbolJSON.getStyle()){
+                    emit insertSymbol(tuple, symbolJSON.getStyle());
+                } else if(opJSON == "INSERTIONRANGE_RESPONSE") {
                     int firstIndex;
                     std::vector<json> jsonSymbols;
                     Jsonize::from_json_insertion_range(jdata_in, firstIndex, jsonSymbols);
