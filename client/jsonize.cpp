@@ -344,9 +344,8 @@ void Jsonize::from_json_removal_range(const json &j, std::vector<sId>& symbolsId
     symbolsId = j.at("symbolsId").get<std::vector<sId>>();
 }
 
-void Jsonize::from_json_format_range(const json &j, int& startIndex, int& endIndex, int& format) {
-    startIndex = j.at("startIndex").get<int>();
-    endIndex = j.at("endIndex").get<int>();
+void Jsonize::from_json_format_range(const json &j, std::vector<sId>& symbolsId, int& format) {
+    symbolsId = j.at("symbolsId").get<std::vector<sId>>();
     format = j.at("format").get<int>();
 }
 
