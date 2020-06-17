@@ -189,10 +189,6 @@ void ClientProc::do_read_body() {
                         //Update client data
                         this->crdt.setSymbols(symbolsJSON);
 
-                        auto t_end1 = std::chrono::high_resolution_clock::now();
-                        double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-                        std::cout << "OPENFILE RESPONSE - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
-
                         emit opResultSuccess("OPENFILE_SUCCESS");
                     } else if(db_responseJSON == "OPENFILE_FILE_EMPTY") {
                         //Update client data
