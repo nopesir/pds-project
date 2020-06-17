@@ -53,7 +53,7 @@ public:
     static void from_jsonUri(const json& j, std::string& uri);
     static void from_json(const json& j, std::string& user, std::string& pass);
     static void from_json(const json &j, std::string &user, std::string &pass, std::string &email);
-    static void from_json_insertion(const json& j, std::pair<int, wchar_t>& tuple, SymbolStyle& style);
+    static void from_json_insertion(const json& j, Symbol& s, int &indexInEditor);
     static void from_json_insertion_range(const json &j, int& firstIndex, std::vector<json>& jsonSymbols);
     static void from_json_cursor_change(const json &j, std::string& username, std::string& color, int& pos);
     static void from_json_collab_colors_resp(const json &j, myCollabColorsMap& collabColorsMap);

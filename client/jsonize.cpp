@@ -305,11 +305,20 @@ void Jsonize::from_jsonUri(const json &j, std::string &uri) {
     uri = j.at("content").at("uri").get<std::string>();
 }
 
-void Jsonize::from_json_insertion(const json &j, std::pair<int, wchar_t>& tuple, SymbolStyle& style) {
-    tuple = j.at("tuple").get<std::pair<int, wchar_t>>();
-    style = {j.at("isBold").get<bool>(), j.at("isItalic").get<bool>(), j.at("isUnderlined").get<bool>(),
-             j.at("fontFamily").get<std::string>(), j.at("fontSize").get<int>(), j.at("alignment").get<int>(),
-             j.at("color").get<std::string>()};
+void Jsonize::from_json_insertion(const json& j, Symbol& s, int &indexInEditor) {
+    indexInEditor = j.at("indexInEditor").get<int>();
+    wchar_t letter = j.at("letter").get<wchar_t>();
+    std::pair<int,int> id = j.at("id").get<std::pair<int,int>>();
+    std::vector<int> pos = j.at("pos").get<std::vector<int>>();
+    SymbolStyle style;
+    style.setBold(j.at("isBold").get<bool>());
+    style.setItalic(j.at("isItalic").get<bool>());
+    style.setUnderlined(j.at("isUnderlined").get<bool>());
+    style.setFontFamily(j.at("fontFamily").get<std::string>());
+    style.setFontSize(j.at("fontSize").get<int>());
+    style.setAlignment(j.at("alignment").get<int>());
+    style.setColor(j.at("color").get<std::string>());
+    s = Symbol(letter, id, pos, style);
 }
 
 void Jsonize::from_json_removal(const json &j, int& index) {

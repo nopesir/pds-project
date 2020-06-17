@@ -279,11 +279,15 @@ void ClientProc::do_read_body() {
                     else
                         emit editorResultFailure("INVITE_URI_FAILURE");
                 } else if(opJSON == "INSERTION_RESPONSE") {
-                    std::pair<int, wchar_t> tupleJSON;
-                    SymbolStyle styleJSON;
-                    Jsonize::from_json_insertion(jdata_in, tupleJSON, styleJSON);
-                    emit insertSymbol(tupleJSON, styleJSON);
-                } else if(opJSON == "INSERTIONRANGE_RESPONSE") {
+                    Symbol symbolJSON;
+                    int indexEditorJSON;
+                    Jsonize::from_json_insertion(jdata_in, symbolJSON, indexEditorJSON);
+
+                    //process received symbol and retrieve new calculated index
+                    int newIndex = this->crdt.process(0, indexEditorJSON, symbolJSON);
+
+                    std::pair<int, wchar_t> tuple = std::make_pair(newIndex, symbolJSON.getLetter());
+                    emit insertSymbol(tuple, symbolJSON.getStyle()){
                     int firstIndex;
                     std::vector<json> jsonSymbols;
                     Jsonize::from_json_insertion_range(jdata_in, firstIndex, jsonSymbols);
