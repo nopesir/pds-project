@@ -8,11 +8,11 @@
 
 typedef std::pair<int,int> sId;
 
-class crdt {
+class CRDT {
 
 public:
-    crdt() = default;
-    virtual ~crdt() = default;
+    CRDT() = default;
+    virtual ~CRDT() = default;
     Symbol localInsert(int index, wchar_t value, SymbolStyle style);
     std::vector<Symbol> localInsert(int startIndex, std::vector<Symbol> symbols);
     std::vector<sId> localErase(int startIndex, int endIndex);

@@ -6,9 +6,9 @@ TEMPLATE        = app
 TARGET          = textedit
 
 HEADERS         = \
+    CRDT.h \
     MyQTextEdit.h \
     clientproc.h \
-    crdt.h \
     editorwindow.h \
     file.h \
     homewindow.h \
@@ -19,9 +19,9 @@ HEADERS         = \
     startwindow.h \
     symbol.h
 SOURCES         = \
+                  CRDT.cpp \
                   MyQTextEdit.cpp \
                   clientproc.cpp \
-                  crdt.cpp \
                   editorwindow.cpp \
                   file.cpp \
                   homewindow.cpp \

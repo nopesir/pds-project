@@ -32,7 +32,7 @@ class ClientProc : public QObject
 public:
     ClientProc();
     virtual ~ClientProc();
-    crdt crdt;
+    CRDT crdt;
     void do_connect();
     bool getStatus();
     QString getUsername();

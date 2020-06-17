@@ -1,15 +1,15 @@
-#include "crdt.h"
+#include "CRDT.h"
 #include <algorithm>
 #include <iostream>
 #include <utility>
 
-std::vector<int> crdt::generatePos(int index) {
+std::vector<int> CRDT::generatePos(int index) {
     const std::vector<int> posBefore = _symbols[index-1].getPos();
     const std::vector<int> posAfter = _symbols[index].getPos();
     return generatePosBetween(posBefore, posAfter);
 }
 
-std::vector<int> crdt::generatePosBetween(std::vector<int> pos1, std::vector<int> pos2, std::vector<int> newPos) {
+std::vector<int> CRDT::generatePosBetween(std::vector<int> pos1, std::vector<int> pos2, std::vector<int> newPos) {
     int id1 = pos1.at(0);
     int id2 = pos2.at(0);
 
@@ -40,7 +40,7 @@ std::vector<int> crdt::generatePosBetween(std::vector<int> pos1, std::vector<int
     }
 }
 
-int crdt::comparePosdx(std::vector<int> curSymPos, std::pair<int,int> curSymId, std::vector<int> newSymPos, std::pair<int,int> newSymId, int posIndex) {
+int CRDT::comparePosdx(std::vector<int> curSymPos, std::pair<int,int> curSymId, std::vector<int> newSymPos, std::pair<int,int> newSymId, int posIndex) {
     int newSymPosSize = static_cast<int>(newSymPos.size());
     int curSymPosSize = static_cast<int>(curSymPos.size());
     int curSymPosCurIndex = static_cast<int>(curSymPos.at(posIndex));
@@ -65,7 +65,7 @@ int crdt::comparePosdx(std::vector<int> curSymPos, std::pair<int,int> curSymId, 
         return -1; //make another cycle taking the next symbol from _symbols
 }
 
-int crdt::comparePos(std::vector<int> curSymPos, std::pair<int,int> curSymId, std::vector<int> newSymPos, std::pair<int,int> newSymId, int posIndex) {
+int CRDT::comparePos(std::vector<int> curSymPos, std::pair<int,int> curSymId, std::vector<int> newSymPos, std::pair<int,int> newSymId, int posIndex) {
     int newSymPosSize = static_cast<int>(newSymPos.size());
     int curSymPosSize = static_cast<int>(curSymPos.size());
     int curSymPosCurIndex = static_cast<int>(curSymPos.at(posIndex));
@@ -90,7 +90,7 @@ int crdt::comparePos(std::vector<int> curSymPos, std::pair<int,int> curSymId, st
         return -1; //make another cycle taking the next symbol from _symbols
 }
 
-Symbol crdt::localInsert(int index, wchar_t value, SymbolStyle style) noexcept(false) {
+Symbol CRDT::localInsert(int index, wchar_t value, SymbolStyle style) noexcept(false) {
     std::vector<int> pos;
 
     if(_symbols.empty()) {
@@ -110,7 +110,7 @@ Symbol crdt::localInsert(int index, wchar_t value, SymbolStyle style) noexcept(f
     return s;
 }
 
-std::vector<Symbol> crdt::localInsert(int startIndex, std::vector<Symbol> symbols) noexcept(false) {
+std::vector<Symbol> CRDT::localInsert(int startIndex, std::vector<Symbol> symbols) noexcept(false) {
     std::vector<int> pos;
 
     //generate initial pos and initial index
@@ -155,7 +155,7 @@ std::vector<Symbol> crdt::localInsert(int startIndex, std::vector<Symbol> symbol
     return std::move(symbolVector);
 }
 
-std::vector<sId> crdt::localErase(int startIndex, int endIndex) noexcept(false) {
+std::vector<sId> CRDT::localErase(int startIndex, int endIndex) noexcept(false) {
     //create vector of id to be sent (in removal we need only id, not entire symbol)
     std::vector<sId> symbolsId;
     std::for_each(_symbols.begin() + startIndex, _symbols.begin() + endIndex, [&symbolsId](const Symbol& s) {
@@ -167,7 +167,7 @@ std::vector<sId> crdt::localErase(int startIndex, int endIndex) noexcept(false) 
     return symbolsId;
 }
 
-std::vector<sId> crdt::localFormat(int startIndex, int endIndex, int format) noexcept(false) {
+std::vector<sId> CRDT::localFormat(int startIndex, int endIndex, int format) noexcept(false) {
     //create vector of id to be sent (in removal we need only id, not entire symbol)
     std::vector<sId> symbolsId;
 
@@ -197,7 +197,7 @@ std::vector<sId> crdt::localFormat(int startIndex, int endIndex, int format) noe
     return symbolsId;
 }
 
-std::vector<sId> crdt::localFontSizeChange(int startIndex, int endIndex, int fontSize) noexcept(false) {
+std::vector<sId> CRDT::localFontSizeChange(int startIndex, int endIndex, int fontSize) noexcept(false) {
     //create vector of id to be sent (in removal we need only id, not entire symbol)
     std::vector<sId> symbolsId;
 
@@ -213,7 +213,7 @@ std::vector<sId> crdt::localFontSizeChange(int startIndex, int endIndex, int fon
     return symbolsId;
 }
 
-std::vector<sId> crdt::localFontFamilyChange(int startIndex, int endIndex, const std::string& fontFamily) noexcept(false) {
+std::vector<sId> CRDT::localFontFamilyChange(int startIndex, int endIndex, const std::string& fontFamily) noexcept(false) {
     //create vector of id to be sent (in removal we need only id, not entire symbol)
     std::vector<sId> symbolsId;
 
@@ -229,7 +229,7 @@ std::vector<sId> crdt::localFontFamilyChange(int startIndex, int endIndex, const
     return symbolsId;
 }
 
-std::vector<sId> crdt::localAlignmentChange(int startIndex, int endIndex, int alignment) noexcept(false) {
+std::vector<sId> CRDT::localAlignmentChange(int startIndex, int endIndex, int alignment) noexcept(false) {
     //create vector of id to be sent (in removal we need only id, not entire symbol)
     std::vector<sId> symbolsId;
     std::for_each(_symbols.begin() + startIndex, _symbols.begin() + endIndex, [&symbolsId, alignment](Symbol& s) {
@@ -244,7 +244,7 @@ std::vector<sId> crdt::localAlignmentChange(int startIndex, int endIndex, int al
     return symbolsId;
 }
 
-int crdt::process(int type, int indexEditor, Symbol newSym) {
+int CRDT::process(int type, int indexEditor, Symbol newSym) {
     /* Insertion */
     if (type == 0) {
         int symbols_index = 0, pos_index = 0;
@@ -283,7 +283,7 @@ int crdt::process(int type, int indexEditor, Symbol newSym) {
     }
 }
 
-int crdt::process(int type, int indexEditor, std::vector<Symbol> newSymbols) {
+int CRDT::process(int type, int indexEditor, std::vector<Symbol> newSymbols) {
     /* Insertion range */
     if(type == 6) {
         int symbols_index = 0, pos_index = 0;
@@ -322,7 +322,7 @@ int crdt::process(int type, int indexEditor, std::vector<Symbol> newSymbols) {
     }
 }
 
-int crdt::processErase(sId id) {
+int CRDT::processErase(sId id) {
     auto it = std::find_if(_symbols.begin(), _symbols.end(), [id](const Symbol& s) {return s.getId() == id;});
     if (it != _symbols.end()) {
         int index = it - _symbols.begin();
@@ -334,7 +334,7 @@ int crdt::processErase(sId id) {
     return -1;
 }
 
-int crdt::processFormat(sId id, int format) {
+int CRDT::processFormat(sId id, int format) {
     auto it = std::find_if(_symbols.begin(), _symbols.end(), [id](const Symbol& s) {return s.getId() == id;});
     if (it != _symbols.end()) {
         int index = it - _symbols.begin();
@@ -360,7 +360,7 @@ int crdt::processFormat(sId id, int format) {
     return -1;
 }
 
-int crdt::processFontSize(sId id, int fontSize) {
+int CRDT::processFontSize(sId id, int fontSize) {
     auto it = std::find_if(_symbols.begin(), _symbols.end(), [id](const Symbol& s) {return s.getId() == id;});
     if (it != _symbols.end()) {
         int index = it - _symbols.begin();
@@ -374,7 +374,7 @@ int crdt::processFontSize(sId id, int fontSize) {
     return -1;
 }
 
-int crdt::processFontFamily(sId id, const std::string& fontFamily) {
+int CRDT::processFontFamily(sId id, const std::string& fontFamily) {
     auto it = std::find_if(_symbols.begin(), _symbols.end(), [id](const Symbol& s) {return s.getId() == id;});
     if (it != _symbols.end()) {
         int index = it - _symbols.begin();
@@ -388,7 +388,7 @@ int crdt::processFontFamily(sId id, const std::string& fontFamily) {
     return -1;
 }
 
-int crdt::processAlignment(sId id, int alignment) {
+int CRDT::processAlignment(sId id, int alignment) {
     //check also if alignments are different because server send to all clients (including me) in case of ALIGNMENT_UPDATE
     auto it = std::find_if(_symbols.begin(), _symbols.end(), [id, alignment](const Symbol& s) {
         return s.getId() == id /*&& s.getStyle().getAlignment() != alignment*/;});
@@ -404,31 +404,31 @@ int crdt::processAlignment(sId id, int alignment) {
     return -1;
 }
 
-int crdt::getSiteId() {
+int CRDT::getSiteId() {
     return this->_siteId;
 }
 
-int crdt::getCounter() {
+int CRDT::getCounter() {
     return this->_counter;
 }
 
-std::vector<Symbol> crdt::getSymbols() {
+std::vector<Symbol> CRDT::getSymbols() {
     return _symbols;
 }
 
-void crdt::setSiteId(int id) {
+void CRDT::setSiteId(int id) {
     this->_siteId = id;
 }
 
-void crdt::setCounter(int counter) {
+void CRDT::setCounter(int counter) {
     this->_counter = counter;
 }
 
-void crdt::setSymbols(std::vector<Symbol> symbols) {
+void CRDT::setSymbols(std::vector<Symbol> symbols) {
     this->_symbols = std::move(symbols);
 }
 
-void crdt::updateAlignmentSymbols(int index, int alignment) {
+void CRDT::updateAlignmentSymbols(int index, int alignment) {
     SymbolStyle style = this->_symbols.at(index).getStyle();
     style.setAlignment(alignment);
     this->_symbols.at(index).setStyle(style);
