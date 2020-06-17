@@ -354,9 +354,8 @@ void Jsonize::from_json_fontsize_change(const json &j, std::vector<sId>& symbols
     fontSize = j.at("fontSize").get<int>();
 }
 
-void Jsonize::from_json_alignment_change(const json &j, int& startBlock, int& endBlock, int& alignment) {
-    startBlock = j.at("startBlock").get<int>();
-    endBlock = j.at("endBlock").get<int>();
+void Jsonize::from_json_alignment_change(const json &j, std::vector<sId>& symbolsId, int& alignment) {
+    symbolsId = j.at("symbolsId").get<std::vector<sId>>();
     alignment = j.at("alignment").get<int>();
 }
 

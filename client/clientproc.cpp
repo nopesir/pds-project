@@ -379,11 +379,22 @@ void ClientProc::do_read_body() {
                         }
                     }
                 } else if(opJSON == "ALIGNMENT_CHANGE_RESPONSE") {
-                    int startBlockJSON;
-                    int endBlockJSON;
+                    std::vector<sId> symbolsId;
                     int alignmentJSON;
-                    Jsonize::from_json_alignment_change(jdata_in, startBlockJSON, endBlockJSON, alignmentJSON);
-                    emit changeAlignment(startBlockJSON, endBlockJSON, alignmentJSON);
+                    Jsonize::from_json_alignment_change(jdata_in, symbolsId, alignmentJSON);
+                    int newIndex;
+
+                    if(symbolsId.empty())
+                        emit changeAlignment(newIndex, newIndex+1, alignmentJSON);
+                    else {
+                        for(const sId& id : symbolsId) {
+                            //process received symbol and retrieve new calculated index
+                            newIndex = this->crdt.processAlignment(id, alignmentJSON);
+                            if(newIndex != -1) {
+                                emit changeAlignment(newIndex, newIndex+1, alignmentJSON);
+                            }
+                        }
+                    }
                 } else {
                     qDebug() << "Something went wrong" << endl;
                     emit opResultFailure("RESPONSE_FAILURE");

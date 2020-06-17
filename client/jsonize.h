@@ -63,7 +63,7 @@ public:
     static void from_json_removal_range(const json &j, std::vector<sId>& symbolsId);
     static void from_json_format_range(const json &j, std::vector<sId>& symbolsId, int& format);
     static void from_json_fontsize_change(const json &j, std::vector<sId>& symbolsId, int& fontSize);
-    static void from_json_alignment_change(const json &j, int& startBlock, int& endBlock, int& alignment);
+    static void from_json_alignment_change(const json &j, std::vector<sId>& symbolsId, int& alignment);
     static void from_json_fontfamily_change(const json &j, std::vector<sId>& symbolsId, std::string& fontFamily);
     static std::vector<json> fromFormattingSymToJson(const std::vector<TemplateSymbol>& symbols);
 };
