@@ -283,10 +283,11 @@ File* Jsonize::from_json_file(const json &j) {
     return f;
 }
 
-void Jsonize::from_json_usernameLogin(const json &j, std::string &name, std::string &color, std::string &mail) {
+void Jsonize::from_json_usernameLogin(const json &j, std::string &name, std::string &color, std::string &mail, int &siteID) {
     name = j.at("content").at("usernameLogin").get<std::string>();
     color = j.at("content").at("colorLogin").get<std::string>();
     mail = j.at("content").at("mailLogin").get<std::string>();
+    siteId = j.at("content").at("siteId").get<int>();
 }
 
 void Jsonize::from_json(const json &j, std::string &user, std::string &pass) {

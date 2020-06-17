@@ -8,6 +8,7 @@ TARGET          = textedit
 HEADERS         = \
     MyQTextEdit.h \
     clientproc.h \
+    crdt.h \
     editorwindow.h \
     file.h \
     homewindow.h \
@@ -21,6 +22,7 @@ HEADERS         = \
 SOURCES         = \
                   MyQTextEdit.cpp \
                   clientproc.cpp \
+                  crdt.cpp \
                   editorwindow.cpp \
                   file.cpp \
                   homewindow.cpp \

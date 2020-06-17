@@ -13,11 +13,11 @@
 #include <deque>
 //#include "jsonUtility.h"
 #include "symbol.h"
-#include "tsymbol.h"
 #include "file.h"
 #include "jsonize.h"
 #include <QDebug>
 #include <iostream>
+#include "crdt.h"
 
 
 using boost::asio::ip::tcp;
@@ -32,6 +32,7 @@ class ClientProc : public QObject
 public:
     ClientProc();
     virtual ~ClientProc();
+    crdt crdt;
     void do_connect();
     bool getStatus();
     QString getUsername();
@@ -40,13 +41,11 @@ public:
     QString getFileURI();
     QString getColor();
     std::vector<File> getVectorFile();
-    std::vector<Symbol> getVector();
     void setUsername(QString name);
     void setMail(QString mail);
     void setFilename(QString filename);
     void setFileURI(QString uri);
     void setColor(QString color);
-    void setVector(std::vector<Symbol> Symbols);
     void setVectorFile(std::vector<File> fileVector);
     void close();
     void write(const Message& msg);
@@ -101,7 +100,6 @@ private:
     QString mail_;
     QString color_;
     std::vector<File> fileVector_;
-    std::vector<Symbol> vector_;
 };
 
 #endif // CLIENTPROC_H

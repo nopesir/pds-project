@@ -13,8 +13,7 @@ ClientProc::ClientProc()
           mail_(""),
           color_("#00ffffff"),
           fullBody(""),
-          fileVector_(std::vector<File>()),
-          vector_() {
+          crdt() {
             worker_= std::thread([&](){
                 io_context_.run(); //boost thread loop start
           });
@@ -71,7 +70,6 @@ void ClientProc::do_read_body() {
                 do_read_header();
                 return;
             }
-            //std::cout << std::endl << std::endl << "full body:" << fullBody << std::endl << std::endl;
 
             std::string opJSON;
             try {
@@ -87,7 +85,8 @@ void ClientProc::do_read_body() {
                         std::string db_usernameLoginJSON;
                         std::string db_colorJSON;
                         std::string db_mailJSON;
-                        Jsonize::from_json_usernameLogin(jdata_in, db_usernameLoginJSON, db_colorJSON, db_mailJSON);
+                        int idJSON;
+                        Jsonize::from_json_usernameLogin(jdata_in, db_usernameLoginJSON, db_colorJSON, db_mailJSON, idJSON);
                         QString name_qstring = QString::fromUtf8(db_usernameLoginJSON.data(), db_usernameLoginJSON.size()); //convert to QString
                         QString color_qstring = QString::fromUtf8(db_colorJSON.data(), db_colorJSON.size());
                         QString mail_qstring = QString::fromUtf8(db_mailJSON.data(), db_mailJSON.size());
@@ -95,6 +94,7 @@ void ClientProc::do_read_body() {
                         this->setUsername(name_qstring);
                         this->setColor(color_qstring);
                         this->setMail(mail_qstring);
+                        this->crdt.setSiteId(idJSON)
 
                         /*
                         emit changeTextUsername(this->getUsername());

@@ -49,7 +49,7 @@ public:
     static Symbol* from_json_symbol(const json &j);
     static TemplateSymbol* from_json_formatting_symbol(const json &j);
     static void from_json_collab_colors_map(const json &j, std::string &op);
-    static void from_json_usernameLogin(const json &j, std::string &name, std::string &color, std::string &mail);
+    static void from_json_usernameLogin(const json &j, std::string &name, std::string &color, std::string &mail, int &siteId);
     static void from_jsonUri(const json& j, std::string& uri);
     static void from_json(const json& j, std::string& user, std::string& pass);
     static void from_json(const json &j, std::string &user, std::string &pass, std::string &email);
