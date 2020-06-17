@@ -360,9 +360,8 @@ void Jsonize::from_json_alignment_change(const json &j, int& startBlock, int& en
     alignment = j.at("alignment").get<int>();
 }
 
-void Jsonize::from_json_fontfamily_change(const json &j, int& startIndex, int& endIndex, std::string& fontFamily) {
-    startIndex = j.at("startIndex").get<int>();
-    endIndex = j.at("endIndex").get<int>();
+void Jsonize::from_json_fontfamily_change(const json &j, std::vector<sId>& symbolsId, std::string& fontFamily) {
+    symbolsId = j.at("symbolsId").get<std::vector<sId>>();
     fontFamily = j.at("fontFamily").get<std::string>();
 }
 
