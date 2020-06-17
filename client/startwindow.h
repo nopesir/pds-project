@@ -40,17 +40,11 @@ private slots:
 
     void on_eyeButton_clicked();*/
 
-
     void on_regButton_clicked();
-
     void on_buttonBack_clicked();
-
     void on_exitButton_clicked();
-
     void on_loginButton_clicked();
-
     void on_buttonReg_clicked();
-
     void on_hideButton_clicked();
 
 public slots:
@@ -67,6 +61,8 @@ private:
     //QString qstr = version.getVersion();
     ClientProc *_client;
     bool regMat;
+
+    void LoginProcedure();
 
 protected:
     //Function for mouse related event

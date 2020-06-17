@@ -116,33 +116,44 @@ void StartWindow::on_exitButton_clicked()
     QApplication::exit();
 }
 
+
+
+
 void StartWindow::on_loginButton_clicked()
 {
-    /*if(_client->getStatus()==false){
-        QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server!\n"
-                                                        "Riprova più tardi");
+    if(_client->getStatus()==false){
+        _client ->do_connect();
+        sleep(1000);
+        qDebug () << "IL SERVER é connesso?--> " <<_client->getStatus();
+        if(_client->getStatus()==false){
+            //secondo controllo se non sono riuscito a ricollegarmi al server
+            QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server!\n" "Riprova più tardi");
+        }else{
+            LoginProcedure();
+        }
     } else {
-        //Get data from the form
-        QString user = ui->lineUser->text();
-        QByteArray ba_user = user.toLocal8Bit();
-        const char *c_user = ba_user.data();
-        QString pass = ui->linePassword->text();
-        QByteArray ba_pass = pass.toLocal8Bit();
-        const char *c_pass = ba_pass.data();
+        LoginProcedure();
+    }
+}
 
-        //update client data
-        _client->setUsername(user);
+void StartWindow::LoginProcedure(){
+    QString user = ui->lineUser->text();
+    QByteArray ba_user = user.toLocal8Bit();
+    const char *c_user = ba_user.data();
+    QString pass = ui->linePassword->text();
+    QByteArray ba_pass = pass.toLocal8Bit();
+    const char *c_pass = ba_pass.data();
 
-        //Serialize data
-        json j;
-        Jsonize::to_json(j, "LOGIN_REQUEST", c_user, c_pass);
-        const std::string req = j.dump();
+    //update client data
+    _client->setUsername(user);
 
-        //Send data (header and body)
-        _client->sendRequestMsg(req);
-        */
-     showPopupSuccess("a");
- //   }
+    //Serialize data
+    json j;
+    Jsonize::to_json(j, "LOGIN_REQUEST", c_user, c_pass);
+    const std::string req = j.dump();
+
+    //Send data (header and body)
+    _client->sendRequestMsg(req);
 }
 
 void StartWindow::on_buttonReg_clicked()
