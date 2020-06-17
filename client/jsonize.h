@@ -9,6 +9,7 @@
 #include "file.h"
 
 using nlohmann::json;
+typedef std::pair<int,int> sId;
 
 //SERIALIZATION (convert json into string) -> it is obtained with method dump() (e.g. json.dump())
 //DESERIALIZATION (convert data into json) -> it is obtained with method parse() (e.g. json::parse(data_));
@@ -59,7 +60,7 @@ public:
     static void from_json_collab_colors_resp(const json &j, myCollabColorsMap& collabColorsMap);
     static void from_json_user_offline(const json &j, std::string &username, myCollabColorsMap& collabColorsMap);
     static void from_json_removal(const json &j, int& index);
-    static void from_json_removal_range(const json &j, int& startIndex, int& endIndex);
+    static void from_json_removal_range(const json &j, std::vector<sId>& symbolsId);
     static void from_json_format_range(const json &j, int& startIndex, int& endIndex, int& format);
     static void from_json_fontsize_change(const json &j, int& startIndex, int& endIndex, int& fontSize);
     static void from_json_alignment_change(const json &j, int& startBlock, int& endBlock, int& alignment);
