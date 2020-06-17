@@ -349,9 +349,8 @@ void Jsonize::from_json_format_range(const json &j, std::vector<sId>& symbolsId,
     format = j.at("format").get<int>();
 }
 
-void Jsonize::from_json_fontsize_change(const json &j, int& startIndex, int& endIndex, int& fontSize) {
-    startIndex = j.at("startIndex").get<int>();
-    endIndex = j.at("endIndex").get<int>();
+void Jsonize::from_json_fontsize_change(const json &j, std::vector<sId>& symbolsId, int& fontSize) {
+    symbolsId = j.at("symbolsId").get<std::vector<sId>>();
     fontSize = j.at("fontSize").get<int>();
 }
 
