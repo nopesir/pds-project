@@ -488,20 +488,12 @@ QString ClientProc::getColor() {
     return this->color_;
 }
 
-void ClientProc::setVector(std::vector<Symbol> symbols){
-    this->vector_ = symbols;
-}
-
 void ClientProc::setVectorFile(std::vector<File> files){
     this->fileVector_ = files;
 }
 
 std::vector<File> ClientProc::getVectorFile(){
     return this->fileVector_;
-}
-
-std::vector<Symbol> ClientProc::getVector(){
-    return this->vector_;
 }
 
 void ClientProc::setFilename(QString filename) {
