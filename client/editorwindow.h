@@ -199,6 +199,13 @@ private:
     QTimer *titlebarTimer;
     bool BruteClose=true;
     std::vector<int> sizeVector = {8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96};
+    void setupListWidgets();
+    void setupTextEdit();
+    void setupColor();
+    void setupValidator();
+    void setupFirstLetter();
+    void setupFontIcon();
+    void setupTitlebarTimer();
     SymbolStyle getCurCharStyle();
     SymbolStyle getStyleFromHTMLStyles(QVector<std::pair<int,SymbolStyle>>& styles);
     QVector<QRegularExpression> getStyleRegexes();

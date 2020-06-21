@@ -135,6 +135,34 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     std::cout << "EDITOR WINDOW CONSTRUCTOR AFTER SHOWSYMBOLS - ELAPSED (ms): " << elapsed_time_ms << std::endl;
 }
 
+
+void EditorWindow::setupListWidgets() {
+    ui->listWidgetOn->setViewMode(QListView::ListMode);
+    ui->listWidgetOn->setGridSize(QSize(215,40));
+    ui->listWidgetOn->setIconSize(QSize(30,30));
+    ui->listWidgetOn->setFlow(QListView::LeftToRight);
+    ui->listWidgetOn->setWrapping(true);
+    ui->listWidgetOn->setWordWrap(true);
+    ui->listWidgetOn->setResizeMode(QListView::Adjust);
+    ui->listWidgetOn->setAlternatingRowColors(false);
+    ui->listWidgetOn->setMovement(QListView::Static);
+    ui->listWidgetOn->setTextElideMode(Qt::ElideRight);
+
+    ui->listWidgetOff->setViewMode(QListView::ListMode);
+    ui->listWidgetOff->setGridSize(QSize(215,40));
+    ui->listWidgetOff->setIconSize(QSize(30,30));
+    ui->listWidgetOff->setFlow(QListView::LeftToRight);
+    ui->listWidgetOff->setWrapping(true);
+    ui->listWidgetOff->setWordWrap(true);
+    ui->listWidgetOff->setResizeMode(QListView::Adjust);
+    ui->listWidgetOff->setAlternatingRowColors(false);
+    ui->listWidgetOff->setMovement(QListView::Static);
+    ui->listWidgetOff->setTextElideMode(Qt::ElideRight);
+
+    ui->listWidgetOn->setVerticalScrollBar(ui->verticalScrollBarOn);
+    ui->listWidgetOff->setVerticalScrollBar(ui->verticalScrollBarOff);
+}
+
 EditorWindow::~EditorWindow() {
     emit closeEditor();
     delete ui;
