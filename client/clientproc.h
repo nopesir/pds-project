@@ -17,7 +17,7 @@
 #include "jsonize.h"
 #include <QDebug>
 #include <iostream>
-#include "crdt.h"
+#include "CRDT.h"
 
 
 using boost::asio::ip::tcp;

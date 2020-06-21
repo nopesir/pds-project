@@ -115,7 +115,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
     std::cout << "EDITOR WINDOW CONSTRUCTOR - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 
-    showSymbolsAt(0, _client->getVector());
+    showSymbolsAt(0, _client->crdt.getSymbols());
     auto t_start = std::chrono::high_resolution_clock::now();
 
     this->installEventFilter(this);

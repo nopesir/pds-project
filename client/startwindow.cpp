@@ -12,9 +12,9 @@
 #include <QDesktopWidget>
 #include <QProgressBar>
 
-//using json = nlohmann::json;
-//using boost::asio::ip::tcp;
-//typedef std::deque<message> message_queue;
+using json = nlohmann::json;
+using boost::asio::ip::tcp;
+typedef std::deque<Message> message_queue;
 
 //CONSTRUCTOR
 StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint),
