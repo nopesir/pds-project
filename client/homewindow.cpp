@@ -292,7 +292,7 @@ void HomeWindow::on_uriDoc_clicked() {
         }
     }
 }
-
+*/
 //OPEN ONE DOCUMENT FROM A LIST OF USER'S DOC
 void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
     //close userProfile Window if it was opened;
@@ -332,7 +332,7 @@ void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
     double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
     std::cout << "ITEM DOUBLE CLICKED - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
-*/
+
 void HomeWindow::showPopupSuccess(QString result) {
     if(result == "DISCONNECT_SUCCESS") {
         StartWindow *s = new StartWindow();
@@ -345,9 +345,9 @@ void HomeWindow::showPopupSuccess(QString result) {
         this->hide();
         _ew->showMaximized();
     } else if(result == "OPENFILE_SUCCESS") {
-        //_ew = new EditorWindow(_client);
+        _ew = new EditorWindow(_client);
         this->hide();
-        //_ew->showMaximized();
+        _ew->showMaximized();
     } else if(result == "OPENWITHURI_SUCCESS") {
         //_ew = new EditorWindow(_client);
         this->hide();
@@ -456,12 +456,12 @@ void HomeWindow::showListFile(std::vector<File> files) {
         }
     }
 }
-/*
+
 void HomeWindow::resumeWindow() {
     this->show();
-    //ui->stackedWidget->setCurrentIndex(0);
+    //ui->stackedWidget->setCurrentIndex(1);
 }
-
+/*
 void HomeWindow:: setUserProfileClosed(){
     profile_closed = true;
 }

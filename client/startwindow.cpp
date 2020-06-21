@@ -123,7 +123,7 @@ void StartWindow::on_loginButton_clicked()
 {
     if(_client->getStatus()==false){
         _client ->do_connect();
-        sleep(1000);
+        sleep(1);
         qDebug () << "IL SERVER é connesso?--> " <<_client->getStatus();
         if(_client->getStatus()==false){
             //secondo controllo se non sono riuscito a ricollegarmi al server
