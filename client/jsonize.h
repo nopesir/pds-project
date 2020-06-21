@@ -27,7 +27,7 @@ public:
     static void to_json(json& j, const std::string& op, const std::string& user, const std::string& pass, const std::string& email);
     static void to_json_insertion(json &j, const std::string &op, const std::pair<int, wchar_t> &tuple, const SymbolStyle &style);
     static void to_json_cursor_change_req(json &j, const std::string &op, const int &index);
-    static void to_json_removal_range(json &j, const std::string &op, const int &startIndex, const int &endIndex);
+    static void to_json_removal_range(json &j, const std::string &op, const std::vector<sId> &symbolsId);
     static void to_json_format_range(json &j, const std::string &op, const int &startIndex, const int &endIndex, const int &format);
     static void to_json_fontsize_change(json &j, const std::string &op, const int &startIndex, const int &endIndex, const int &fontSize);
     static void to_json_alignment_change(json &j, const std::string &op, const int &startBlock, const int &endBlock, const int &alignment);

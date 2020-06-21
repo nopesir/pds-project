@@ -24,8 +24,6 @@
 using json = nlohmann::json;
 
 EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(parent), ui(new Ui::EditorWindow), _client(client) {
-    auto t_start1 = std::chrono::high_resolution_clock::now();
-
     ui->setupUi(this);
     connect(_client, &ClientProc::editorResultSuccess, this, &EditorWindow::showPopupSuccess);
     connect(_client, &ClientProc::editorResultFailure, this, &EditorWindow::showPopupFailure);
@@ -45,94 +43,25 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     connect(ui->fontSizeBox->lineEdit(), &QLineEdit::editingFinished, this, &EditorWindow::resetFontSize);
     connect(ui->RealTextEdit, &MyQTextEdit::updateAlignmentButton, this, &EditorWindow::updateAlignmentButton);
     connect(&ui->RealTextEdit->timer, &QTimer::timeout, ui->RealTextEdit, &MyQTextEdit::hideHorizontalRect);
+    connect(_client, &ClientProc::statusChanged, this, &EditorWindow::goodbyeClient);
 
-    ui->listWidgetOn->setViewMode(QListView::ListMode);
-    ui->listWidgetOn->setGridSize(QSize(215,40));
-    ui->listWidgetOn->setIconSize(QSize(30,30));
-    ui->listWidgetOn->setFlow(QListView::LeftToRight);
-    ui->listWidgetOn->setWrapping(true);
-    ui->listWidgetOn->setWordWrap(true);
-    ui->listWidgetOn->setResizeMode(QListView::Adjust);
-    ui->listWidgetOn->setAlternatingRowColors(false);
-    ui->listWidgetOn->setMovement(QListView::Static);
-    ui->listWidgetOn->setTextElideMode(Qt::ElideRight);
-
-    ui->listWidgetOff->setViewMode(QListView::ListMode);
-    ui->listWidgetOff->setGridSize(QSize(215,40));
-    ui->listWidgetOff->setIconSize(QSize(30,30));
-    ui->listWidgetOff->setFlow(QListView::LeftToRight);
-    ui->listWidgetOff->setWrapping(true);
-    ui->listWidgetOff->setWordWrap(true);
-    ui->listWidgetOff->setResizeMode(QListView::Adjust);
-    ui->listWidgetOff->setAlternatingRowColors(false);
-    ui->listWidgetOff->setMovement(QListView::Static);
-    ui->listWidgetOff->setTextElideMode(Qt::ElideRight);
-
-    ui->listWidgetOn->setVerticalScrollBar(ui->verticalScrollBarOn);
-    ui->listWidgetOff->setVerticalScrollBar(ui->verticalScrollBarOff);
-
-    QString user = _client->getUsername();
-    ui->labelUser->setText(user);
-
-    QChar firstLetter;
-
-    for (int i=0;i<user.length();i++){
-        firstLetter = user.at(i);
-        if(firstLetter.isLetter()){
-            break;
-        }
-    }
-
-    SimplifySingleCharForSorting(firstLetter,1);
-    ui->profileButton->setText(firstLetter.toUpper());
-
-    QColor color = _client->getColor();
-    QString qss = QString("border-radius: 5px; \nbackground-color: %1; color:white;").arg(color.name());
-    ui->profileButton->setStyleSheet(qss);
-
-    QRegularExpressionValidator* fontSizeValidator;
-    QIcon fontIcon(":/image/Editor/font.png");
-    fontSizeValidator = new QRegularExpressionValidator(QRegularExpression("^(200|[1-9]|[1-9][0-9]|1[0-9][0-9])")); //from 1 to 200
-
-    ui->fontSizeBox->lineEdit()->setValidator(fontSizeValidator);
-
-    ui->RealTextEdit->setFontPointSize(14);
-    ui->RealTextEdit->setFontFamily("Times New Roman");
-    ui->RealTextEdit->setAcceptDrops(false);
-    ui->RealTextEdit->setUndoRedoEnabled(false);
-    ui->RealTextEdit->document()->setDocumentMargin(50);
-    ui->fontFamilyBox->setCurrentText(ui->RealTextEdit->currentFont().family());
-    for(int i=0; i<ui->fontFamilyBox->count(); i++) {
-        ui->fontFamilyBox->setItemIcon(i, fontIcon);
-    }
-    ui->RealTextEdit->setEditorColor(_client->getColor());
-    ui->RealTextEdit->addRemoteCursor(_client->getUsername(), std::make_pair(_client->getColor(),0));
+    setupListWidgets();
+    setupFirstLetter();
+    setupColor();
+    setupValidator();
+    setupTextEdit();
+    setupFontIcon();
     cursorChangeRequest(0);
     hideLastAddedItem(ui->fontFamilyBox);
     qRegisterMetaType<std::vector<Symbol>>("std::vector<symbol>");
     qRegisterMetaType<myCollabColorsMap>("std::map<std::string,std::pair<std::string,bool>");
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    std::cout << "EDITOR WINDOW CONSTRUCTOR - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
-
     showSymbolsAt(0, _client->crdt.getSymbols());
-    auto t_start = std::chrono::high_resolution_clock::now();
-
     this->installEventFilter(this);
     ui->RealTextEdit->installEventFilter(this);
     collabColorsRequest(_client->getFileURI());
-
-    //Load Last User's Saved Setting
     LoadUserSetting();
-    titlebarTimer = new QTimer(this);
-    connect(titlebarTimer,SIGNAL(timeout()), this, SLOT(TitlebarChangeByTimer()));
-    titlebarTimer->start(1);
-
-    //Set docName on CollabBar
-    SetDynamicDocNameLabel();
-    auto t_end = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    std::cout << "EDITOR WINDOW CONSTRUCTOR AFTER SHOWSYMBOLS - ELAPSED (ms): " << elapsed_time_ms << std::endl;
+    setupTitlebarTimer();
+    SetDynamicDocNameLabel(); //set docName on CollabBar
 }
 
 
@@ -161,6 +90,56 @@ void EditorWindow::setupListWidgets() {
 
     ui->listWidgetOn->setVerticalScrollBar(ui->verticalScrollBarOn);
     ui->listWidgetOff->setVerticalScrollBar(ui->verticalScrollBarOff);
+}
+
+void EditorWindow::setupTextEdit() {
+    ui->RealTextEdit->setFontPointSize(14);
+    ui->RealTextEdit->setFontFamily("Times New Roman");
+    ui->RealTextEdit->setAcceptDrops(false);
+    ui->RealTextEdit->setUndoRedoEnabled(false);
+    ui->RealTextEdit->document()->setDocumentMargin(50);
+    ui->RealTextEdit->setEditorColor(_client->getColor());
+}
+
+void EditorWindow::setupFirstLetter() {
+    QString user = _client->getUsername();
+    ui->labelUser->setText(user);
+
+    QChar firstLetter;
+    for (int i=0;i<user.length();i++) {
+        firstLetter = user.at(i);
+        if(firstLetter.isLetter()) {
+            break;
+        }
+    }
+    SimplifySingleCharForSorting(firstLetter,1);
+    ui->profileButton->setText(firstLetter.toUpper());
+}
+
+void EditorWindow::setupValidator() {
+    QRegularExpressionValidator* fontSizeValidator;
+    fontSizeValidator = new QRegularExpressionValidator(QRegularExpression("^(200|[1-9]|[1-9][0-9]|1[0-9][0-9])")); //from 1 to 200
+    ui->fontSizeBox->lineEdit()->setValidator(fontSizeValidator);
+}
+
+void EditorWindow::setupColor() {
+    QColor color = _client->getColor();
+    QString qss = QString("border-radius: 5px; \nbackground-color: %1; color:white;").arg(color.name());
+    ui->profileButton->setStyleSheet(qss);
+}
+
+void EditorWindow::setupFontIcon() {
+    QIcon fontIcon(":/image/Editor/font.png");
+    ui->fontFamilyBox->setCurrentText(ui->RealTextEdit->currentFont().family());
+    for(int i=0; i<ui->fontFamilyBox->count(); i++) {
+        ui->fontFamilyBox->setItemIcon(i, fontIcon);
+    }
+}
+
+void EditorWindow::setupTitlebarTimer() {
+    titlebarTimer = new QTimer(this);
+    connect(titlebarTimer, SIGNAL(timeout()), this, SLOT(TitlebarChangeByTimer()));
+    titlebarTimer->start(1);
 }
 
 EditorWindow::~EditorWindow() {
@@ -3287,10 +3266,10 @@ QString EditorWindow::updateBackgroundColor(QString html, QString finalAlpha) {
     return html;
 }
 
-void EditorWindow::removeCharRequest(int startIndex, int endIndex) {
+void EditorWindow::removeCharRequest(const std::vector<sId>& symbolsId) {
     //Serialize data
     json j;
-    Jsonize::to_json_removal_range(j, "REMOVAL_REQUEST", startIndex, endIndex);
+    Jsonize::to_json_removal_range(j, "REMOVAL_REQUEST", symbolsId);
     const std::string req = j.dump();
 
     //Send data (header and body)

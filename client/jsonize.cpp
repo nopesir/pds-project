@@ -41,11 +41,10 @@ void Jsonize::to_json_cursor_change_req(json &j, const std::string &op, const in
     };
 }
 
-void Jsonize::to_json_removal_range(json &j, const std::string &op, const int &startIndex, const int &endIndex) {
+void Jsonize::to_json_removal_range(json &j, const std::string &op, const std::vector<sId> &symbolsId) {
     j = json{
             {"operation", op},
-            {"startIndex", startIndex},
-            {"endIndex", endIndex}
+            {"symbolsId", symbolsId}
     };
 }
 
