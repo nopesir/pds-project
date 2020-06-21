@@ -75,11 +75,10 @@ void Jsonize::to_json_alignment_change(json &j, const std::string &op, const std
     };
 }
 
-void Jsonize::to_json_fontfamily_change(json &j, const std::string &op, const int &startIndex, const int &endIndex, const std::string &fontFamily) {
+void Jsonize::to_json_fontfamily_change(json &j, const std::string &op, const std::vector<sId> &symbolsId, const std::string &fontFamily) {
     j = json{
             {"operation", op},
-            {"startIndex", startIndex},
-            {"endIndex", endIndex},
+            {"symbolsId", symbolsId},
             {"fontFamily", fontFamily}
     };
 }

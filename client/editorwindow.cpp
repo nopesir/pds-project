@@ -3086,7 +3086,7 @@ void EditorWindow::sendAlignChangeRequest(int blockStart, int blockEnd, int alig
 
     //Serialize data
     json j;
-    jsonUtility::to_json_alignment_change(j, "ALIGNMENT_CHANGE_REQUEST", symbolsId, alignment);
+    Jsonize::to_json_alignment_change(j, "ALIGNMENT_CHANGE_REQUEST", symbolsId, alignment);
     const std::string req = j.dump();
 
     //Send data (header and body)
@@ -3099,9 +3099,12 @@ void EditorWindow::sendFontChangeRequest(std::string fontFamily) {
         int startIndex = cursor.selectionStart();
         int endIndex = cursor.selectionEnd();
 
+        //Update symbols of the client
+        std::vector<sId> symbolsId = _client->crdt.localFontFamilyChange(startIndex, endIndex, fontFamily);
+
         //Serialize data
         json j;
-        Jsonize::to_json_fontfamily_change(j, "FONTFAMILY_CHANGE_REQUEST", startIndex, endIndex, fontFamily);
+        Jsonize::to_json_fontfamily_change(j, "FONTFAMILY_CHANGE_REQUEST", symbolsId, fontFamily);
         const std::string req = j.dump();
 
         //Send data (header and body)
@@ -3255,11 +3258,83 @@ void EditorWindow::alignSingleBlock(QTextCursor& cursor, Qt::AlignmentFlag align
     textBlockFormat.setAlignment(alignment);
     cursor.mergeBlockFormat(textBlockFormat);
     ui->RealTextEdit->setTextCursor(cursor);
-    if(ui->RealTextEdit->document()->lastBlock() == cursor.block()) //Qt considers <CR> in last line, even if I didn't press Return btn
-        sendAlignChangeRequest(cursor.block().position(), cursor.block().position()+cursor.block().length()-1, alignment);
-    else
+    int oldPos = cursor.position();
+
+    if(ui->RealTextEdit->document()->lastBlock() == cursor.block()) { //Qt considers <CR> in last line, even if I didn't press Return btn
+
+        //update symbols of the client
+        cursor.movePosition(QTextCursor::End);
+        int lastPos = cursor.position();
+        int vecSize = static_cast<int>(_client->crdt.getSymbols().size());
+
+        bool addNewline = false;
+        Symbol s;
+        if(vecSize == 0) {
+            SymbolStyle style = getCurCharStyle();
+            QTextCharFormat format;
+            //QTextBlockFormat blockFormat;
+
+            /* Get style */
+            format.setFontFamily(QString::fromStdString(style.getFontFamily()));
+            format.setFontPointSize(style.getFontSize());
+            format.setFontItalic(style.isItalic());
+            format.setFontWeight(style.isBold() ? QFont::Bold : QFont::Normal);
+            format.setFontUnderline(style.isUnderlined());
+            //blockFormat.setAlignment(static_cast<Qt::AlignmentFlag>(style.getAlignment()));
+
+            /* Insert (formatted) char locally in document */
+            cursor.setPosition(lastPos);
+            cursor.setCharFormat(format);
+            cursor.insertText(static_cast<QString>('\r'));
+            //cursor.setBlockFormat(blockFormat);
+            cursor.setPosition(oldPos);
+            ui->RealTextEdit->setTextCursor(cursor);
+
+            /* Insert (formatted) char in symbol vector */
+            s = _client->crdt.localInsert(lastPos, '\r', style);
+            addNewline = true;
+        }
+        else if(cursor.position() >= lastPos) {
+            SymbolStyle style = _client->crdt.getSymbols().at(vecSize-1).getStyle();
+            QTextCharFormat format;
+
+            /* Get style */
+            format.setFontFamily(QString::fromStdString(style.getFontFamily()));
+            format.setFontPointSize(style.getFontSize());
+            format.setFontItalic(style.isItalic());
+            format.setFontWeight(style.isBold() ? QFont::Bold : QFont::Normal);
+            format.setFontUnderline(style.isUnderlined());
+
+            /* Insert (formatted) char locally in document */
+            cursor.setPosition(vecSize);
+            cursor.setCharFormat(format);
+            cursor.insertText(static_cast<QString>('\r'));
+            cursor.setPosition(oldPos);
+            ui->RealTextEdit->setTextCursor(cursor);
+
+            /* Insert (formatted) char in symbol vector */
+            s = _client->crdt.localInsert(vecSize, '\r', style);
+            addNewline = true;
+        }
+
+        if(addNewline) {
+            //Serialize data
+            json j;
+            Jsonize::to_json_insertion(j, "INSERTION_REQUEST", s, vecSize);
+            const std::string req = j.dump();
+
+            //Send data (header and body)
+            _client->sendRequestMsg(req);
+
+            sendAlignChangeRequest(cursor.block().position(), cursor.block().position()+cursor.block().length(), alignment);
+        } else {
+            sendAlignChangeRequest(cursor.block().position(), cursor.block().position()+cursor.block().length()-1, alignment);
+        }
+    }
+    else {
         sendAlignChangeRequest(cursor.block().position(), cursor.block().position()+cursor.block().length(), alignment);
-    //NB: cursor.block().length() considers also <CR>, while QTextCursor::EndOfBlock not!
+        //NB: cursor.block().length() considers also <CR>, while QTextCursor::EndOfBlock not!
+    }
 }
 
 void EditorWindow::alignMultipleBlocks(int startIndex, int endIndex, QTextCursor& cursor, Qt::AlignmentFlag alignment) {
@@ -3293,7 +3368,9 @@ std::pair<int,int> EditorWindow::alignBlocks(int startIndex, int endIndex, const
     QTextCursor tempCursor = cursor;
     QTextBlockFormat textBlockFormat;
     int startPos, endPos = -1;
+    bool lastBlockEmpty = false;
 
+    tempCursor.beginEditBlock();
     tempCursor.setPosition(startIndex);
     tempCursor.movePosition(QTextCursor::StartOfBlock);
     startPos = tempCursor.position();
@@ -3301,13 +3378,59 @@ std::pair<int,int> EditorWindow::alignBlocks(int startIndex, int endIndex, const
         textBlockFormat = tempCursor.blockFormat();
         textBlockFormat.setAlignment(alignment);
         tempCursor.mergeBlockFormat(textBlockFormat);
+
+        /* Detect if last block does not have any characters */
+        int posBefore = tempCursor.position();
         tempCursor.movePosition(QTextCursor::EndOfBlock); //NB: EndOfBlock does NOT consider <CR> (for ex.), so I have to move Right to reach the next block
-        endPos = tempCursor.position();
+        int posAfter = tempCursor.position();
+        if(posBefore == posAfter)
+            lastBlockEmpty = true;
+
         tempCursor.movePosition(QTextCursor::Right);
+        endPos = tempCursor.position();
+        if(endPos >= endIndex) {
+            endPos--;
+            break;
+        }
     }
     tempCursor.movePosition(QTextCursor::Left); //to check if we selected also the last block
-    if(ui->RealTextEdit->document()->lastBlock() == tempCursor.block())
-        return std::make_pair(startPos, endPos); //endPos and not endPos+1 due to the fact that Qt considers <CR> in last line, even if I didn't press Return btn
+    tempCursor.endEditBlock();
+
+    if(lastBlockEmpty || ui->RealTextEdit->document()->lastBlock() == tempCursor.block()) {
+        int oldPos = tempCursor.position();
+        tempCursor.movePosition(QTextCursor::End);
+        int vecSize = static_cast<int>(_client->crdt.getSymbols().size());
+        Symbol s;
+
+        SymbolStyle style = _client->crdt.getSymbols().at(vecSize-1).getStyle();
+        QTextCharFormat format;
+
+        /* Get style */
+        format.setFontFamily(QString::fromStdString(style.getFontFamily()));
+        format.setFontPointSize(style.getFontSize());
+        format.setFontItalic(style.isItalic());
+        format.setFontWeight(style.isBold() ? QFont::Bold : QFont::Normal);
+        format.setFontUnderline(style.isUnderlined());
+
+        /* Insert (formatted) char locally in document */
+        tempCursor.setPosition(vecSize);
+        tempCursor.setCharFormat(format);
+        tempCursor.insertText(static_cast<QString>('\r'));
+        tempCursor.setPosition(oldPos);
+        ui->RealTextEdit->setTextCursor(cursor);
+
+        /* Insert (formatted) char in symbol vector */
+        s = _client->crdt.localInsert(vecSize, '\r', style);
+
+        //Serialize data
+        json j;
+        Jsonize::to_json_insertion(j, "INSERTION_REQUEST", s, vecSize);
+        const std::string req = j.dump();
+
+        //Send data (header and body)
+        _client->sendRequestMsg(req);
+        return std::make_pair(startPos, endPos+1);
+    }
     else
         return std::make_pair(startPos, endPos+1); //endPos+1 to change alignment also for <CR>
 }

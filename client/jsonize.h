@@ -31,7 +31,7 @@ public:
     static void to_json_format_range(json &j, const std::string &op, const std::vector<sId> &symbolsId, const int &format);
     static void to_json_fontsize_change(json &j, const std::string &op, const std::vector<sId> &symbolsId, const int &fontSize);
     static void to_json_alignment_change(json &j, const std::string &op, const std::vector<sId> &symbolsId, const int &alignment);
-    static void to_json_fontfamily_change(json &j, const std::string &op, const int &startIndex, const int &endIndex, const std::string &fontFamily);
+    static void to_json_fontfamily_change(json &j, const std::string &op, const std::vector<sId> &symbolsId, const std::string &fontFamily);
     static void to_json_insertion_range(json &j, const std::string &op, const std::vector<json> &symVector, const int &startIndex);
     static void to_json_FormattingSymbol(json &j, const Symbol &symbol);
     static void to_jsonUser(json &j, const std::string &op, const std::string &user);
