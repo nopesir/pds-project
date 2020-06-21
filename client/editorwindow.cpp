@@ -3360,8 +3360,8 @@ void EditorWindow::insertCharRangeRequest(int pos, bool cursorHasSelection) noex
 
         //Serialize data
         json j;
-        std::vector<json> symFormattingVectorJSON = jsonUtility::fromFormattingSymToJson(symbols);
-        jsonUtility::to_json_insertion_range(j, "INSERTIONRANGE_REQUEST", symFormattingVectorJSON, initialPos);
+        std::vector<json> symFormattingVectorJSON = Jsonize::fromFormattingSymToJson(symbols);
+        Jsonize::to_json_insertion_range(j, "INSERTIONRANGE_REQUEST", symFormattingVectorJSON, initialPos);
         const std::string req = j.dump();
 
         //Send data (header and body)

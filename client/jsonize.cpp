@@ -152,10 +152,11 @@ void Jsonize::to_jsonUser(json &j, const std::string &op, const std::string &use
     };
 }
 
-void Jsonize::to_json_insertion_range(json &j, const std::string &op, const std::vector<json> &symVector) {
+void Jsonize::to_json_insertion_range(json &j, const std::string &op, const std::vector<json> &symVector, const int &startIndex) {
     j = json{
             {"operation", op},
-            {"formattingSymVector", symVector} //JSON vector
+            {"formattingSymVector", symVector}, //JSON vector
+            {"startIndex", startIndex}
     };
 }
 
