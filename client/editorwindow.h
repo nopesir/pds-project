@@ -164,6 +164,10 @@ private slots:
     void openSettingsWindows();
     void setInfoWindowClosed();
     void openInfoWindows();
+    void goodbyeClient();
+
+signals:
+    void closeEditor();
 
     /************************************
      *        OTHER SLOTS FUNCTION      *

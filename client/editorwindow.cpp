@@ -136,6 +136,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
 }
 
 EditorWindow::~EditorWindow() {
+    emit closeEditor();
     delete ui;
 }
 
@@ -3397,4 +3398,11 @@ QChar EditorWindow::SimplifySingleCharForSorting(QChar c, bool changeToLowerCase
     if ( c == 0x9F || c == 0xDD || c == 0xFD || c == 0xFF )
         return ( ( c == 0x9F || c == 0xDD ) && !changeToLowerCase ) ? 'Y' : 'y';
     return c;
+}
+
+void EditorWindow::goodbyeClient() {
+   if(_client->getStatus()==false) {
+        QMessageBox::warning(nullptr, "Attenzione", "Non sono riuscito a contattare il server\n\nL'applicazione verrà chiusa");
+        QApplication::exit(-1000);
+   }
 }
