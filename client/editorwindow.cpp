@@ -22,6 +22,7 @@
 #include <QShortcut>
 
 using json = nlohmann::json;
+typedef std::pair<int,int> sId;
 
 EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(parent), ui(new Ui::EditorWindow), _client(client) {
     ui->setupUi(this);
