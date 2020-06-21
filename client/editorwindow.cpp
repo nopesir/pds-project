@@ -577,7 +577,11 @@ void EditorWindow::on_buttonCut_clicked() {
         int startIndex = cursor.selectionStart();
         int endIndex = cursor.selectionEnd();
         changeNextCharsAlignment(cursor, startIndex, endIndex);
-        removeCharRequest(startIndex, endIndex);
+
+        //Update symbols of the client
+        std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
+        removeCharRequest(symbolsId);
         ui->RealTextEdit->cut();
     }
     ui->RealTextEdit->setFocus();
@@ -595,7 +599,11 @@ void EditorWindow::on_buttonPaste_clicked() {
             int startIndex = cursor.selectionStart();
             int endIndex = cursor.selectionEnd();
             changeNextCharsAlignment(cursor, startIndex, endIndex);
-            removeCharRequest(startIndex, endIndex);
+
+            //Update symbols of the client
+            std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
+            removeCharRequest(symbolsId);
         }
         insertCharRangeRequest(pos, hasSelection);
         ui->RealTextEdit->paste();
@@ -950,7 +958,11 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
                 int startIndex = cursor.selectionStart();
                 int endIndex = cursor.selectionEnd();
                 changeNextCharsAlignment(cursor, startIndex, endIndex);
-                removeCharRequest(startIndex, endIndex);
+
+                //Update symbols of the client
+                std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
+                removeCharRequest(symbolsId);
             }
             return QObject::eventFilter(obj, ev);
         } //*********************************************** CTRL-C *************************************************
@@ -969,7 +981,11 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
                     int startIndex = cursor.selectionStart();
                     int endIndex = cursor.selectionEnd();
                     changeNextCharsAlignment(cursor, startIndex, endIndex);
-                    removeCharRequest(startIndex, endIndex);
+
+                    //Update symbols of the client
+                    std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
+                    removeCharRequest(symbolsId);
                 }
                 insertCharRangeRequest(pos, hasSelection);
             } catch(OperationNotSupported& ex) {
@@ -1091,9 +1107,12 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
                 ui->fontSizeBox->setCurrentText(QString::number(f.fontPointSize()));
                 ui->fontFamilyBox->setCurrentText(f.fontFamily());
 
+                //update symbols of the client
+                std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
                 //Serialize data
                 json j;
-                Jsonize::to_json_removal_range(j, "REMOVAL_REQUEST", startIndex, endIndex);
+                Jsonize::to_json_removal_range(j, "REMOVAL_REQUEST", symbolsId);
                 const std::string req = j.dump();
 
                 //Send data (header and body)
@@ -1128,12 +1147,12 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
                 hideLastAddedItem(ui->fontSizeBox);
             }
 
-            qDebug() << "char: " << c;
-            tuple = std::make_pair(pos, c);
+            //update symbols of the client
+            Symbol s = _client->crdt.localInsert(pos, c, getCurCharStyle());
 
             //Serialize data
             json j;
-            Jsonize::to_json_insertion(j, "INSERTION_REQUEST", tuple, getCurCharStyle());
+            Jsonize::to_json_insertion(j, "INSERTION_REQUEST", s, pos);
             const std::string req = j.dump();
 
             //Send data (header and body)
@@ -1149,7 +1168,7 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
                 int endIndex = cursor.selectionEnd();
 
                 /* Update new alignment */
-                cursor.setPosition(cursor.selectionStart());
+                cursor.setPosition(startIndex);
                 QTextBlockFormat textBlockFormat;
                 int firstCharAlignment = static_cast<int>(cursor.blockFormat().alignment());
                 textBlockFormat.setAlignment(static_cast<Qt::AlignmentFlag>(firstCharAlignment));
@@ -1162,11 +1181,19 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
 
                 /* Send requests */
                 changeNextCharsAlignment(cursor, startIndex, endIndex);
-                removeCharRequest(startIndex, endIndex);
+
+                //Update symbols of the client
+                std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
+                removeCharRequest(symbolsId);
             }
             else if(pos > 0) { //Remove only one character
                 changeNextCharsAlignment(cursor, pos-1, pos);
-                removeCharRequest(pos-1, pos);
+
+                //Update symbols of the client
+                std::vector<sId> symbolsId = _client->crdt.localErase(pos-1, pos);
+
+                removeCharRequest(symbolsId);
             }
             return QObject::eventFilter(obj, ev);
         } //******************************************** CANC ******************************************************
@@ -1192,11 +1219,19 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
 
                 /* Send requests */
                 changeNextCharsAlignment(cursor, startIndex, endIndex);
-                removeCharRequest(startIndex, endIndex);
+
+                //Update symbols of the client
+                std::vector<sId> symbolsId = _client->crdt.localErase(startIndex, endIndex);
+
+                removeCharRequest(symbolsId);
             }
             else if(pos >= 0 && pos < ui->RealTextEdit->toPlainText().size()) {
                 changeNextCharsAlignment(cursor, pos, pos+1);
-                removeCharRequest(pos, pos+1);
+
+                //Update symbols of the client
+                std::vector<sId> symbolsId = _client->crdt.localErase(pos, pos+1);
+
+                removeCharRequest(symbolsId);
             }
             return QObject::eventFilter(obj, ev);
         } //********************************************* ESC ******************************************************

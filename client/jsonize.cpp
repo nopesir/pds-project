@@ -20,17 +20,20 @@ void Jsonize::to_json(json &j, const std::string &op, const std::string &user, c
     };
 }
 
-void Jsonize::to_json_insertion(json &j, const std::string &op, const std::pair<int, wchar_t> &tuple, const SymbolStyle &style) {
+void Jsonize::to_json_insertion(json &j, const std::string &op, const Symbol &symbol, const int &indexInEditor) {
     j = json{
         {"operation", op},
-        {"tuple", tuple},
-        {"isBold", style.isBold()},
-        {"isItalic", style.isItalic()},
-        {"isUnderlined", style.isUnderlined()},
-        {"fontFamily", style.getFontFamily()},
-        {"fontSize", style.getFontSize()},
-        {"alignment", style.getAlignment()},
-        {"color", style.getColor()}
+        {"id", symbol.getId()},
+        {"pos", symbol.getPos()},
+        {"letter", symbol.getLetter()},
+        {"isBold", symbol.getStyle().isBold()},
+        {"isItalic", symbol.getStyle().isItalic()},
+        {"isUnderlined", symbol.getStyle().isUnderlined()},
+        {"fontFamily", symbol.getStyle().getFontFamily()},
+        {"fontSize", symbol.getStyle().getFontSize()},
+        {"alignment", symbol.getStyle().getAlignment()},
+        {"color", symbol.getStyle().getColor()},
+        {"indexInEditor", indexInEditor}
     };
 }
 
