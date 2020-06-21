@@ -680,12 +680,19 @@ void EditorWindow::on_RealTextEdit_selectionChanged() {
         if(ui->RealTextEdit->toPlainText().length() == 0) { //there aren't chars
             setupInitialCondition();
         } else {
+            bool hasNoFormat = false;
+            if(QString::number(c.charFormat().fontPointSize()) == "0" || c.charFormat().fontFamily() == "") {
+                c.movePosition(QTextCursor::Right); //get format from the letter to the right (usually \n in this case)
+                hasNoFormat = true;
+            }
+
+            /* Setup format buttons */
             ui->fontSizeBox->setCurrentText(QString::number(c.charFormat().fontPointSize()));
             ui->fontFamilyBox->setCurrentIndex(ui->fontFamilyBox->findText(c.charFormat().fontFamily()));
             c.charFormat().fontWeight()==QFont::Bold ? ui->buttonBold->setChecked(true) : ui->buttonBold->setChecked(false);
             c.charFormat().fontItalic()==true ? ui->buttonItalic->setChecked(true) : ui->buttonItalic->setChecked(false);
             c.charFormat().fontUnderline()==true ? ui->buttonUnderline->setChecked(true) : ui->buttonUnderline->setChecked(false);
-
+            if(hasNoFormat) c.movePosition(QTextCursor::Left);
             if(c.blockFormat().alignment()==Qt::AlignRight)
                 AlignDXButtonHandler();
             else if(c.blockFormat().alignment()==Qt::AlignCenter || c.blockFormat().alignment()==Qt::AlignHCenter)
@@ -2334,7 +2341,6 @@ void EditorWindow::SetDynamicDocNameLabel(){
 
     ui->DocNameLabel->adjustSize();
     ui->DocNameLabel->resize(ui->DocNameLabel->sizeHint());
-    qDebug() << "DocNameLabel pixel width is --> " << ui->DocNameLabel->width();
     if(ui->DocNameLabel->width() > 240){
         QFontMetrics metrics(ui->DocNameLabel->font());
         QString elidedText = metrics.elidedText(docName, Qt::ElideRight, ui->DocNameLabel->width());
@@ -2499,7 +2505,6 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
             itemOn->setText(" "+user);
             itemOn->setIcon(QIcon(ic));
             itemOn->setBackground(brush);
-            itemOn->setToolTip("Mostrare mail");
             fileItem.append(itemOn);
         }
         else {
@@ -2510,13 +2515,12 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
             itemOff->setText(" "+user);
             itemOff->setIcon(QIcon(ic));
             itemOff->setBackground(brush);
-            itemOff->setToolTip("Mostrare mail");
             fileItem.append(itemOff);
         }
      }
 
-    ui->listWidgetOn->setStyleSheet("#listWidgetOn{\nborder:transparent;\nbackground: transparent;\n}\n\nQToolTip { \n	color: #000000; \n	background-color: #FFF2BF; \n	border: 0px; \n}");
-    ui->listWidgetOff->setStyleSheet("#listWidgetOff{\nborder:transparent;\nbackground: transparent;\ncolor: rgb(159,159,159);\n}\n\nQToolTip { \n	color: #000000; \n	background-color: #FFF2BF; \n	border: 0px; \n}");
+    ui->listWidgetOn->setStyleSheet("#listWidgetOn{\nborder:transparent;\nbackground: transparent;\n}");
+    ui->listWidgetOff->setStyleSheet("#listWidgetOff{\nborder:transparent;\nbackground: transparent;\ncolor: rgb(159,159,159);\n}");
 
 }
 
@@ -2532,8 +2536,6 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
     wchar_t letter;
     int index = firstIndex;
     QTextCursor c = ui->RealTextEdit->textCursor();
-
-    auto t_start1 = std::chrono::high_resolution_clock::now();
 
     c.beginEditBlock();
     foreach (Symbol s, symbols) {
@@ -2571,6 +2573,8 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
             c.setPosition(pos);
             c.setCharFormat(newFormat);
             c.insertText(static_cast<QString>(letter));
+            c.movePosition(QTextCursor::Right);
+            c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
             c.setBlockFormat(newBlockFormat);
 
             /* Keep current selection */
@@ -2582,6 +2586,8 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
             c.setPosition(pos);
             c.setCharFormat(newFormat);
             c.insertText(static_cast<QString>(letter));
+            c.movePosition(QTextCursor::Right);
+            c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
             c.setBlockFormat(newBlockFormat);
             c.setPosition(oldPos);
         }
@@ -2594,16 +2600,13 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
     }
     c.endEditBlock();
     ui->RealTextEdit->setTextCursor(c);
-
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    std::cout << "SHOW SYMBOLS AT - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
 
 void EditorWindow::showSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style) {
     int pos = tuple.first;
     wchar_t c = tuple.second;
     QTextCharFormat format;
+    QTextBlockFormat newBlockFormat;
 
     /* Apply transparency (put 01 as alpha value) if btn color is unchecked */
     QString colorStr = QString::fromStdString(style.getColor());
@@ -2620,6 +2623,7 @@ void EditorWindow::showSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style) 
     format.setFontFamily(QString::fromStdString(style.getFontFamily()));
     format.setFontPointSize(style.getFontSize());
     format.setBackground(color);
+    newBlockFormat.setAlignment(static_cast<Qt::AlignmentFlag>(style.getAlignment()));
 
     QTextCursor cursor = ui->RealTextEdit->textCursor();
     cursor.beginEditBlock();
@@ -2636,6 +2640,9 @@ void EditorWindow::showSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style) 
         cursor.setPosition(pos);
         cursor.setCharFormat(format);
         cursor.insertText(static_cast<QString>(c));
+        cursor.movePosition(QTextCursor::Right);
+        cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+        cursor.setBlockFormat(newBlockFormat);
 
         /* Keep current selection */
         cursor.setPosition(oldPos == startIndex ? endIndex : startIndex, QTextCursor::MoveAnchor);
@@ -2646,6 +2653,9 @@ void EditorWindow::showSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style) 
         cursor.setPosition(pos);
         cursor.setCharFormat(format);
         cursor.insertText(static_cast<QString>(c));
+        cursor.movePosition(QTextCursor::Right);
+        cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+        cursor.setBlockFormat(newBlockFormat);
         cursor.setPosition(oldPos);
     }
 
@@ -2667,11 +2677,23 @@ void EditorWindow::eraseSymbols(int startIndex, int endIndex) {
     QTextCursor cursor = ui->RealTextEdit->textCursor();
 
     cursor.beginEditBlock();
+    /* get start alignment */
+    cursor.setPosition(startIndex);
+    int startAlignment = cursor.blockFormat().alignment();
+
+    /* erase symbols */
     cursor.setPosition(endIndex);
     cursor.setPosition(startIndex+1, QTextCursor::KeepAnchor);
     cursor.removeSelectedText();
     cursor.setPosition(startIndex, QTextCursor::KeepAnchor);
     cursor.removeSelectedText();
+
+    /* set start alignment */
+    QTextBlockFormat textBlockFormat;
+    textBlockFormat = cursor.blockFormat();
+    textBlockFormat.setAlignment(static_cast<Qt::AlignmentFlag>(startAlignment));
+    cursor.mergeBlockFormat(textBlockFormat);
+
     cursor.endEditBlock();
 
     qDebug() << "Deleted char range" << endl;
@@ -2757,12 +2779,18 @@ void EditorWindow::changeFontSize(int startIndex, int endIndex, int fontSize) {
 void EditorWindow::changeFontFamily(int startIndex, int endIndex, std::string fontFamily) {
     QTextCursor cursor = ui->RealTextEdit->textCursor();
     QTextCharFormat newFormat;
+    QFont f;
 
     cursor.beginEditBlock();
     while(endIndex > startIndex) {
         cursor.setPosition(--endIndex);
         cursor.setPosition(endIndex+1, QTextCursor::KeepAnchor); //to select the char to be updated
-        newFormat.setFontFamily(QString::fromStdString(fontFamily));
+        f.setFamily(QString::fromStdString(fontFamily));
+        f.setBold(cursor.charFormat().font().bold());
+        f.setItalic(cursor.charFormat().font().italic());
+        f.setUnderline(cursor.charFormat().font().underline());
+        f.setPointSize(cursor.charFormat().font().pointSize());
+        newFormat.setFont(f);
         cursor.mergeCharFormat(newFormat);
     }
     cursor.endEditBlock();
@@ -2787,18 +2815,6 @@ void EditorWindow::changeAlignment(int startBlock, int endBlock, int alignment) 
     textBlockFormat = cursor.blockFormat();
     textBlockFormat.setAlignment(static_cast<Qt::AlignmentFlag>(alignment));
     cursor.mergeBlockFormat(textBlockFormat);
-    cursor.movePosition(QTextCursor::EndOfBlock);
-    int curPos = cursor.position();
-
-    /* Change alignment of the next blocks, if requested */
-    while(curPos < endBlock-1) {
-        cursor.movePosition(QTextCursor::Right);
-        textBlockFormat = cursor.blockFormat();
-        textBlockFormat.setAlignment(static_cast<Qt::AlignmentFlag>(alignment));
-        cursor.mergeBlockFormat(textBlockFormat);
-        cursor.movePosition(QTextCursor::EndOfBlock);
-        curPos = cursor.position();
-    }
 
     /* Update cursor and style buttons */
     cursor.setPosition(oldPos);
@@ -2807,6 +2823,7 @@ void EditorWindow::changeAlignment(int startBlock, int endBlock, int alignment) 
     setAlignmentButton(static_cast<Qt::AlignmentFlag>(static_cast<int>(cursor.blockFormat().alignment())));
     AlignButtonStyleHandler();
     ui->RealTextEdit->setAlignment(cursor.blockFormat().alignment());
+    ui->RealTextEdit->viewport()->update();
 
     qDebug() << "Changed alignment" << endl;
     ui->RealTextEdit->setFocus();
@@ -2859,7 +2876,6 @@ QVector<std::pair<int,SymbolStyle>> EditorWindow::getStylesFromHTML(QString html
         if(alignments.empty() || numChars <= 0 || s.contains(" color:"))
             throw OperationNotSupported();
         SymbolStyle curStyle = constructSymStyle(rxs, s, alignments.first());
-        qDebug() << curStyle.getFontSize();
         if((ui->fontFamilyBox->findText(QString::fromStdString(curStyle.getFontFamily())) == -1 &&
             curStyle.getFontFamily() != "") || curStyle.getFontSize() > 200 || curStyle.getFontSize() <= 0)
             throw OperationNotSupported();
@@ -2886,9 +2902,9 @@ QVector<std::pair<int,int>> EditorWindow::getAlignmentsFromHTML(QString htmlText
 
     if(paragraphs.empty())
         throw OperationNotSupported();
-    if(paragraphs.length()==3 && paragraphs.at(0).contains("paragraph-type:empty") && paragraphs.at(2).contains("paragraph-type:empty")) {
-        paragraphs.pop_back();
-        paragraphs.pop_back();
+    if(paragraphs.length() >= 3) {
+        paragraphs.erase(std::remove_if(paragraphs.begin(), std::prev(paragraphs.end()),
+            [](const QString& s){ return s.contains("paragraph-type:empty"); }), std::prev(paragraphs.end()));
     }
 
     /* Handle first paragraph -> each char of this paragraph will have the startAlignment */
@@ -2923,7 +2939,7 @@ QVector<std::pair<int,int>> EditorWindow::getAlignmentsFromHTML(QString htmlText
             p.first = 1;
     });
 
-    qDebug() << endl << "FINAL ALMNT VECTOR: " << finalVec;
+    //qDebug() << endl << "FINAL ALMNT VECTOR: " << finalVec;
     return finalVec;
 }
 
@@ -3032,9 +3048,12 @@ void EditorWindow::sendFormatRequest(int format) {
         int startIndex = cursor.selectionStart();
         int endIndex = cursor.selectionEnd();
 
+        //Update symbols of the client
+        std::vector<sId> symbolsId = _client->crdt.localFormat(startIndex, endIndex, format);
+
         //Serialize data
         json j;
-        Jsonize::to_json_format_range(j, "FORMAT_RANGE_REQUEST", startIndex, endIndex, format);
+        Jsonize::to_json_format_range(j, "FORMAT_RANGE_REQUEST", symbolsId, format);
         const std::string req = j.dump();
 
         //Send data (header and body)
@@ -3048,9 +3067,12 @@ void EditorWindow::sendFontChangeRequest(int fontSize) {
         int startIndex = cursor.selectionStart();
         int endIndex = cursor.selectionEnd();
 
+        //Update symbols of the client
+        std::vector<sId> symbolsId = _client->crdt.localFontSizeChange(startIndex, endIndex, fontSize);
+
         //Serialize data
         json j;
-        Jsonize::to_json_fontsize_change(j, "FONTSIZE_CHANGE_REQUEST", startIndex, endIndex, fontSize);
+        Jsonize::to_json_fontsize_change(j, "FONTSIZE_CHANGE_REQUEST", symbolsId, fontSize);
         const std::string req = j.dump();
 
         //Send data (header and body)
@@ -3059,16 +3081,16 @@ void EditorWindow::sendFontChangeRequest(int fontSize) {
 }
 
 void EditorWindow::sendAlignChangeRequest(int blockStart, int blockEnd, int alignment) {
+    //Update symbols of the client
+    std::vector<sId> symbolsId = _client->crdt.localAlignmentChange(blockStart, blockEnd, alignment);
 
-    //if(blockStart < blockEnd) {
-        //Serialize data
-        json j;
-        Jsonize::to_json_alignment_change(j, "ALIGNMENT_CHANGE_REQUEST", blockStart, blockEnd, alignment);
-        const std::string req = j.dump();
+    //Serialize data
+    json j;
+    jsonUtility::to_json_alignment_change(j, "ALIGNMENT_CHANGE_REQUEST", symbolsId, alignment);
+    const std::string req = j.dump();
 
-        //Send data (header and body)
-        _client->sendRequestMsg(req);
-    //}
+    //Send data (header and body)
+    _client->sendRequestMsg(req);
 }
 
 void EditorWindow::sendFontChangeRequest(std::string fontFamily) {

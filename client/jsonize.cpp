@@ -51,29 +51,26 @@ void Jsonize::to_json_removal_range(json &j, const std::string &op, const std::v
     };
 }
 
-void Jsonize::to_json_format_range(json &j, const std::string &op, const int &startIndex, const int &endIndex, const int &format) {
+void Jsonize::to_json_format_range(json &j, const std::string &op, const std::vector<sId> &symbolsId, const int &format) {
     j = json{
             {"operation", op},
-            {"startIndex", startIndex},
-            {"endIndex", endIndex},
+            {"symbolsId", symbolsId},
             {"format", format}
     };
 }
 
-void Jsonize::to_json_fontsize_change(json &j, const std::string &op, const int &startIndex, const int &endIndex, const int &fontSize) {
+void Jsonize::to_json_fontsize_change(json &j, const std::string &op, const std::vector<sId> &symbolsId, const int &fontSize) {
     j = json{
             {"operation", op},
-            {"startIndex", startIndex},
-            {"endIndex", endIndex},
+            {"symbolsId", symbolsId},
             {"fontSize", fontSize}
     };
 }
 
-void Jsonize::to_json_alignment_change(json &j, const std::string &op, const int &startBlock, const int &endBlock, const int &alignment) {
+void Jsonize::to_json_alignment_change(json &j, const std::string &op, const std::vector<sId> &symbolsId, const int &alignment) {
     j = json{
             {"operation", op},
-            {"startBlock", startBlock},
-            {"endBlock", endBlock},
+            {"symbolsId", symbolsId},
             {"alignment", alignment}
     };
 }
