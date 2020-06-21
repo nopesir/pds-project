@@ -3293,8 +3293,6 @@ void EditorWindow::insertCharRangeRequest(int pos, bool cursorHasSelection) noex
     const QMimeData *mimeData = clipboard->mimeData();
     QTextCursor cursor = ui->RealTextEdit->textCursor();
 
-    auto t_start1 = std::chrono::high_resolution_clock::now();
-
     if(mimeData->hasText() && !mimeData->hasImage() && !mimeData->hasUrls() && !mimeData->html().contains("<a href")) {
         /* Get chars from clipboard mimeData */
         int numChars = mimeData->text().size(); //number of chars = number of iterations
@@ -3335,9 +3333,10 @@ void EditorWindow::insertCharRangeRequest(int pos, bool cursorHasSelection) noex
                         [](std::pair<int,SymbolStyle> const pair){ return std::make_pair(pair.first, pair.second.getAlignment()); });
         ui->RealTextEdit->setAlignmentsVector(alignmentsVector);
 
-        std::vector<TemplateSymbol> infoSymbols;
+        std::vector<Symbol> infoSymbols; //temporary vector without symbol pos (it will be used by the process)
         int index;
         wchar_t c;
+        int initialPos = pos;
         SymbolStyle charStyle;
 
         /* Loop over mimeData chars and give the extracted style to each of them */
@@ -3352,19 +3351,18 @@ void EditorWindow::insertCharRangeRequest(int pos, bool cursorHasSelection) noex
                 qDebug() << ex.what();
                 throw OperationNotSupported(); //raise exception
             }
-            TemplateSymbol s(index, c, charStyle);
+            Symbol s(c, charStyle);
             infoSymbols.push_back(s);
         }
 
+        //Update symbols of the client
+        std::vector<Symbol> symbols = _client->crdt.localInsert(initialPos, infoSymbols);
+
         //Serialize data
         json j;
-        std::vector<json> symFormattingVectorJSON = Jsonize::fromFormattingSymToJson(infoSymbols);
-        Jsonize::to_json_insertion_range(j, "INSERTIONRANGE_REQUEST", symFormattingVectorJSON);
+        std::vector<json> symFormattingVectorJSON = jsonUtility::fromFormattingSymToJson(symbols);
+        jsonUtility::to_json_insertion_range(j, "INSERTIONRANGE_REQUEST", symFormattingVectorJSON, initialPos);
         const std::string req = j.dump();
-
-        auto t_end1 = std::chrono::high_resolution_clock::now();
-        double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-        std::cout << "insertCharRangeRequest ELAPSED: " << elapsed_time_ms1 << std::endl;
 
         //Send data (header and body)
         _client->sendRequestMsg(req);

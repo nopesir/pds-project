@@ -4,6 +4,9 @@
 Symbol::Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos)
     : _letter(character), _id(std::move(id)), _pos(std::move(pos)), _style() {}
 
+Symbol::Symbol(wchar_t character, SymbolStyle style)
+    : _letter(character), _style(std::move(style)) {}
+
 Symbol::Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos, SymbolStyle style)
     : _letter(character), _id(std::move(id)), _pos(std::move(pos)), _style(std::move(style)) {}
 
@@ -38,4 +41,5 @@ void Symbol::setPos(std::vector<int> pos) {
 void Symbol::setStyle(SymbolStyle style) {
     this->_style = std::move(style);
 }
+
 

@@ -1,7 +1,6 @@
 #ifndef SYMBOL_H
 #define SYMBOL_H
 
-
 #include <vector>
 #include <string>
 #include <array>
@@ -20,6 +19,7 @@ public:
     Symbol() = default;
     Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos);
     Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos, SymbolStyle style);
+    Symbol(wchar_t character, SymbolStyle style);
 
     /* Getters */
     std::vector<int> getPos() const;
