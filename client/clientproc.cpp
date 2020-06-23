@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QtWidgets/QApplication>
 
+
 typedef std::deque<Message> message_queue;
 
 ClientProc::ClientProc()
