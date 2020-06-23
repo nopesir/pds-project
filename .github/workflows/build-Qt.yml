@@ -30,7 +30,7 @@ jobs:
         cd client
         mkdir build
         cd build
-        qmake ../client/textedit.pro
+        qmake ../textedit.pro
         make -j2
         
     - name: Upload build
