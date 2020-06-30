@@ -101,14 +101,40 @@
       <widget class="QLabel" name="label_3">
        <property name="geometry">
         <rect>
-         <x>320</x>
-         <y>200</y>
-         <width>67</width>
+         <x>30</x>
+         <y>20</y>
+         <width>191</width>
          <height>22</height>
         </rect>
        </property>
        <property name="text">
-        <string>c</string>
+        <string>Insert URL of the document </string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="urlTextEdit">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>60</y>
+         <width>551</width>
+         <height>41</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="openUrlButton">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>120</y>
+         <width>89</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Open</string>
        </property>
       </widget>
      </widget>
