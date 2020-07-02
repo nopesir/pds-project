@@ -45,6 +45,7 @@ public slots:
     void showPopupFailure(QString result);
     void showListFile(std::vector<File> files);
     void resumeWindow();
+    void setEditorClosed();
     //void setUserProfileClosed();
 
 private:
@@ -56,6 +57,7 @@ private:
     bool profile = false;
     bool FirstTimeWindowOpens=true;
     bool profile_closed = true;
+    bool editor_closed = true;
     //UserProfile *up;
 
 protected:

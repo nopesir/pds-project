@@ -1,7 +1,7 @@
 #include "editorwindow.h"
 #include "ui_editorwindow.h"
 #include "MyQTextEdit.h"
-//#include "menuwindow.h"
+#include "homewindow.h"
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QColorDialog>
@@ -1275,7 +1275,7 @@ void EditorWindow::closeEvent(QCloseEvent * event) {
             int replay = message.exec();
             switch(replay){
                 case 0:
-                  event->ignore();
+                  /*event->ignore();
                   //close userProfile Window if it was opened;
                   if(!profile_closed){
                     //  delete up;
@@ -1287,8 +1287,8 @@ void EditorWindow::closeEvent(QCloseEvent * event) {
                   //close Settings Window if it was opened;
                   if(!settings_closed){
                     //  delete s;
-                  }
-
+                  }*/
+                  std::cout << "ECCO QUA"  << std::endl;
                   CloseDocumentRequest(); //Return to MenuWindow (close only the current document)
                   break;
                 case 1:
@@ -2148,6 +2148,7 @@ void EditorWindow::CloseDocumentRequest() {
     const std::string req = j.dump();
 
     //Send data (header and body)
+    std::cout << "ECCO LA"  << std::endl;
     _client->sendRequestMsg(req);
 }
 
@@ -2434,7 +2435,7 @@ void EditorWindow::showPopupSuccess(QString result, std::string filename) {
         SetDynamicDocNameLabel();
         _client->setFilename(QString::fromStdString(filename)); //Assign newText to the variable
 
-        this->setWindowTitle("C.A.R.T.E. - " + QString::fromStdString(filename));
+        this->setWindowTitle("legoRT - " + QString::fromStdString(filename));
         ui->RealTextEdit->setFocus();
     } else if(result == "INVITE_URI_SUCCESS") {
         QMessageBox::warning(this,"Invito effettuato con successo", "Il tuo invito a collaborare è stato correttamente eseguito.");
