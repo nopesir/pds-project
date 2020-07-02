@@ -65,32 +65,6 @@ void HomeWindow::RapidUserLogout() {
     _client->sendRequestMsg(req);    //Send data (header and body)
 }
 
-//LOGOUT BUTTON
-void HomeWindow::on_LogoutButton_clicked(){
-
-    Logout=true;    //set simple logout true
-
-    if(_client->getStatus()==false){
-        handleTheConnectionLoss();
-    }else{
-        //Get data from the form
-        QString user = _client->getUsername();
-        QByteArray ba_user = user.toLocal8Bit();
-        const char *c_user = ba_user.data();
-
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "Uscita", "Vuoi disconnetterti?", QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes) {
-            //Serialize data
-            json j;
-            Jsonize::to_jsonUser(j, "DISCONNECT_REQUEST", c_user);
-            const std::string req = j.dump();
-
-            //Send data (header and body)
-            _client->sendRequestMsg(req);
-        }
-    }
-}
 */
 void HomeWindow::mousePressEvent(QMouseEvent *evt){
     oldPos = evt->globalPos();
@@ -365,7 +339,7 @@ void HomeWindow::showPopupSuccess(QString result) {
             */
             if(FirstTimeWindowOpens==true){
                 FirstTimeWindowOpens=false;
-                ui->stackedWidget->setCurrentIndex(0);
+                ui->stackedWidget->setCurrentIndex(1);
             }else{
                 ui->stackedWidget->setCurrentIndex(1);
             }
@@ -592,4 +566,30 @@ void HomeWindow::on_openUrlButton_clicked()
     auto t_end1 = std::chrono::high_resolution_clock::now();
     double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
     std::cout << "BUTTON URI CLICK - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
+}
+
+void HomeWindow::on_logoutButton_clicked()
+{
+    Logout=true;    //set simple logout true
+
+    if(_client->getStatus()==false){
+        handleTheConnectionLoss();
+    }else{
+        //Get data from the form
+        QString user = _client->getUsername();
+        QByteArray ba_user = user.toLocal8Bit();
+        const char *c_user = ba_user.data();
+
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Uscita", "Vuoi disconnetterti?", QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            //Serialize data
+            json j;
+            Jsonize::to_jsonUser(j, "DISCONNECT_REQUEST", c_user);
+            const std::string req = j.dump();
+
+            //Send data (header and body)
+            _client->sendRequestMsg(req);
+        }
+    }
 }

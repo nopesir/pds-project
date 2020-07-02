@@ -40,6 +40,8 @@ private slots:
 
     void on_openUrlButton_clicked();
 
+    void on_logoutButton_clicked();
+
 public slots:
     void showPopupSuccess(QString result);
     void showPopupFailure(QString result);
