@@ -38,7 +38,7 @@ HomeWindow::HomeWindow(ClientProc* client, QWidget *parent) : QMainWindow(parent
 HomeWindow::~HomeWindow() {
     delete ui;
     delete _client;
-    //delete _ew;
+    delete _ew;
 }
 
 //CHECK HOW THIS WINDOW IS CLOSED
@@ -65,32 +65,6 @@ void HomeWindow::RapidUserLogout() {
     _client->sendRequestMsg(req);    //Send data (header and body)
 }
 
-//LOGOUT BUTTON
-void HomeWindow::on_LogoutButton_clicked(){
-
-    Logout=true;    //set simple logout true
-
-    if(_client->getStatus()==false){
-        handleTheConnectionLoss();
-    }else{
-        //Get data from the form
-        QString user = _client->getUsername();
-        QByteArray ba_user = user.toLocal8Bit();
-        const char *c_user = ba_user.data();
-
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "Uscita", "Vuoi disconnetterti?", QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes) {
-            //Serialize data
-            json j;
-            Jsonize::to_jsonUser(j, "DISCONNECT_REQUEST", c_user);
-            const std::string req = j.dump();
-
-            //Send data (header and body)
-            _client->sendRequestMsg(req);
-        }
-    }
-}
 */
 void HomeWindow::mousePressEvent(QMouseEvent *evt){
     oldPos = evt->globalPos();
@@ -333,6 +307,11 @@ void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
     std::cout << "ITEM DOUBLE CLICKED - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
 
+void HomeWindow:: setEditorClosed(){
+    editor_closed = true;
+    this->show();
+}
+
 void HomeWindow::showPopupSuccess(QString result) {
     if(result == "DISCONNECT_SUCCESS") {
         StartWindow *s = new StartWindow();
@@ -340,33 +319,29 @@ void HomeWindow::showPopupSuccess(QString result) {
         s->show();
     } else if(result == "LOGOUT_SUCCESS") {
         QApplication::exit();
-    } else if(result == "NEWFILE_SUCCESS") {
-        _ew = new EditorWindow(_client);
-        this->hide();
-        _ew->showMaximized();
-    } else if(result == "OPENFILE_SUCCESS") {
-        _ew = new EditorWindow(_client);
-        this->hide();
-        _ew->showMaximized();
-    } else if(result == "OPENWITHURI_SUCCESS") {
-        _ew = new EditorWindow(_client);
-        this->hide();
-        _ew->showMaximized();
+    } else if(result == "NEWFILE_SUCCESS" || result == "OPENFILE_SUCCESS" || result == "OPENWITHURI_SUCCESS") {
+        if(editor_closed){
+            _ew = new EditorWindow(_client);
+            connect(_ew, &EditorWindow::closeEditor, this, &HomeWindow::setEditorClosed);
+            editor_closed = false;
+            this->hide();
+            _ew->showMaximized();
+        }
     } else if(result == "LISTFILE_SUCCESS") {
         if(profile) {
             profile = false;
         } else {
-
-             //* Note: First I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
-             //* Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
-             //* In this way, when user clicks on his profile button, he can see how many files has.
-             //* On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
-
+            /*
+             * Note: First I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
+             * Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
+             * In this way, when user clicks on his profile button, he can see how many files has.
+             * On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
+            */
             if(FirstTimeWindowOpens==true){
                 FirstTimeWindowOpens=false;
-                //ui->stackedWidget->setCurrentIndex(0);
+                ui->stackedWidget->setCurrentIndex(1);
             }else{
-                //ui->stackedWidget->setCurrentIndex(1);
+                ui->stackedWidget->setCurrentIndex(1);
             }
         }
     }
@@ -374,34 +349,34 @@ void HomeWindow::showPopupSuccess(QString result) {
 
 void HomeWindow::showPopupFailure(QString result) {
     if(result == "LOGOUT_FAILURE") {
-        QMessageBox::critical(this,"Errore", "Logout non completato!");           //Stay in the same window
+        QMessageBox::critical(this,"Errore", "C'è stato un errore, impossibile effettuare il logout!");           //Stay in the same window
     } else if(result == "DISCONNECT_FAILURE") {
-        QMessageBox::critical(this,"Errore", "Disconnect non completato!");       //Stay in the same window
+        QMessageBox::critical(this,"Errore", "C'è stato un errore, disconnessione non completata!");       //Stay in the same window
     } else if(result == "NEWFILE_FAILURE") {
-        QMessageBox::critical(this,"Errore", "Newfile non completata!");          //Stay in the same window
+        QMessageBox::critical(this,"Errore", "C'è stato un errore, impossibile creare il file!");          //Stay in the same window
     } else if(result == "OPENFILE_FAILURE") {
-        QMessageBox::critical(this,"Errore", "Openfile non completata!");         //Stay in the same window (HomeWindow(1))
+        QMessageBox::critical(this,"Errore", "C'è stato un errore, impossibile aprire il file!");         //Stay in the same window (MenuWindow(1))
     } else if(result == "OPENWITHURI_FAILURE") {
-        QMessageBox::critical(this,"Errore", "Openwithuri non completata!");      //Stay in the same window
+        QMessageBox::critical(this,"Errore", "C'è stato un errore, impossibile aprire il file!");      //Stay in the same window
     } else if(result == "LISTFILE_FAILURE") {
-        QMessageBox::critical(this,"Errore", "Listfile non completata!");         //Stay in the same window (HomeWindow(1))
+        QMessageBox::critical(this,"Errore", "C'è stato un errore, impossibile visualizzare la lista dei file!");         //Stay in the same window (MenuWindow(1))
     } else if(result == "LISTFILE_FAILURE_LISTNOTEXIST") {
-        QMessageBox::warning(this,"Attenzione", "Non hai ancora nessun un documento!");  //Stay in the same window (HomeWindow(1))
+        //QMessageBox::warning(this,"Attenzione", "Non hai ancora nessun un documento!");  //Stay in the same window (MenuWindow(1))
 
-
-         //* Note: If the user has no file, then first I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
-         //* Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
-         //* In this way, when user clicks on his profile button, he can see how many files has.
-         //* On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
-
+        /*
+         * Note: If the user has no file, then first I call on_listFiles_clicked() in the constructor. This is for getting the number of files from server.
+         * Then I want to return to initial stackedWidget (index=0), if is the first time that I open this window.
+         * In this way, when user clicks on his profile button, he can see how many files has.
+         * On the second call of on_listFiles_clicked(), i want to go on the "list file page" (index=1).
+        */
         if(FirstTimeWindowOpens==true){
             FirstTimeWindowOpens=false;
-            //ui->stackedWidget->setCurrentIndex(0);
+            ui->stackedWidget->setCurrentIndex(1);
         }else{
             if(profile) {
                 profile = false;
             } else {
-                //ui->stackedWidget->setCurrentIndex(1);
+                ui->stackedWidget->setCurrentIndex(1);
             }
         }
     } else if(result == "RESPONSE_FAILURE") {
@@ -591,4 +566,30 @@ void HomeWindow::on_openUrlButton_clicked()
     auto t_end1 = std::chrono::high_resolution_clock::now();
     double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
     std::cout << "BUTTON URI CLICK - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
+}
+
+void HomeWindow::on_logoutButton_clicked()
+{
+    Logout=true;    //set simple logout true
+
+    if(_client->getStatus()==false){
+        handleTheConnectionLoss();
+    }else{
+        //Get data from the form
+        QString user = _client->getUsername();
+        QByteArray ba_user = user.toLocal8Bit();
+        const char *c_user = ba_user.data();
+
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Uscita", "Vuoi disconnetterti?", QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            //Serialize data
+            json j;
+            Jsonize::to_jsonUser(j, "DISCONNECT_REQUEST", c_user);
+            const std::string req = j.dump();
+
+            //Send data (header and body)
+            _client->sendRequestMsg(req);
+        }
+    }
 }
