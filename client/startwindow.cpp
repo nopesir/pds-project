@@ -57,6 +57,17 @@ StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWind
 
 }
 
+void StartWindow::mousePressEvent(QMouseEvent *evt) {
+     oldPos = evt->globalPos();
+}
+
+
+void StartWindow::mouseMoveEvent(QMouseEvent *evt) {
+    const QPoint delta = evt->globalPos() - oldPos;
+    move(x()+delta.x(), y()+delta.y());
+    oldPos = evt->globalPos();
+}
+
 void StartWindow::setStatus(bool newStatus) {
     if(newStatus)
         ui->labelStatus->setText(tr("<font color=\"black\">CONNECTED</font>"));

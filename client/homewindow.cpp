@@ -436,11 +436,11 @@ void HomeWindow::resumeWindow() {
     this->show();
     //ui->stackedWidget->setCurrentIndex(1);
 }
-/*
-void HomeWindow:: setUserProfileClosed(){
+
+void HomeWindow:: setprofileWindowClosed(){
     profile_closed = true;
 }
-*/
+
 void HomeWindow::handleTheConnectionLoss() {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::warning(nullptr, "Warning", "Cannot reach the server!\nDo you want to quit?",  QMessageBox::Yes|QMessageBox::No);
@@ -591,5 +591,42 @@ void HomeWindow::on_logoutButton_clicked()
             //Send data (header and body)
             _client->sendRequestMsg(req);
         }
+    }
+}
+
+void HomeWindow::on_viewProfile_clicked()
+{
+    if(_client->getStatus()==false){
+        handleTheConnectionLoss();
+    }else{
+        int Nfile=0;
+        if(profile_closed){
+            QList<QListWidgetItem*> fileItem;
+
+
+            if(!_client->getVectorFile().empty()){
+                std::vector<File> files = _client->getVectorFile();
+                foreach (File f, files) {
+                    if(QString::fromUtf8(f.getowner().c_str()) == _client->getUsername()){
+                        Nfile++;
+                    }
+                }
+            }else{
+                Nfile=0;
+            }
+        }
+        _pw = new profilewindow(_client, Nfile);
+        _pw->setModal(true);
+        connect(_pw, &profilewindow::closeUserProfile, this, &HomeWindow::setprofileWindowClosed);
+        profile_closed = false;
+        //_pw->setModal(true);
+        //_pw->exec();
+    /*
+        _ew = new EditorWindow(_client);
+        connect(_ew, &EditorWindow::closeEditor, this, &HomeWindow::setEditorClosed);
+        editor_closed = false;
+        this->hide();
+        _ew->showMaximized();
+    */
     }
 }

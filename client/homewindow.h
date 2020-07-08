@@ -6,6 +6,7 @@
 #include <QListWidgetItem>
 #include "editorwindow.h"
 #include "clientproc.h"
+#include "profilewindow.h"
 //#include "userprofile.h"
 
 namespace Ui{class HomeWindow;}
@@ -42,19 +43,22 @@ private slots:
 
     void on_logoutButton_clicked();
 
+    void on_viewProfile_clicked();
+
 public slots:
     void showPopupSuccess(QString result);
     void showPopupFailure(QString result);
     void showListFile(std::vector<File> files);
     void resumeWindow();
     void setEditorClosed();
-    //void setUserProfileClosed();
+    void setprofileWindowClosed();
 
 private:
     Ui::HomeWindow *ui;
     QPoint oldPos; //This "oldPos" object is used to save the old position of the windows for the translation of windows
     ClientProc *_client;
     EditorWindow *_ew;
+    profilewindow *_pw;
     bool Logout = false;
     bool profile = false;
     bool FirstTimeWindowOpens=true;

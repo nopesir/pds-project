@@ -15,6 +15,7 @@ HEADERS         = \
     json.hpp \
     jsonize.h \
     message.h \
+    profilewindow.h \
     sstyle.h \
     startwindow.h \
     symbol.h
@@ -28,13 +29,15 @@ SOURCES         = \
                   jsonize.cpp \
                   main.cpp \
                   message.cpp \
+                  profilewindow.cpp \
                   sstyle.cpp \
                   startwindow.cpp \
                   symbol.cpp
 FORMS           += startwindow.ui \
     editor.ui \
     editorwindow.ui \
-    homewindow.ui
+    homewindow.ui \
+    profilewindow.ui
 
 RESOURCES += textedit.qrc
 build_all:!build_pass {

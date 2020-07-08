@@ -39,7 +39,7 @@
       <string notr="true">background-color: rgb(227, 232, 223);</string>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageNewFile">
       <widget class="QLabel" name="label">
@@ -392,15 +392,47 @@ border: transparent;</string>
     </property>
     <property name="icon">
      <iconset resource="textedit.qrc">
-      <normaloff>:/images/logout.png</normaloff>
-      <normalon>:/images/logout.png</normalon>
-      <disabledoff>:/images/logout.png</disabledoff>
-      <disabledon>:/images/logout.png</disabledon>:/images/logout.png</iconset>
+      <normaloff>:/images/logout.png</normaloff>:/images/logout.png</iconset>
     </property>
     <property name="iconSize">
      <size>
       <width>24</width>
       <height>24</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="viewProfile">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>10</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#viewProfile {
+	color: rgb(0, 0, 0);
+	background-color: rgb(186, 189, 182);
+	border: transparent;;
+}
+
+
+#viewProfile:hover {
+    border: 2px solid rgb(164, 0, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="textedit.qrc">
+      <normaloff>:/images/user.png</normaloff>:/images/user.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>34</width>
+      <height>34</height>
      </size>
     </property>
    </widget>
