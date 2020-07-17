@@ -365,7 +365,7 @@
 background-color: rgb(85, 87, 83);</string>
                </property>
                <property name="text">
-                <string/>
+                <string>TEST</string>
                </property>
               </widget>
              </item>
@@ -463,6 +463,7 @@ background-color: rgb(85, 87, 83);</string>
                   <property name="styleSheet">
                    <string notr="true">#buttonBold {
 	border-radius: 4px;
+	image: url(:/images/win/textbold.png);
 }
 
 #buttonBold:hover {
@@ -519,6 +520,7 @@ background-color: rgb(85, 87, 83);</string>
                   <property name="styleSheet">
                    <string notr="true">#buttonItalic {
 	border-radius: 4px;
+	image: url(:/images/win/textitalic.png);
 }
 
 #buttonItalic:hover {
@@ -574,6 +576,7 @@ background-color: rgb(85, 87, 83);</string>
                   <property name="styleSheet">
                    <string notr="true">#buttonUnderline {
 	border-radius: 4px;
+	image: url(:/images/win/textunder.png);
 }
 
 #buttonUnderline:hover {
@@ -956,6 +959,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonAlignSX{
 	border-radius: 4px;
+	image: url(:/images/win/textleft.png);
 }
 
 #buttonAlignSX:hover{
@@ -1010,6 +1014,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonAlignCX{
 	border-radius: 4px;
+	image: url(:/images/win/textcenter.png);
 }
 
 #buttonAlignCX:hover{
@@ -1064,6 +1069,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonAlignDX{
 	border-radius: 4px;
+	image: url(:/images/win/textright.png);
 }
 
 #buttonAlignDX:hover{
@@ -1118,6 +1124,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonAlignJFX{
 	border-radius: 4px;
+	image: url(:/images/win/textjustify.png);
 }
 
 #buttonAlignJFX:hover{
@@ -1204,6 +1211,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonCopy {
 	border-radius: 4px;
+	image: url(:/images/win/editcopy.png);
 }
 
 #buttonCopy:hover {
@@ -1255,6 +1263,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonCut {
 	border-radius: 4px;
+	image: url(:/images/win/editcut.png);
 }
 
 #buttonCut:hover {
@@ -1306,6 +1315,7 @@ background-color: lightgrey;
                   <property name="styleSheet">
                    <string notr="true">#buttonPaste {
 	border-radius: 4px;
+	image: url(:/images/win/editpaste.png);
 }
 
 #buttonPaste:hover {
