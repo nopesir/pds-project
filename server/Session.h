@@ -7,33 +7,31 @@
 
 
 #include <boost/asio/ip/tcp.hpp>
-#include "User.h"
+#include <deque>
 
 #include "SharedEditor.h"
+#include "Message.h"
 
-class Session: public Client{
+class Session: public Client, public std::enable_shared_from_this<Session>{
 private:
     boost::asio::ip::tcp::socket _socket;
-    SharedEditor& _se;
-    /*
-    message read_msg_;
-    message_queue write_msgs_;
+    Message read_msg_;
+    std::deque<Message> write_msgs_;
     std::string fullBody;
-    dbService dbService_;
+
+    //dbService dbService_;
+
     void do_read_header();
     void do_read_body();
     void do_write(); //for the editor
-     std::string handleRequests(const std::string& opJSON, const json& jdata_in, int& edId, std::string& curFile, bool& onlyToThisEditor);
+    std::string handleRequests(const std::string& opJSON, const json& jdata_in, int& edId, std::string& curFile, bool& onlyToThisEditor);
     void sendMsg(const std::string& response);
     void sendMsgAll(const std::string& response, const int& edId, const std::string& curFile, bool includeThisEditor=false); //send msg to all the clients except client with id 'edId' having the curFile opened
-     */
 public:
-    Session(boost::asio::ip::tcp::socket socket, SharedEditor &se, int id);
+    explicit Session(boost::asio::ip::tcp::socket socket);
+    void session_start(int editorId);
+    void deliver(const Message& msg);
 
-    void session_start();
-    /*
-    void deliver(const message& msg);
-     */
 };
 
 

@@ -15,7 +15,6 @@ class Server {
 
 private:
     boost::asio::ip::tcp::acceptor acceptor;
-    SharedEditor _se;
     int editor_counter;
     void accept_connection();
 

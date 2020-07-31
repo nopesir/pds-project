@@ -22,9 +22,9 @@ void Server::accept_connection()
     acceptor.async_accept([this](boost::system::error_code ec, boost::asio::ip::tcp::socket socket) {
         if (ec) {
             std::cout << "Error before handle_accept: " << ec.message() << std::endl;
-            return; //TODO Server never return. Maybe is better to change this behaviour
+            return; //TODOSharedEditor _se; Server never return. Maybe is better to change this behaviour
         }
-        std::make_shared<Session>(std::move(socket), _se, ++editor_counter);
+        std::make_shared<Session>(std::move(socket));
         accept_connection(); //server socket continue accepting new connections
     });
 }
