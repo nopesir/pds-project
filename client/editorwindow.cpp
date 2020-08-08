@@ -20,6 +20,8 @@
 #include <QKeyEvent>
 #include <QStandardItemModel>
 #include <QShortcut>
+#include <QtWidgets>
+#include <QListWidget>
 
 using json = nlohmann::json;
 typedef std::pair<int,int> sId;
@@ -52,6 +54,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     setupValidator();
     setupTextEdit();
     setupFontIcon();
+    createDock();
     cursorChangeRequest(0);
     hideLastAddedItem(ui->fontFamilyBox);
     qRegisterMetaType<std::vector<Symbol>>("std::vector<symbol>");
@@ -63,34 +66,36 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     LoadUserSetting();
     setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 
 void EditorWindow::setupListWidgets() {
-    ui->listWidgetOn->setViewMode(QListView::ListMode);
-    ui->listWidgetOn->setGridSize(QSize(215,40));
-    ui->listWidgetOn->setIconSize(QSize(30,30));
-    ui->listWidgetOn->setFlow(QListView::LeftToRight);
-    ui->listWidgetOn->setWrapping(true);
-    ui->listWidgetOn->setWordWrap(true);
-    ui->listWidgetOn->setResizeMode(QListView::Adjust);
-    ui->listWidgetOn->setAlternatingRowColors(false);
-    ui->listWidgetOn->setMovement(QListView::Static);
-    ui->listWidgetOn->setTextElideMode(Qt::ElideRight);
+    ui->listWidgetOn_2->setViewMode(QListView::ListMode);
+    ui->listWidgetOn_2->setGridSize(QSize(215,40));
+    ui->listWidgetOn_2->setIconSize(QSize(30,30));
+    ui->listWidgetOn_2->setFlow(QListView::LeftToRight);
+    ui->listWidgetOn_2->setWrapping(true);
+    ui->listWidgetOn_2->setWordWrap(true);
+    ui->listWidgetOn_2->setResizeMode(QListView::Adjust);
+    ui->listWidgetOn_2->setAlternatingRowColors(false);
+    ui->listWidgetOn_2->setMovement(QListView::Static);
+    ui->listWidgetOn_2->setTextElideMode(Qt::ElideRight);
 
-    ui->listWidgetOff->setViewMode(QListView::ListMode);
-    ui->listWidgetOff->setGridSize(QSize(215,40));
-    ui->listWidgetOff->setIconSize(QSize(30,30));
-    ui->listWidgetOff->setFlow(QListView::LeftToRight);
-    ui->listWidgetOff->setWrapping(true);
-    ui->listWidgetOff->setWordWrap(true);
-    ui->listWidgetOff->setResizeMode(QListView::Adjust);
-    ui->listWidgetOff->setAlternatingRowColors(false);
-    ui->listWidgetOff->setMovement(QListView::Static);
-    ui->listWidgetOff->setTextElideMode(Qt::ElideRight);
 
-    ui->listWidgetOn->setVerticalScrollBar(ui->verticalScrollBarOn);
-    ui->listWidgetOff->setVerticalScrollBar(ui->verticalScrollBarOff);
+    ui->listWidgetOff_2->setViewMode(QListView::ListMode);
+    ui->listWidgetOff_2->setGridSize(QSize(215,40));
+    ui->listWidgetOff_2->setIconSize(QSize(30,30));
+    ui->listWidgetOff_2->setFlow(QListView::LeftToRight);
+    ui->listWidgetOff_2->setWrapping(true);
+    ui->listWidgetOff_2->setWordWrap(true);
+    ui->listWidgetOff_2->setResizeMode(QListView::Adjust);
+    ui->listWidgetOff_2->setAlternatingRowColors(false);
+    ui->listWidgetOff_2->setMovement(QListView::Static);
+    ui->listWidgetOff_2->setTextElideMode(Qt::ElideRight);
+
+    ui->listWidgetOn_2->setVerticalScrollBar(ui->verticalScrollBarOn);
+    ui->listWidgetOff_2->setVerticalScrollBar(ui->verticalScrollBarOff);
 }
 
 void EditorWindow::setupTextEdit() {
@@ -104,7 +109,7 @@ void EditorWindow::setupTextEdit() {
 
 void EditorWindow::setupFirstLetter() {
     QString user = _client->getUsername();
-    ui->labelUser->setText(user);
+    ui->labelUser_2->setText(user);
 
     QChar firstLetter;
     for (int i=0;i<user.length();i++) {
@@ -115,6 +120,22 @@ void EditorWindow::setupFirstLetter() {
     }
     SimplifySingleCharForSorting(firstLetter,1);
     ui->profileButton->setText(firstLetter.toUpper());
+}
+
+void EditorWindow::createDock() {
+    dock = new QDockWidget(tr("Users"), this);
+        dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+        auto customerList = new QListWidget(dock);
+        customerList->addItems(QStringList()
+                << "John Doe, Harmony Enterprises, 12 Lakeside, Ambleton"
+                << "Jane Doe, Memorabilia, 23 Watersedge, Beaton"
+                << "Tammy Shea, Tiblanka, 38 Sea Views, Carlton"
+                << "Tim Sheen, Caraba Gifts, 48 Ocean Way, Deal"
+                << "Sol Harvey, Chicos Coffee, 53 New Springs, Eccleston"
+                << "Sally Hobart, Tiroli Tea, 67 Long River, Fedula");
+        dock->setWidget(customerList);
+        dock->setFloating(true);
+        addDockWidget(Qt::RightDockWidgetArea, dock);
 }
 
 void EditorWindow::setupValidator() {
@@ -193,6 +214,8 @@ void EditorWindow::on_fileButton_clicked(){
     pdfExport->setShortcuts(shortcutPdf);
     rename->setShortcuts(shortcutRinomina);
     close->setShortcuts(shortcutClose);
+
+    dock->setVisible(!dock->isVisible());
 
     //add action to menu
     menuFile.addAction(uri);
@@ -824,9 +847,9 @@ void EditorWindow::on_RealTextEdit_textChanged(){
     else {
         ZaLine = "Linee: "+QString::number(lineCount);
     }
-    ui->label->setText(ZaChar);
-    ui->label_2->setText(ZaWord);
-    ui->label_3->setText(ZaLine);
+    ui->label_4->setText(ZaChar);
+    ui->label_5->setText(ZaWord);
+    ui->label_6->setText(ZaLine);
 }
 
 void EditorWindow::on_RealTextEdit_customContextMenuRequested(const QPoint &pos){
@@ -1443,7 +1466,7 @@ void EditorWindow::on_actionDark_Mode_triggered() {
 
 //COLLABORATOR TRIGGERED
 void EditorWindow::on_actionCollaboratori_triggered() {
-    if(ui->listWidgetOn->isHidden()){
+    if(ui->listWidgetOn_2->isHidden()){
         showCollab();
     }
     else{
@@ -1765,7 +1788,7 @@ void EditorWindow::installTheme_Day_ClassicBlue(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1782,7 +1805,7 @@ void EditorWindow::installTheme_Day_PlainBlue(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1798,7 +1821,7 @@ void EditorWindow::installTheme_Day_ElectricBlue(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: white;}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1814,7 +1837,7 @@ void EditorWindow::installTheme_Day_ClassicPurple(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1831,7 +1854,7 @@ void EditorWindow::installTheme_Day_ClassicOrange(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1848,7 +1871,7 @@ void EditorWindow::installTheme_Day_ClassicGreen(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1865,7 +1888,7 @@ void EditorWindow::installTheme_Day_ClassicRed(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1881,7 +1904,7 @@ void EditorWindow::installTheme_Day_Rainbow(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1898,7 +1921,7 @@ void EditorWindow::installTheme_Day_FountainRainbow(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1914,7 +1937,7 @@ void EditorWindow::installTheme_Day_Polito(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/polilogo.png)");
 
     //TOP FRAME
@@ -1930,7 +1953,7 @@ void EditorWindow::installTheme_Day_Special(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{ background-color:transparent; border: transparent; color: #505050;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1950,7 +1973,7 @@ void EditorWindow::installTheme_Dark_ClassicOrange(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1967,7 +1990,7 @@ void EditorWindow::installTheme_Dark_PlainOrange(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: #1A1A1A;}");
     ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{  background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{  background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -1984,7 +2007,7 @@ void EditorWindow::installTheme_Dark_ElectricOrange(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("    #editorFrame{   background: black;}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #111111; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2001,7 +2024,7 @@ void EditorWindow::installTheme_Dark_ClassicPurple(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2018,7 +2041,7 @@ void EditorWindow::installTheme_Dark_ClassicBlue(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2035,7 +2058,7 @@ void EditorWindow::installTheme_Dark_ClassicGreen(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2051,7 +2074,7 @@ void EditorWindow::installTheme_Dark_ClassicRed(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2067,7 +2090,7 @@ void EditorWindow::installTheme_Dark_Rainbow(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2082,7 +2105,7 @@ void EditorWindow::installTheme_Dark_FountainRainbow(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2098,7 +2121,7 @@ void EditorWindow::installTheme_Dark_Polito(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/polilogo.png)");
 
     //TOP FRAME
@@ -2114,7 +2137,7 @@ void EditorWindow::installTheme_Dark_Special(){
     //GENERAL COLOR
     ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
     ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel->setStyleSheet("  #DocNameLabel{   background-color:transparent; border: transparent; color: #F0F0F0;}");
+    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
     ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
 
     //TOP FRAME
@@ -2236,37 +2259,37 @@ void EditorWindow::refreshFormatButtons() {
 
 void EditorWindow::hideCollab(){
     //estate.SetCollaboratorBar(false);
-    ui->listWidgetOn->hide();
-    ui->listWidgetOff->hide();
-    ui->labelUser->hide();
+    ui->listWidgetOn_2->hide();
+    ui->listWidgetOff_2->hide();
+    ui->labelUser_2->hide();
     ui->profileButton->hide();
-    ui->label->hide();
-    ui->label_2->hide();
-    ui->label_3->hide();
-    ui->labelCollOn->hide();
-    ui->labelCollOff->hide();
-    ui->line->hide();
-    ui->line_2->hide();
-    ui->line_3->hide();
-    ui->DocNameLabel->hide();
+    ui->label_4->hide();
+    ui->label_5->hide();
+    ui->label_6->hide();
+    ui->labelCollOn_2->hide();
+    ui->labelCollOff_2->hide();
+    ui->line_4->hide();
+    ui->line_5->hide();
+    ui->line_6->hide();
+    ui->DocNameLabel_2->hide();
     ui->verticalLayout_5->setContentsMargins(10,5,0,0);
 }
 
 void EditorWindow::showCollab(){
     //estate.SetCollaboratorBar(true);
-    ui->listWidgetOn->show();
-    ui->listWidgetOff->show();
-    ui->labelUser->show();
+    ui->listWidgetOn_2->show();
+    ui->listWidgetOff_2->show();
+    ui->labelUser_2->show();
     ui->profileButton->show();
-    ui->label->show();
-    ui->label_2->show();
-    ui->label_3->show();
-    ui->labelCollOn->show();
-    ui->labelCollOff->show();
-    ui->line->show();
-    ui->line_2->show();
-    ui->line_3->show();
-    ui->DocNameLabel->show();
+    ui->label_4->show();
+    ui->label_5->show();
+    ui->label_6->show();
+    ui->labelCollOn_2->show();
+    ui->labelCollOff_2->show();
+    ui->line_4->show();
+    ui->line_5->show();
+    ui->line_6->show();
+    ui->DocNameLabel_2->show();
     ui->verticalLayout_5->setContentsMargins(0,5,35,0);
 }
 
@@ -2338,14 +2361,14 @@ void EditorWindow::setupInitialCondition(){
 
 void EditorWindow::SetDynamicDocNameLabel(){
 
-    ui->DocNameLabel->setText(docName); //Update docNameLabel after rename! Important!!!
+    ui->DocNameLabel_2->setText(docName); //Update DocNameLabel_2 after rename! Important!!!
 
-    ui->DocNameLabel->adjustSize();
-    ui->DocNameLabel->resize(ui->DocNameLabel->sizeHint());
-    if(ui->DocNameLabel->width() > 240){
-        QFontMetrics metrics(ui->DocNameLabel->font());
-        QString elidedText = metrics.elidedText(docName, Qt::ElideRight, ui->DocNameLabel->width());
-        ui->DocNameLabel->setText(elidedText);
+    ui->DocNameLabel_2->adjustSize();
+    ui->DocNameLabel_2->resize(ui->DocNameLabel_2->sizeHint());
+    if(ui->DocNameLabel_2->width() > 240){
+        QFontMetrics metrics(ui->DocNameLabel_2->font());
+        QString elidedText = metrics.elidedText(docName, Qt::ElideRight, ui->DocNameLabel_2->width());
+        ui->DocNameLabel_2->setText(elidedText);
     }
 }
 
@@ -2467,8 +2490,8 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
     //this will show remote cursor of other users
     cursorChangeRequest(ui->RealTextEdit->textCursor().position());
 
-    ui->listWidgetOn->clear();
-    ui->listWidgetOff->clear();
+    ui->listWidgetOn_2->clear();
+    ui->listWidgetOff_2->clear();
 
     QString username=nullptr, itemString=nullptr, user=nullptr, color=nullptr, ic=nullptr;
     QChar firstLetter;
@@ -2502,7 +2525,7 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
             gradient.setColorAt(0,QColor(color));
             gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
-            itemOn = new QListWidgetItem(itemString, ui->listWidgetOn);
+            itemOn = new QListWidgetItem(itemString, ui->listWidgetOn_2);
             itemOn->setText(" "+user);
             itemOn->setIcon(QIcon(ic));
             itemOn->setBackground(brush);
@@ -2512,7 +2535,7 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
             gradient.setColorAt(0,QColor(color));
             gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
-            itemOff = new QListWidgetItem(itemString, ui->listWidgetOff);
+            itemOff = new QListWidgetItem(itemString, ui->listWidgetOff_2);
             itemOff->setText(" "+user);
             itemOff->setIcon(QIcon(ic));
             itemOff->setBackground(brush);
@@ -2520,8 +2543,8 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
         }
      }
 
-    ui->listWidgetOn->setStyleSheet("#listWidgetOn{\nborder:transparent;\nbackground: transparent;\n}");
-    ui->listWidgetOff->setStyleSheet("#listWidgetOff{\nborder:transparent;\nbackground: transparent;\ncolor: rgb(159,159,159);\n}");
+    ui->listWidgetOn_2->setStyleSheet("#listWidgetOn_2{\nborder:transparent;\nbackground: white;\n}");
+    ui->listWidgetOff_2->setStyleSheet("#listWidgetOff_2{\nborder:transparent;\nbackground: white;\ncolor: rgb(159,159,159);\n}");
 
 }
 
