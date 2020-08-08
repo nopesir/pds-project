@@ -66,6 +66,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     LoadUserSetting();
     setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
+    ui->dockWidget->lower();
     //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
@@ -135,6 +136,7 @@ void EditorWindow::createDock() {
                 << "Sally Hobart, Tiroli Tea, 67 Long River, Fedula");
         dock->setWidget(customerList);
         dock->setFloating(true);
+
         addDockWidget(Qt::RightDockWidgetArea, dock);
 }
 
@@ -229,17 +231,13 @@ void EditorWindow::on_fileButton_clicked(){
 }
 
 void EditorWindow::on_visualizzaButton_clicked(){
-    /*QMenu menuVisualizza(this);
+    QMenu menuVisualizza(this);
 
     //prepare action
-    QAction *fullscreen = new QAction( tr("Schermo Intero"), this);
-    QAction *DayNNight = new QAction(  tr("Modalità Notte"), this);
-    QAction *MenuCollab = new QAction( tr("Nascondi barra collaboratori"), this);
-    QAction *Toolbar = new QAction( tr("Nascondi barra degli strumenti"), this);
+    QAction *toggle = new QAction( tr("Toggle barra collaboratori"), this);
 
     //Handle the dynamic part of this menu (if the action is checked)
     //if(estate.GetFullScreen()==true){
-        fullscreen->setText("Modalità Finestra");
     //}
     //if(estate.GetDarkMode()==true){
     //    QIcon icoDay;
@@ -249,51 +247,18 @@ void EditorWindow::on_visualizzaButton_clicked(){
     //}else{
         //prepare icon
    //     QIcon icoDark;
-        icoDark.addPixmap(QPixmap(":/image/Editor/DarkMoon.png"),QIcon::Normal,QIcon::On);
-        DayNNight->setIcon(icoDark);
-    }
-    if(estate.GetCollaboratorBar()==false){
-        MenuCollab->setText("Mostra barra collaboratori");
-    }
-    if(estate.GetToolbar()==false){
-        Toolbar->setText("Mostra barra degli strumenti");
-    }
 
-    //connect action
-    connect(fullscreen, &QAction::triggered, this, &EditorWindow::on_actionFullscreen_triggered);
-    connect(DayNNight, &QAction::triggered, this, &EditorWindow::on_actionDark_Mode_triggered);
-    connect(MenuCollab, &QAction::triggered, this, &EditorWindow::on_actionCollaboratori_triggered);
-    connect(Toolbar, &QAction::triggered, this, &EditorWindow::on_actionToolbar_triggered);
-
-    //set tip
-    fullscreen->setStatusTip(tr("Passa in modalità fullscreen"));
-    DayNNight->setStatusTip(tr("Alterna DayMode o DarkMode"));
-    MenuCollab->setStatusTip(tr("Mostra o nascondi la barra dei collaboratori"));
-    Toolbar->setStatusTip(tr("Mostra o nascondi la barra degli strumenti"));
-
-    //prepare list of Shortcut
-    QList<QKeySequence> shortcutFullS, shortcutDark, shortcutMenuC, shortcutToolbar;
-    shortcutFullS.append(QKeySequence(Qt::CTRL + Qt::Key_F11));     //CTRL+F11
-    shortcutDark.append(QKeySequence(Qt::CTRL + Qt::Key_D));        //CTRL+D
-    //shortcutMenuC.append(QKeySequence(Qt::CTRL + Qt::Key_?));     //WE HAVE A SHORTCUT FOR THIS?
-    shortcutToolbar.append(QKeySequence(Qt::CTRL + Qt::Key_M));        //CTRL+M
-
-    //set Shortcut
-    fullscreen->setShortcuts(shortcutFullS);
-    DayNNight->setShortcuts(shortcutDark);
-    MenuCollab->setShortcuts(shortcutMenuC);
-    Toolbar->setShortcuts(shortcutToolbar);
+    connect(toggle, &QAction::triggered, this, &EditorWindow::on_toggle_triggered);
 
     //add action to menu
-    menuVisualizza.addAction(fullscreen);
-    menuVisualizza.addAction(DayNNight);
-    menuVisualizza.addSeparator();
-    menuVisualizza.addAction(MenuCollab);
-    menuVisualizza.addAction(Toolbar);
+    menuVisualizza.addAction(toggle);
 
     ui->visualizzaButton->setMenu(&menuVisualizza);
     ui->visualizzaButton->showMenu();
-    */
+}
+
+void EditorWindow::on_toggle_triggered() {
+    ui->dockWidget->setHidden(!ui->dockWidget->isHidden());
 }
 
 void EditorWindow::on_modificaButton_clicked(){

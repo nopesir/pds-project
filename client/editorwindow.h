@@ -100,6 +100,7 @@ private slots:
     void on_actionSeleziona_Tutto_triggered();
     void on_actionToolbar_triggered();
     void on_actionOpzioni_triggered();
+    void on_toggle_triggered();
 
     /************************************
      * STANDALONE FUNCTION FOR GRAPHIC  *
@@ -240,7 +241,6 @@ private:
     int getTotalCharsInSpan(QString text);
     void setAlignmentButton(Qt::AlignmentFlag alignment);
     void changeNextCharsAlignment(QTextCursor cursor, int startIndex, int endIndex);
-    void createDock();
     /* Variables */
     bool changedFontSize = false, changedCurIndex = false, setCurPointSize = false;
     enum formatType {MAKE_BOLD=0, MAKE_ITALIC=1, MAKE_UNDERLINE=2, UNMAKE_BOLD=3, UNMAKE_ITALIC=4, UNMAKE_UNDERLINE=5, FORMAT_UNKNOWN=6, CHANGE_FONT_SIZE=7};
