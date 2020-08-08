@@ -54,7 +54,6 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     setupValidator();
     setupTextEdit();
     setupFontIcon();
-    createDock();
     cursorChangeRequest(0);
     hideLastAddedItem(ui->fontFamilyBox);
     qRegisterMetaType<std::vector<Symbol>>("std::vector<symbol>");
@@ -121,23 +120,6 @@ void EditorWindow::setupFirstLetter() {
     }
     SimplifySingleCharForSorting(firstLetter,1);
     ui->profileButton->setText(firstLetter.toUpper());
-}
-
-void EditorWindow::createDock() {
-    dock = new QDockWidget(tr("Users"), this);
-        dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        auto customerList = new QListWidget(dock);
-        customerList->addItems(QStringList()
-                << "John Doe, Harmony Enterprises, 12 Lakeside, Ambleton"
-                << "Jane Doe, Memorabilia, 23 Watersedge, Beaton"
-                << "Tammy Shea, Tiblanka, 38 Sea Views, Carlton"
-                << "Tim Sheen, Caraba Gifts, 48 Ocean Way, Deal"
-                << "Sol Harvey, Chicos Coffee, 53 New Springs, Eccleston"
-                << "Sally Hobart, Tiroli Tea, 67 Long River, Fedula");
-        dock->setWidget(customerList);
-        dock->setFloating(true);
-
-        addDockWidget(Qt::RightDockWidgetArea, dock);
 }
 
 void EditorWindow::setupValidator() {
@@ -216,8 +198,6 @@ void EditorWindow::on_fileButton_clicked(){
     pdfExport->setShortcuts(shortcutPdf);
     rename->setShortcuts(shortcutRinomina);
     close->setShortcuts(shortcutClose);
-
-    dock->setVisible(!dock->isVisible());
 
     //add action to menu
     menuFile.addAction(uri);
