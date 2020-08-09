@@ -503,6 +503,7 @@ void HomeWindow::on_newFile_clicked()
 
 void HomeWindow::on_openFiles_clicked()
 {
+    on_listFiles_clicked();
     ui->stackedWidget->setCurrentIndex(1);
     ui->newFile->setStyleSheet("#newFile {color: rgb(0, 0, 0); background-color: rgb(186, 189, 182); border: transparent;} #newFile:hover {border: 2px solid rgb(164, 0, 0);}");
     ui->labelNew->setStyleSheet("background-color: rgb(186, 189, 182);");
