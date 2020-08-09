@@ -41,9 +41,7 @@ private slots:
      ************************************/
 
     //TopMenuBar
-    void on_fileButton_clicked();
-    void on_visualizzaButton_clicked();
-    void on_modificaButton_clicked();
+    void setup_menu();
     void on_strumentiButton_clicked();
     void on_aboutButton_clicked();
 
