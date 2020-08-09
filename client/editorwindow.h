@@ -245,7 +245,6 @@ private:
     bool changedFontSize = false, changedCurIndex = false, setCurPointSize = false;
     enum formatType {MAKE_BOLD=0, MAKE_ITALIC=1, MAKE_UNDERLINE=2, UNMAKE_BOLD=3, UNMAKE_ITALIC=4, UNMAKE_UNDERLINE=5, FORMAT_UNKNOWN=6, CHANGE_FONT_SIZE=7};
     QChar SimplifySingleCharForSorting( QChar c, bool changeToLowerCase);
-    QDockWidget * dock;
 
     //Boolean for check if only one instance of following window is created
     bool profile_closed = true;

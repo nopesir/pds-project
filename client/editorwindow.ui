@@ -1203,17 +1203,14 @@ border-left: 2px solid #404040
         </layout>
        </item>
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <property name="spacing">
-          <number>0</number>
-         </property>
+        <layout class="QGridLayout" name="gridLayout_4">
          <property name="sizeConstraint">
           <enum>QLayout::SetDefaultConstraint</enum>
          </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
-         <item>
+         <item row="0" column="0">
           <widget class="QFrame" name="frameTopBar">
            <property name="minimumSize">
             <size>
@@ -1280,7 +1277,7 @@ border-left: 2px solid #404040
               </property>
               <property name="font">
                <font>
-                <family>Verdana</family>
+                <family>Ubuntu</family>
                 <pointsize>11</pointsize>
                 <weight>50</weight>
                 <bold>false</bold>
@@ -1322,7 +1319,7 @@ border-left: 2px solid #404040
               </property>
               <property name="font">
                <font>
-                <family>Verdana</family>
+                <family>Ubuntu</family>
                 <pointsize>11</pointsize>
                 <weight>50</weight>
                 <bold>false</bold>
@@ -1361,7 +1358,7 @@ border-left: 2px solid #404040
               </property>
               <property name="font">
                <font>
-                <family>Verdana</family>
+                <family>Ubuntu</family>
                 <pointsize>11</pointsize>
                 <weight>50</weight>
                 <bold>false</bold>
@@ -1400,7 +1397,7 @@ border-left: 2px solid #404040
               </property>
               <property name="font">
                <font>
-                <family>Verdana</family>
+                <family>Ubuntu</family>
                 <pointsize>11</pointsize>
                </font>
               </property>
@@ -1437,7 +1434,7 @@ border-left: 2px solid #404040
               </property>
               <property name="font">
                <font>
-                <family>Verdana</family>
+                <family>Ubuntu</family>
                 <pointsize>11</pointsize>
                 <weight>50</weight>
                 <bold>false</bold>
@@ -1475,29 +1472,6 @@ border-left: 2px solid #404040
                </size>
               </property>
              </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="opaqueLogo">
-              <property name="minimumSize">
-               <size>
-                <width>370</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>370</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(136, 138, 133);
-background-color: rgb(85, 87, 83);</string>
-              </property>
-              <property name="text">
-               <string>TEST</string>
-              </property>
-             </widget>
             </item>
            </layout>
           </widget>
