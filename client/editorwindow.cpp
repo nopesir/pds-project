@@ -1940,7 +1940,6 @@ void EditorWindow::CloseDocumentRequest() {
     const std::string req = j.dump();
 
     //Send data (header and body)
-    std::cout << "ECCO LA"  << std::endl;
     _client->sendRequestMsg(req);
 }
 

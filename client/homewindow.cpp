@@ -309,6 +309,7 @@ void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
 
 void HomeWindow:: setEditorClosed(){
     editor_closed = true;
+    on_openFiles_clicked();
     this->show();
 }
 
@@ -433,6 +434,7 @@ void HomeWindow::showListFile(std::vector<File> files) {
 }
 
 void HomeWindow::resumeWindow() {
+    on_openFiles_clicked();
     this->show();
     //ui->stackedWidget->setCurrentIndex(1);
 }
