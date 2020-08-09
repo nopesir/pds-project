@@ -70,6 +70,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     LoadUserSetting();
     setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
+    this->setWindowTitle("legoRT editor - " + docName);
 }
 
 
