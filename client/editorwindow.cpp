@@ -48,6 +48,10 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     connect(&ui->RealTextEdit->timer, &QTimer::timeout, ui->RealTextEdit, &MyQTextEdit::hideHorizontalRect);
     connect(_client, &ClientProc::statusChanged, this, &EditorWindow::goodbyeClient);
 
+
+    auto cut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_T), this);
+    connect(cut, &QShortcut::activated, this, &EditorWindow::on_toggle_triggered);
+
     setupListWidgets();
     setupFirstLetter();
     setupColor();
@@ -65,8 +69,6 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     LoadUserSetting();
     setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
-    ui->dockWidget->lower();
-    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 
@@ -216,23 +218,15 @@ void EditorWindow::on_visualizzaButton_clicked(){
     QMenu menuVisualizza(this);
 
     //prepare action
-    QAction *toggle = new QAction( tr("Toggle barra collaboratori"), this);
-
-    //Handle the dynamic part of this menu (if the action is checked)
-    //if(estate.GetFullScreen()==true){
-    //}
-    //if(estate.GetDarkMode()==true){
-    //    QIcon icoDay;
-    //    icoDay.addPixmap(QPixmap(":/image/Editor/DarkSun.png"),QIcon::Normal,QIcon::On);
-    //    DayNNight->setIcon(icoDay);
-    //    DayNNight->setText("Modalità Giorno");
-    //}else{
-        //prepare icon
-   //     QIcon icoDark;
-
+    QAction *toggle = new QAction( tr("Toggle barra dei collaboratori"), this);
     connect(toggle, &QAction::triggered, this, &EditorWindow::on_toggle_triggered);
 
     //add action to menu
+
+    QList<QKeySequence> shortcutToggle;
+    shortcutToggle.append(QKeySequence(Qt::CTRL + Qt::Key_T)); // CRTL+T
+    toggle->setShortcuts(shortcutToggle);
+
     menuVisualizza.addAction(toggle);
 
     ui->visualizzaButton->setMenu(&menuVisualizza);

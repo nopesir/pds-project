@@ -2254,6 +2254,115 @@ QToolTip {
     </widget>
    </widget>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1245</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionInvia_tramite_URI"/>
+    <addaction name="actionEsporta_come_PDF"/>
+    <addaction name="actionRinomina"/>
+    <addaction name="separator"/>
+    <addaction name="actionChiudi_documento"/>
+   </widget>
+   <widget class="QMenu" name="menuVisualizza">
+    <property name="title">
+     <string>Visualizza</string>
+    </property>
+    <addaction name="actionToggle_collaboratori"/>
+   </widget>
+   <widget class="QMenu" name="menuModifica">
+    <property name="title">
+     <string>Modifica</string>
+    </property>
+    <addaction name="actionGrassetto"/>
+    <addaction name="actionCorsivo"/>
+    <addaction name="actionSottolineato"/>
+    <addaction name="separator"/>
+    <addaction name="actionTaglia"/>
+    <addaction name="actionCopia"/>
+    <addaction name="actionIncolla"/>
+    <addaction name="separator"/>
+    <addaction name="actionSeleziona_tutto"/>
+   </widget>
+   <widget class="QMenu" name="menuAiuto">
+    <property name="title">
+     <string>Aiuto</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuVisualizza"/>
+   <addaction name="menuModifica"/>
+   <addaction name="menuAiuto"/>
+  </widget>
+  <action name="actionInvia_tramite_URI">
+   <property name="text">
+    <string>Invia tramite URI</string>
+   </property>
+  </action>
+  <action name="actionEsporta_come_PDF">
+   <property name="text">
+    <string>Esporta come PDF</string>
+   </property>
+  </action>
+  <action name="actionRinomina">
+   <property name="text">
+    <string>Rinomina</string>
+   </property>
+  </action>
+  <action name="actionChiudi_documento">
+   <property name="text">
+    <string>Chiudi documento</string>
+   </property>
+  </action>
+  <action name="actionToggle_collaboratori">
+   <property name="text">
+    <string>Toggle collaboratori</string>
+   </property>
+  </action>
+  <action name="actionGrassetto">
+   <property name="text">
+    <string>Grassetto</string>
+   </property>
+  </action>
+  <action name="actionCorsivo">
+   <property name="text">
+    <string>Corsivo</string>
+   </property>
+  </action>
+  <action name="actionSottolineato">
+   <property name="text">
+    <string>Sottolineato</string>
+   </property>
+  </action>
+  <action name="actionTaglia">
+   <property name="text">
+    <string>Taglia</string>
+   </property>
+  </action>
+  <action name="actionCopia">
+   <property name="text">
+    <string>Copia</string>
+   </property>
+  </action>
+  <action name="actionIncolla">
+   <property name="text">
+    <string>Incolla</string>
+   </property>
+  </action>
+  <action name="actionSeleziona_tutto">
+   <property name="text">
+    <string>Seleziona tutto</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
