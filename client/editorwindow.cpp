@@ -49,8 +49,8 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     connect(_client, &ClientProc::statusChanged, this, &EditorWindow::goodbyeClient);
 
 
-    auto cut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_T), this);
-    connect(cut, &QShortcut::activated, this, &EditorWindow::on_toggle_triggered);
+    //auto cut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_T), this);
+    //connect(cut, &QShortcut::activated, this, &EditorWindow::on_toggle_triggered);
 
     setupListWidgets();
     setupFirstLetter();
