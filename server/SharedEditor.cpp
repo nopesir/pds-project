@@ -5,6 +5,7 @@
 #include <iostream>
 #include "SharedEditor.h"
 #include "SymbolStyle.h"
+#include "fileUtility.h"
 
 
 void SharedEditor::join(const std::shared_ptr<Client>& participant) {

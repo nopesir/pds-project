@@ -4,10 +4,12 @@
 
 #include "Server.h"
 #include "Session.h"
-
+#include <boost/asio.hpp>
 #include <iostream>
 #include <memory>
+#include <utility>
 
+using boost::asio::ip::tcp;
 
 Server::Server(boost::asio::io_context& io_context, const boost::asio::ip::tcp::endpoint& endpoint)
         : acceptor(io_context, endpoint), editor_counter(0) {
