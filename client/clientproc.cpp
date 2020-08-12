@@ -177,8 +177,6 @@ void ClientProc::do_read_body() {
                         emit opResultFailure("NEWFILE_FAILURE");
                 } else if(opJSON == "OPENFILE_RESPONSE") {
 
-                    auto t_start1 = std::chrono::high_resolution_clock::now();
-
                     std::string db_responseJSON;
                     Jsonize::from_json_resp(jdata_in, db_responseJSON);
 
@@ -206,6 +204,7 @@ void ClientProc::do_read_body() {
                     else
                         emit editorResultFailure("RENAME_FAILURE");
                 } else if(opJSON == "OPENWITHURI_RESPONSE") {
+                    std::cout << "RESPONSE"  << std::endl;
                     std::string db_responseJSON;
                     Jsonize::from_json_resp(jdata_in, db_responseJSON);
 

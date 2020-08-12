@@ -536,7 +536,6 @@ void HomeWindow::on_pushButton_clicked()
 
 void HomeWindow::on_openUrlButton_clicked()
 {
-    auto t_start1 = std::chrono::high_resolution_clock::now();
     if(_client->getStatus()==false) {
         handleTheConnectionLoss();
     } else {
@@ -566,9 +565,6 @@ void HomeWindow::on_openUrlButton_clicked()
         //Send data (header and body)
         _client->sendRequestMsg(req);
     }
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    std::cout << "BUTTON URI CLICK - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
 
 void HomeWindow::on_logoutButton_clicked()

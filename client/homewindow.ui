@@ -39,7 +39,7 @@
       <string notr="true">background-color: rgb(227, 232, 223);</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="pageNewFile">
       <widget class="QLabel" name="label">

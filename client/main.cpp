@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
 
     qRegisterMetaType<std::pair<int,wchar_t>>("std::pair<int,wchar_t>");
     qRegisterMetaType<std::string>("std::string");
+    qRegisterMetaType<SymbolStyle>("SymbolStyle");
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
