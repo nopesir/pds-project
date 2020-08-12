@@ -5,10 +5,11 @@
 #include <boost/asio.hpp>
 #include <iostream>
 #include <QtSql/QSqlDatabase>
-//#include "sqlite3.h"
+#include "sqlite3.h"
 #include "Session.h"
 #include "SharedEditor.h"
-
+#include "fileUtility.h"
+#include "email.h"
 Session::Session(boost::asio::ip::tcp::socket socket)
         :_socket(std::move(socket)){}
 
@@ -361,7 +362,7 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
 
             //Update session data
             shared_from_this()->setCurrentFile(uri.toStdString());
-            SharedEditor::getInstance().addEntryInMap(shared_from_this()->getCurrentFile(), std::vector<symbol>());
+            SharedEditor::getInstance().addEntryInMap(shared_from_this()->getCurrentFile(), std::vector<Symbol>());
 
             //Serialize data
             json j;

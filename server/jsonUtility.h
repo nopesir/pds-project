@@ -7,6 +7,7 @@
 
 #include "json.hpp"
 #include "Symbol.h"
+#include "File.h"
 
 using nlohmann::json;
 class jsonUtility {

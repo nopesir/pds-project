@@ -14,8 +14,8 @@ Server::Server(boost::asio::io_context& io_context, const boost::asio::ip::tcp::
     accept_connection();
 }
 
-//#pragma clang diagnostic push
-//#pragma ide diagnostic ignored "InfiniteRecursion"
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "InfiniteRecursion"
 void Server::accept_connection()
 {
     std::cout << "Waiting for clients..."  << std::endl;
@@ -28,5 +28,5 @@ void Server::accept_connection()
         accept_connection(); //server socket continue accepting new connections
     });
 }
-//#pragma clang diagnostic pop
+#pragma clang diagnostic pop
 

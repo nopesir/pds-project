@@ -1,9 +1,15 @@
 //
 // Created by gheb on 05/04/20.
 //
-
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err34-c"
+#pragma ide diagnostic ignored "cert-msc32-c"
 #include "Server.h"
 #include <boost/asio.hpp>
+#include <QtSql/QSqlDatabase>
+#include "dbService.h"
+#include <iostream>
+#include <memory>
 
 
 

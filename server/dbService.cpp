@@ -2,7 +2,7 @@
 // Created by giuseppe on 8/2/20.
 //
 #include <string>
-#include "header_files/dbService.h"
+#include "dbService.h"
 #include <iostream>
 #include <QSqlDatabase>
 #include <QSqlDriver>

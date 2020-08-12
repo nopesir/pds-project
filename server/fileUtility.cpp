@@ -10,7 +10,7 @@
 
 using json = nlohmann::json;
 
-void fileUtility::writeFile(const std::string& filename, const std::vector<symbol>& symbols) {
+void fileUtility::writeFile(const std::string& filename, const std::vector<Symbol>& symbols) {
     json j = jsonUtility::fromSymToJson(symbols);
 
     // Write json string on file
@@ -23,15 +23,15 @@ void fileUtility::writeFile(const std::string& filename, const std::vector<symbo
         std::cout << "Unable to open file";
 }
 
-std::vector<symbol> fileUtility::readFile(const std::string& filepath) {
-    std::vector<symbol> symbols;
+std::vector<Symbol> fileUtility::readFile(const std::string& filepath) {
+    std::vector<Symbol> symbols;
 
     /* Read bytes from file */
     std::ifstream f(filepath);
     std::string str;
     if(f.is_open()) {
         if(fileUtility::is_empty(f))
-            return std::vector<symbol>();
+            return std::vector<Symbol>();
 
         std::string line;
         while(getline(f, line)) {
