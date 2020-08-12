@@ -49,6 +49,8 @@ private slots:
 
     void on_linePassword_returnPressed();
 
+    void on_linePasswordForm_returnPressed();
+
 public slots:
     void setStatus(bool newStatus);
     void showPopupSuccess(QString result);

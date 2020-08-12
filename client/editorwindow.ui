@@ -1532,6 +1532,9 @@ text-align: center;
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
+            <property name="margin">
+             <number>5</number>
+            </property>
            </widget>
           </item>
           <item>
@@ -1549,7 +1552,7 @@ text-align: center;
               </property>
               <property name="minimumSize">
                <size>
-                <width>250</width>
+                <width>260</width>
                 <height>0</height>
                </size>
               </property>
