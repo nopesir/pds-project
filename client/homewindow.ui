@@ -45,9 +45,9 @@
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>150</x>
          <y>20</y>
-         <width>160</width>
+         <width>251</width>
          <height>20</height>
         </rect>
        </property>
@@ -57,7 +57,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Create a new file</string>
+        <string>Crea un nuovo documento</string>
        </property>
       </widget>
      </widget>
@@ -98,43 +98,22 @@
       </widget>
      </widget>
      <widget class="QWidget" name="pageShareFile">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>30</x>
+         <x>130</x>
          <y>20</y>
-         <width>191</width>
-         <height>22</height>
+         <width>271</width>
+         <height>20</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
        </property>
        <property name="text">
-        <string>Insert URL of the document </string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="urlTextEdit">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>60</y>
-         <width>551</width>
-         <height>41</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="openUrlButton">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>120</y>
-         <width>89</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Open</string>
+        <string>Apri un documento condiviso</string>
        </property>
       </widget>
      </widget>
@@ -363,12 +342,15 @@ color: rgb(238, 238, 236);</string>
      <rect>
       <x>750</x>
       <y>20</y>
-      <width>30</width>
-      <height>30</height>
+      <width>31</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Logout</string>
     </property>
     <property name="statusTip">
      <string/>
@@ -383,9 +365,14 @@ color: rgb(238, 238, 236);</string>
      <string/>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(164, 0, 0);
+     <string notr="true">#logoutButton{
+background-color: rgb(164, 0, 0);
 color: rgb(211, 215, 207);
-border: transparent;</string>
+border: transparent;
+}
+#logoutButton:hover {
+    border: 8px solid rgb(164, 0, 0);
+}</string>
     </property>
     <property name="text">
      <string extracomment="aaaaaaaaa"/>
@@ -404,11 +391,14 @@ border: transparent;</string>
    <widget class="QPushButton" name="viewProfile">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>10</y>
-      <width>51</width>
-      <height>51</height>
+      <x>710</x>
+      <y>20</y>
+      <width>31</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string/>
     </property>
     <property name="styleSheet">
      <string notr="true">#viewProfile {
@@ -431,7 +421,7 @@ border: transparent;</string>
     </property>
     <property name="iconSize">
      <size>
-      <width>34</width>
+      <width>26</width>
       <height>34</height>
      </size>
     </property>
