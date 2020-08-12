@@ -229,3 +229,8 @@ void StartWindow::on_hideButton_clicked()
         hidePass=true;
     }
 }
+
+void StartWindow::on_linePassword_returnPressed()
+{
+    on_loginButton_clicked();
+}

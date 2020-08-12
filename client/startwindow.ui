@@ -83,6 +83,9 @@ background-color: rgb(136, 138, 133);</string>
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
       <property name="placeholderText">
        <string> Username</string>
       </property>
@@ -102,6 +105,9 @@ background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="echoMode">
        <enum>QLineEdit::Password</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="placeholderText">
        <string> Password</string>
@@ -187,6 +193,9 @@ border-image: url(:/images/hide.png);
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
       <property name="placeholderText">
        <string> Username</string>
       </property>
@@ -248,6 +257,9 @@ color: rgb(255, 255, 255);</string>
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
       <property name="placeholderText">
        <string> Email</string>
       </property>
@@ -264,6 +276,9 @@ background-color: rgb(255, 255, 255);</string>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="placeholderText">
        <string> Password</string>

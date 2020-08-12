@@ -150,7 +150,7 @@ background: white;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(204, 0, 0);</string>
+    <string notr="true">background-color: rgb(164, 0, 0);</string>
    </property>
    <property name="text">
     <string>X</string>
