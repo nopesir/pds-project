@@ -87,19 +87,19 @@ void EditorWindow::setupListWidgets() {
     ui->listWidgetOn_2->setTextElideMode(Qt::ElideRight);
 
 
-    ui->listWidgetOff_2->setViewMode(QListView::ListMode);
-    ui->listWidgetOff_2->setGridSize(QSize(215,40));
-    ui->listWidgetOff_2->setIconSize(QSize(30,30));
-    ui->listWidgetOff_2->setFlow(QListView::LeftToRight);
-    ui->listWidgetOff_2->setWrapping(true);
-    ui->listWidgetOff_2->setWordWrap(true);
-    ui->listWidgetOff_2->setResizeMode(QListView::Adjust);
-    ui->listWidgetOff_2->setAlternatingRowColors(false);
-    ui->listWidgetOff_2->setMovement(QListView::Static);
-    ui->listWidgetOff_2->setTextElideMode(Qt::ElideRight);
+//    ui->listWidgetOff_2->setViewMode(QListView::ListMode);
+//    ui->listWidgetOff_2->setGridSize(QSize(215,40));
+//    ui->listWidgetOff_2->setIconSize(QSize(30,30));
+//    ui->listWidgetOff_2->setFlow(QListView::LeftToRight);
+//    ui->listWidgetOff_2->setWrapping(true);
+//    ui->listWidgetOff_2->setWordWrap(true);
+//    ui->listWidgetOff_2->setResizeMode(QListView::Adjust);
+//    ui->listWidgetOff_2->setAlternatingRowColors(false);
+//    ui->listWidgetOff_2->setMovement(QListView::Static);
+//    ui->listWidgetOff_2->setTextElideMode(Qt::ElideRight);
 
     ui->listWidgetOn_2->setVerticalScrollBar(ui->verticalScrollBarOn);
-    ui->listWidgetOff_2->setVerticalScrollBar(ui->verticalScrollBarOff);
+    //ui->listWidgetOff_2->setVerticalScrollBar(ui->verticalScrollBarOff);
 }
 
 void EditorWindow::setupTextEdit() {
@@ -113,7 +113,7 @@ void EditorWindow::setupTextEdit() {
 
 void EditorWindow::setupFirstLetter() {
     QString user = _client->getUsername();
-    ui->labelUser_2->setText(user);
+    //ui->labelUser_2->setText(user);
 
     QChar firstLetter;
     for (int i=0;i<user.length();i++) {
@@ -123,7 +123,7 @@ void EditorWindow::setupFirstLetter() {
         }
     }
     SimplifySingleCharForSorting(firstLetter,1);
-    ui->profileButton->setText(firstLetter.toUpper());
+    //ui->profileButton->setText(firstLetter.toUpper());
 }
 
 void EditorWindow::setupValidator() {
@@ -135,7 +135,7 @@ void EditorWindow::setupValidator() {
 void EditorWindow::setupColor() {
     QColor color = _client->getColor();
     QString qss = QString("border-radius: 5px; \nbackground-color: %1; color:white;").arg(color.name());
-    ui->profileButton->setStyleSheet(qss);
+    //ui->profileButton->setStyleSheet(qss);
 }
 
 void EditorWindow::setupFontIcon() {
@@ -768,9 +768,9 @@ void EditorWindow::on_RealTextEdit_textChanged(){
     else {
         ZaLine = "Linee: "+QString::number(lineCount);
     }
-    ui->label_4->setText(ZaChar);
-    ui->label_5->setText(ZaWord);
-    ui->label_6->setText(ZaLine);
+    ui->label_1->setText(ZaChar);
+    ui->label_2->setText(ZaWord);
+    ui->label_3->setText(ZaLine);
 }
 
 void EditorWindow::on_RealTextEdit_customContextMenuRequested(const QPoint &pos){
@@ -2028,14 +2028,14 @@ void EditorWindow::refreshFormatButtons() {
 void EditorWindow::hideCollab(){
     //estate.SetCollaboratorBar(false);
     ui->listWidgetOn_2->hide();
-    ui->listWidgetOff_2->hide();
-    ui->labelUser_2->hide();
-    ui->profileButton->hide();
-    ui->label_4->hide();
-    ui->label_5->hide();
-    ui->label_6->hide();
+    //ui->listWidgetOff_2->hide();
+    //ui->labelUser_2->hide();
+    //ui->profileButton->hide();
+    ui->label_1->hide();
+    ui->label_2->hide();
+    ui->label_3->hide();
     ui->labelCollOn_2->hide();
-    ui->labelCollOff_2->hide();
+    //ui->labelCollOff_2->hide();
     ui->line_4->hide();
     ui->line_5->hide();
     ui->line_6->hide();
@@ -2046,14 +2046,14 @@ void EditorWindow::hideCollab(){
 void EditorWindow::showCollab(){
     //estate.SetCollaboratorBar(true);
     ui->listWidgetOn_2->show();
-    ui->listWidgetOff_2->show();
-    ui->labelUser_2->show();
-    ui->profileButton->show();
-    ui->label_4->show();
-    ui->label_5->show();
-    ui->label_6->show();
+    //ui->listWidgetOff_2->show();
+    //ui->labelUser_2->show();
+    //ui->profileButton->show();
+    ui->label_1->show();
+    ui->label_2->show();
+    ui->label_3->show();
     ui->labelCollOn_2->show();
-    ui->labelCollOff_2->show();
+    //ui->labelCollOff_2->show();
     ui->line_4->show();
     ui->line_5->show();
     ui->line_6->show();
@@ -2133,11 +2133,11 @@ void EditorWindow::SetDynamicDocNameLabel(){
 
     ui->DocNameLabel_2->adjustSize();
     ui->DocNameLabel_2->resize(ui->DocNameLabel_2->sizeHint());
-    if(ui->DocNameLabel_2->width() > 240){
+    /*if(ui->DocNameLabel_2->width() > 240){
         QFontMetrics metrics(ui->DocNameLabel_2->font());
-        QString elidedText = metrics.elidedText(docName, Qt::ElideRight, ui->DocNameLabel_2->width());
+        QString elidedText = metrics.elidedText(docName, Qt::ElideLeft, ui->DocNameLabel_2->width());
         ui->DocNameLabel_2->setText(elidedText);
-    }
+    }*/
 }
 
 
@@ -2149,7 +2149,7 @@ void EditorWindow:: setUserProfileClosed(){
     profile_closed = true;
 }
 
-void EditorWindow::on_profileButton_clicked() {
+/*void EditorWindow::on_profileButton_clicked() {
     if(profile_closed){//you can access to the stats, else you must close the current UserProfile Window
 
         QString filename, owner, timestamp;
@@ -2178,7 +2178,7 @@ void EditorWindow::on_profileButton_clicked() {
         //profile_closed = false;
         //up->show(); Not necessary is done by the costructor
     }
-}
+}*/
 
 void EditorWindow::setSettingsClosed(){
     settings_closed = true;
@@ -2254,29 +2254,36 @@ void EditorWindow::showPopupFailure(QString result) {
 }
 
 void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
+//    myCollabColorsMap first;
+//    first[std::string("nicola")] = std::make_pair(std::string("a8dadc"),true);
+//    first[std::string("zupa")] = std::make_pair(std::string("2a9d8f"),true);
+//    first[std::string("francesco")] = std::make_pair(std::string("2a9d8f"),true);
+//    first[std::string("gennaro")] = std::make_pair(std::string("e9c46a"),false);
+
 
     //this will show remote cursor of other users
     cursorChangeRequest(ui->RealTextEdit->textCursor().position());
 
     ui->listWidgetOn_2->clear();
-    ui->listWidgetOff_2->clear();
+    //ui->listWidgetOff_2->clear();
 
     QString username=nullptr, itemString=nullptr, user=nullptr, color=nullptr, ic=nullptr;
     QChar firstLetter;
     QList<QListWidgetItem*> fileItem;
     QListWidgetItem* itemOn;
-    QListWidgetItem* itemOff;
+    //QListWidgetItem* itemOff;
     QLinearGradient gradient = QLinearGradient(35, 35, 36, 35);
     QBrush brush;
 
     for(std::map<std::string, std::pair<std::string,bool>>::const_iterator it = collabColorsMap.begin(); it != collabColorsMap.end(); ++it){
+    //for(std::map<std::string, std::pair<std::string,bool>>::const_iterator it = first.begin(); it != first.end(); ++it){
         user = QString::fromStdString(it->first);
         color = QString::fromStdString(it->second.first);
         bool isOnline = it->second.second;
         username = _client->getUsername();
 
         if(username==user)
-            continue;
+            user ="TU";
 
         for (int i=0;i<user.length();i++) {
             firstLetter = user.at(i);
@@ -2287,32 +2294,40 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
         firstLetter = SimplifySingleCharForSorting(firstLetter,1);
         ic = QString(":/image/Letters/%1.png").arg(firstLetter.toUpper());
 
+        itemOn = new QListWidgetItem(itemString);
+        itemOn->setText(" "+user);
+        itemOn->setIcon(QIcon(ic));
+
         if(isOnline) {
             color[1]='f';
             color[2]='f';
             gradient.setColorAt(0,QColor(color));
             gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
-            itemOn = new QListWidgetItem(itemString, ui->listWidgetOn_2);
-            itemOn->setText(" "+user);
-            itemOn->setIcon(QIcon(ic));
+
             itemOn->setBackground(brush);
-            fileItem.append(itemOn);
+            //fileItem.insert(1,itemOn);
+            //fileItem.append(itemOn);
+            ui->listWidgetOn_2->insertItem(0,itemOn);
         }
-        else {
-            gradient.setColorAt(0,QColor(color));
+            ui->listWidgetOn_2->addItem(itemOn);
+            fileItem.append(itemOn);
+
+
+
+           /* gradient.setColorAt(0,QColor(color));
             gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
             itemOff = new QListWidgetItem(itemString, ui->listWidgetOff_2);
-            itemOff->setText(" "+user);
+            itemOff->setText("- "+user);
             itemOff->setIcon(QIcon(ic));
-            itemOff->setBackground(brush);
+            //itemOff->setBackground(brush);
             fileItem.append(itemOff);
-        }
+*/
      }
 
     ui->listWidgetOn_2->setStyleSheet("#listWidgetOn_2{\nborder:transparent;\nbackground: white;\n}");
-    ui->listWidgetOff_2->setStyleSheet("#listWidgetOff_2{\nborder:transparent;\nbackground: white;\ncolor: rgb(159,159,159);\n}");
+    //ui->listWidgetOff_2->setStyleSheet("#listWidgetOff_2{\nborder:transparent;\nbackground: white;\ncolor: rgb(159,159,159);\n}");
 
 }
 

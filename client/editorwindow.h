@@ -157,7 +157,7 @@ private slots:
     /************************************
      *  ONE INSTANCE HANDLER FUNCTION   *
      ************************************/
-    void on_profileButton_clicked();
+    //void on_profileButton_clicked();
     void setUserProfileClosed();
     void setSettingsClosed();
     void openSettingsWindows();

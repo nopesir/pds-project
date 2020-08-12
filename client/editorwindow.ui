@@ -1198,6 +1198,91 @@ border-left: 2px solid #404040
              </property>
             </widget>
            </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label_1">
+               <property name="font">
+                <font>
+                 <family>aakar</family>
+                 <pointsize>10</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color:grey;</string>
+               </property>
+               <property name="text">
+                <string>Caratteri: 0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="font">
+                <font>
+                 <family>aakar</family>
+                 <pointsize>10</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color:grey;</string>
+               </property>
+               <property name="text">
+                <string>Parole: 0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <family>aakar</family>
+                 <pointsize>10</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color:grey;</string>
+               </property>
+               <property name="text">
+                <string>Linee: 0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
           </layout>
          </item>
         </layout>
@@ -1208,15 +1293,21 @@ border-left: 2px solid #404040
    </layout>
   </widget>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="minimumSize">
     <size>
-     <width>350</width>
-     <height>750</height>
+     <width>330</width>
+     <height>500</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>350</width>
+     <width>330</width>
      <height>750</height>
     </size>
    </property>
@@ -1293,48 +1384,25 @@ border-left: 2px solid #404040
              <number>10</number>
             </property>
             <item>
-             <widget class="QPushButton" name="profileButton">
-              <property name="minimumSize">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
                <size>
                 <width>40</width>
-                <height>40</height>
+                <height>20</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>40</width>
-                <height>40</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">border:none;
-border-radius: 4px;</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
+             </spacer>
             </item>
             <item>
-             <widget class="QLabel" name="labelUser_2">
+             <widget class="QLabel" name="DocNameLabel_2">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -1347,30 +1415,38 @@ border-radius: 4px;</string>
               </property>
               <property name="maximumSize">
                <size>
-                <width>16777215</width>
+                <width>250</width>
                 <height>40</height>
+               </size>
+              </property>
+              <property name="sizeIncrement">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Calibri</family>
-                <pointsize>18</pointsize>
+                <pointsize>17</pointsize>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
               <property name="styleSheet">
-               <string notr="true">#labelCollab{
-	background-color:transparent;
+               <string notr="true">#DocNameLabel{
 	color: #505050;
-	border-bottom: 2px solid lightgrey;
+text-align: center;
 }</string>
               </property>
               <property name="text">
-               <string>CURRENT USER</string>
+               <string>DocumentNameGoesHere</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1387,7 +1463,7 @@ border-radius: 4px;</string>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>50</width>
+                <width>40</width>
                 <height>20</height>
                </size>
               </property>
@@ -1396,23 +1472,7 @@ border-radius: 4px;</string>
            </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer_9">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>4</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_10">
+           <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -1428,209 +1488,11 @@ border-radius: 4px;</string>
            </spacer>
           </item>
           <item>
-           <widget class="Line" name="line_8">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>1</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>1</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border:none;
-background-color: lightgrey;
-
-</string>
-            </property>
+           <widget class="Line" name="line_3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_11">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>6</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="DocNameLabel_2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>250</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="sizeIncrement">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Calibri</family>
-              <pointsize>17</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">#DocNameLabel{
-	color: #505050;
-}</string>
-            </property>
-            <property name="text">
-             <string>DocumentNameGoesHere</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_12">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>6</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_4">
-            <property name="font">
-             <font>
-              <family>Calibri</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color:grey;</string>
-            </property>
-            <property name="text">
-             <string>Caratteri: 0</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_5">
-            <property name="font">
-             <font>
-              <family>Calibri</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color:grey;</string>
-            </property>
-            <property name="text">
-             <string>Parole: 0</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_6">
-            <property name="font">
-             <font>
-              <family>Calibri</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color:grey;</string>
-            </property>
-            <property name="text">
-             <string>Linee: 0</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="line_9">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>1</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>1</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border:none;
-background-color: lightgrey;
-
-</string>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_13">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>6</height>
-             </size>
-            </property>
-           </spacer>
           </item>
           <item>
            <spacer name="verticalSpacer_14">
@@ -1662,7 +1524,10 @@ background-color: lightgrey;
              <string notr="true">color: grey;</string>
             </property>
             <property name="text">
-             <string>Collaboratori online</string>
+             <string>Collaboratori</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -1674,7 +1539,7 @@ background-color: lightgrey;
             <item>
              <widget class="QListWidget" name="listWidgetOn_2">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -1747,6 +1612,22 @@ QToolTip {
               <property name="spacing">
                <number>6</number>
               </property>
+              <property name="currentRow">
+               <number>-1</number>
+              </property>
+              <property name="sortingEnabled">
+               <bool>false</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>prova</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>ciao</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item>
@@ -1811,163 +1692,26 @@ QToolTip {
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="labelCollOff_2">
-            <property name="font">
-             <font>
-              <family>Calibri</family>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-            <property name="styleSheet">
-             <string notr="true">color: grey;</string>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
             </property>
-            <property name="text">
-             <string>Collaboratori offline</string>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
             </property>
-           </widget>
+           </spacer>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_18">
             <property name="spacing">
              <number>0</number>
             </property>
-            <item>
-             <widget class="QListWidget" name="listWidgetOff_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>250</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>250</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Calibri</family>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">#listWidgetOff_2{
-border:transparent;
-background: white;
-color: rgb(159,159,159);
-}
-
-QToolTip { 
-	color: #000000; 
-	background-color: #FFF2BF; 
-	border: 0px; 
-}</string>
-              </property>
-              <property name="verticalScrollBarPolicy">
-               <enum>Qt::ScrollBarAsNeeded</enum>
-              </property>
-              <property name="horizontalScrollBarPolicy">
-               <enum>Qt::ScrollBarAsNeeded</enum>
-              </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QAbstractScrollArea::AdjustIgnored</enum>
-              </property>
-              <property name="autoScroll">
-               <bool>false</bool>
-              </property>
-              <property name="autoScrollMargin">
-               <number>16</number>
-              </property>
-              <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
-              </property>
-              <property name="showDropIndicator" stdset="0">
-               <bool>false</bool>
-              </property>
-              <property name="defaultDropAction">
-               <enum>Qt::IgnoreAction</enum>
-              </property>
-              <property name="selectionMode">
-               <enum>QAbstractItemView::NoSelection</enum>
-              </property>
-              <property name="selectionBehavior">
-               <enum>QAbstractItemView::SelectItems</enum>
-              </property>
-              <property name="verticalScrollMode">
-               <enum>QAbstractItemView::ScrollPerPixel</enum>
-              </property>
-              <property name="spacing">
-               <number>6</number>
-              </property>
-              <property name="selectionRectVisible">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QScrollBar" name="verticalScrollBarOff">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>8</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>8</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QScrollBar:vertical {
-			border-radius: 4px;
-            background: lightgrey;
-            width:8px;    
-        }
-
-        QScrollBar::handle:vertical {         
-       
-            min-height: 0px;
-          	border: 0px solid red;
-			border-radius: 4px;
-			background-color: #80808080;
-        }
-        QScrollBar::add-line:vertical {       
-            height: 0px;
-            subcontrol-position: bottom;
-            subcontrol-origin: margin;
-        }
-        QScrollBar::sub-line:vertical {
-            height: 0 px;
-            subcontrol-position: top;
-            subcontrol-origin: margin;
-        }</string>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
          </layout>
