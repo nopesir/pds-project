@@ -14,7 +14,7 @@
 dbService::DB_RESPONSE dbService::tryCleanAll() {
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
         query.prepare(QString("UPDATE permissions SET isOpen=0"));
@@ -46,7 +46,7 @@ dbService::DB_RESPONSE dbService::tryLogout(const std::string& user) {
     QString username = QString::fromUtf8(user.data(), user.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
         query.prepare(QString("UPDATE users SET isLogged=0 WHERE username= :username"));
@@ -74,7 +74,7 @@ dbService::DB_RESPONSE dbService::tryLogout(const std::string& user, const std::
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
@@ -104,7 +104,7 @@ dbService::DB_RESPONSE dbService::tryLogin(const std::string& user, const std::s
     QString password = QString::fromUtf8(pass.data(), pass.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
@@ -175,7 +175,7 @@ dbService::DB_RESPONSE dbService::trySignup(const std::string& user, const std::
     }
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if (db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect"));
@@ -219,7 +219,7 @@ dbService::DB_RESPONSE dbService::tryNewFile(const std::string& user, const std:
     QString filename = QString::fromUtf8(file_name.data(), file_name.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect3");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
     if (db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect3"));
         query.prepare(QString("SELECT * FROM files WHERE filename = :filename and  owner = :username "));
@@ -272,7 +272,7 @@ dbService::DB_RESPONSE dbService::tryListFile(const std::string& user, std::vect
     QString username = QString::fromUtf8(user.data(), user.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
@@ -313,7 +313,7 @@ dbService::DB_RESPONSE dbService::tryOpenFile(const std::string& user, const std
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
@@ -358,7 +358,7 @@ dbService::DB_RESPONSE dbService::tryOpenWithURIFile(const std::string& user, co
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
@@ -406,7 +406,7 @@ dbService::DB_RESPONSE dbService::tryGetEmail(const std::string &invited, std::s
     QString username = QString::fromUtf8(invited.data(), invited.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
         query.prepare(QString("SELECT email FROM users WHERE username= :username LIMIT 1"));
@@ -438,7 +438,7 @@ dbService::DB_RESPONSE dbService::tryAddFriend(const std::string &invited, const
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
@@ -501,7 +501,7 @@ dbService::DB_RESPONSE dbService::tryGetCollabColors(const std::string& uri, std
     QString _uri = QString::fromUtf8(uri.data(), uri.size());
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if(db.open()) {
         /* Get online collaborators (with their color) */
@@ -592,7 +592,7 @@ dbService::DB_RESPONSE dbService::tryRenameFile(const std::string &newNameFile, 
     QString owner;
 
     db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect3");
-    db.setDatabaseName("/texteditor_users.sqlite");
+    db.setDatabaseName("texteditor_users.sqlite");
 
     if (db.open()) {
         //get the name of the owner of the uri requested from the db
