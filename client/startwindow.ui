@@ -189,6 +189,9 @@ border-image: url(:/images/hide.png);
         <height>51</height>
        </rect>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
@@ -391,6 +394,19 @@ background-color: rgb(164, 0, 0);</string>
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineUser</tabstop>
+  <tabstop>linePassword</tabstop>
+  <tabstop>hideButton</tabstop>
+  <tabstop>loginButton</tabstop>
+  <tabstop>regButton</tabstop>
+  <tabstop>exitButton</tabstop>
+  <tabstop>lineUserForm</tabstop>
+  <tabstop>lineMailForm</tabstop>
+  <tabstop>linePasswordForm</tabstop>
+  <tabstop>buttonReg</tabstop>
+  <tabstop>buttonBack</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
