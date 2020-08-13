@@ -38,8 +38,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(186, 189, 182);
-background-color: rgb(136, 138, 133);</string>
+   <string notr="true">background-color: rgb(186, 189, 182)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="stackedWidget">
@@ -64,7 +63,7 @@ background-color: rgb(136, 138, 133);</string>
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(211, 215, 207);</string>
+     <string notr="true">background-color: rgb(227, 232, 223);</string>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -74,7 +73,7 @@ background-color: rgb(136, 138, 133);</string>
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>30</y>
+        <y>40</y>
         <width>201</width>
         <height>51</height>
        </rect>
@@ -82,6 +81,9 @@ background-color: rgb(136, 138, 133);</string>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="placeholderText">
        <string> Username</string>
@@ -91,7 +93,7 @@ background-color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>90</y>
+        <y>100</y>
         <width>201</width>
         <height>51</height>
        </rect>
@@ -102,6 +104,9 @@ background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="echoMode">
        <enum>QLineEdit::Password</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="placeholderText">
        <string> Password</string>
@@ -155,7 +160,7 @@ color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>380</x>
-        <y>100</y>
+        <y>110</y>
         <width>31</width>
         <height>31</height>
        </rect>
@@ -183,9 +188,15 @@ border-image: url(:/images/hide.png);
         <height>51</height>
        </rect>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="placeholderText">
        <string> Username</string>
@@ -248,6 +259,9 @@ color: rgb(255, 255, 255);</string>
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
       <property name="placeholderText">
        <string> Email</string>
       </property>
@@ -264,6 +278,9 @@ background-color: rgb(255, 255, 255);</string>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="placeholderText">
        <string> Password</string>
@@ -376,6 +393,19 @@ background-color: rgb(164, 0, 0);</string>
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineUser</tabstop>
+  <tabstop>linePassword</tabstop>
+  <tabstop>hideButton</tabstop>
+  <tabstop>loginButton</tabstop>
+  <tabstop>regButton</tabstop>
+  <tabstop>exitButton</tabstop>
+  <tabstop>lineUserForm</tabstop>
+  <tabstop>lineMailForm</tabstop>
+  <tabstop>linePasswordForm</tabstop>
+  <tabstop>buttonReg</tabstop>
+  <tabstop>buttonBack</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

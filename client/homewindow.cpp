@@ -499,6 +499,8 @@ void HomeWindow::on_newFile_clicked()
             QMessageBox::critical(this,"Errore", "Inserire il nome del documento!");
             on_newFile_clicked();
         }
+        else
+            on_openFiles_clicked();
     }
 }
 
@@ -524,6 +526,53 @@ void HomeWindow::on_sharedFiles_clicked()
     ui->labelOpen->setStyleSheet("background-color: rgb(186, 189, 182);");
     ui->sharedFiles->setStyleSheet("#sharedFiles {color: rgb(0, 0, 0); background-color: rgb(211, 215, 207);border: transparent;}");
     ui->labelShare->setStyleSheet("background-color: rgb(211, 215, 207);");
+
+    if(_client->getStatus()==false){
+        handleTheConnectionLoss();
+    }else{
+        bool ok;
+        QString text = QInputDialog::getText(this, tr("URL Documento"),
+                                             tr("Inserisci l'URL ricevuta via e-mail del documento:"), QLineEdit::Normal,
+                                             "", &ok);
+        if (ok && !text.isEmpty() && text.size()<=25){
+
+            //Get data from the urltextedit
+            QString uri = text;
+            QString user = _client->getUsername();
+            QByteArray ba_user = user.toLocal8Bit();
+            const char *c_user = ba_user.data();
+            //std::vector<QString> uriAndFilename = item->data(Qt::UserRole).value<std::vector<QString>>();
+            //QString uri = uriAndFilename.at(0);
+            //QString filename = uriAndFilename.at(1);
+            qDebug() << "Opening file with URI: " << uri;
+            //filename = QLatin1String(filename.toUtf8());
+            QByteArray ba_uri = uri.toLocal8Bit();
+            const char *c_uri = ba_uri.data();
+            std::cout << "url messo è :" << c_uri << std::endl;
+            //Serialize data
+            json j;
+            Jsonize::to_jsonUri(j, "OPENWITHURI_REQUEST", c_user, c_uri);
+            const std::string req = j.dump();
+
+            //update client data
+            _client->setUsername(user);
+            _client->setFileURI(uri);
+            //_client->setFilename(filename);
+
+            //Send data (header and body)
+            _client->sendRequestMsg(req);
+        }
+        else if (ok && !text.isEmpty() && text.size()>25) {
+            QMessageBox::critical(this,"Errore", "Inserire un URL minore di 25 caratteri!");
+            on_sharedFiles_clicked();
+        }
+        else if (ok && text.isEmpty()) {
+            QMessageBox::critical(this,"Errore", "Inserire l'URL!");
+            on_sharedFiles_clicked();
+        }
+        else
+            on_openFiles_clicked();
+    }
 }
 
 void HomeWindow::on_pushButton_clicked()
@@ -534,9 +583,8 @@ void HomeWindow::on_pushButton_clicked()
 }
 
 
-void HomeWindow::on_openUrlButton_clicked()
+/*void HomeWindow::on_openUrlButton_clicked()
 {
-    auto t_start1 = std::chrono::high_resolution_clock::now();
     if(_client->getStatus()==false) {
         handleTheConnectionLoss();
     } else {
@@ -566,10 +614,7 @@ void HomeWindow::on_openUrlButton_clicked()
         //Send data (header and body)
         _client->sendRequestMsg(req);
     }
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    std::cout << "BUTTON URI CLICK - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
-}
+}*/
 
 void HomeWindow::on_logoutButton_clicked()
 {

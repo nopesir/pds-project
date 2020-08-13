@@ -2340,6 +2340,7 @@ void EditorWindow::getUserOnline(myCollabColorsMap collabColorsMap) {
 }
 
 void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
+
     wchar_t letter;
     int index = firstIndex;
     QTextCursor c = ui->RealTextEdit->textCursor();
@@ -2410,6 +2411,7 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
 }
 
 void EditorWindow::showSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style) {
+    std::cout << "AHZZZZ" << std::endl;
     int pos = tuple.first;
     wchar_t c = tuple.second;
     QTextCharFormat format;

@@ -78,14 +78,14 @@ void StartWindow::setStatus(bool newStatus) {
 }
 
 void StartWindow::showPopupSuccess(QString result) {
-    //if(result == "LOGIN_SUCCESS") {
+    if(result == "LOGIN_SUCCESS") {
         HomeWindow *m = new HomeWindow(_client);
         this->close(); //this startWindow will be then created (new) when user press Logout button on HomeWindow
         m->show();
-    //} else if(result == "SIGNUP_SUCCESS") {
-    //    QMessageBox::information(this,"Complimenti", "La registrazione è avvenuta correttamente!");
-    //    ui->stackedWidget->setCurrentIndex(0);
-    //}
+    } else if(result == "SIGNUP_SUCCESS") {
+        QMessageBox::information(this,"Complimenti", "La registrazione è avvenuta correttamente!");
+        ui->stackedWidget->setCurrentIndex(0);
+    }
 }
 
 void StartWindow::showPopupFailure(QString result) {
@@ -228,4 +228,14 @@ void StartWindow::on_hideButton_clicked()
         ui->hideButton->setStyleSheet("background-color: rgb(255, 255, 255); border-image: url(:images/hide.png);");
         hidePass=true;
     }
+}
+
+void StartWindow::on_linePassword_returnPressed()
+{
+    on_loginButton_clicked();
+}
+
+void StartWindow::on_linePasswordForm_returnPressed()
+{
+    on_buttonReg_clicked();
 }

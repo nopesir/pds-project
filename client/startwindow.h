@@ -47,6 +47,10 @@ private slots:
     void on_buttonReg_clicked();
     void on_hideButton_clicked();
 
+    void on_linePassword_returnPressed();
+
+    void on_linePasswordForm_returnPressed();
+
 public slots:
     void setStatus(bool newStatus);
     void showPopupSuccess(QString result);

@@ -39,7 +39,7 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_openUrlButton_clicked();
+    //void on_openUrlButton_clicked();
 
     void on_logoutButton_clicked();
 
