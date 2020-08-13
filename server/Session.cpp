@@ -358,7 +358,7 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
         QSqlDatabase::removeDatabase("MyConnect3");
 
         //create file on local filesystem
-       boost::filesystem::ofstream(R"(..\Filesystem\)" + uri.toStdString() + ".txt");
+       boost::filesystem::ofstream(R"(Filesystem\)" + uri.toStdString() + ".txt");
 
         if (resp == dbService::NEWFILE_OK) {
             db_res = "NEWFILE_OK";

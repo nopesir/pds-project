@@ -18,6 +18,8 @@ Server::Server(boost::asio::io_context& io_context, const boost::asio::ip::tcp::
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "InfiniteRecursion"
+
+
 void Server::accept_connection()
 {
     std::cout << "Waiting for clients..."  << std::endl;
@@ -26,7 +28,7 @@ void Server::accept_connection()
             std::cout << "Error before handle_accept: " << ec.message() << std::endl;
             return; //TODOSharedEditor _se; Server never return. Maybe is better to change this behaviour
         }
-        std::make_shared<Session>(std::move(socket));
+        std::make_shared<Session>(std::move(socket))->session_start(++editor_counter);
         accept_connection(); //server socket continue accepting new connections
     });
 }
