@@ -5,6 +5,7 @@ qtHaveModule(printsupport): QT += printsupport
 TEMPLATE        = app
 TARGET          = textedit
 
+
 HEADERS         = \
     CRDT.h \
     MyQTextEdit.h \
