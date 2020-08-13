@@ -8,7 +8,7 @@
 
 #include <boost/asio/ip/tcp.hpp>
 #include <deque>
-
+#include<boost/filesystem.hpp>
 #include "SharedEditor.h"
 #include "Message.h"
 #include "jsonUtility.h"
