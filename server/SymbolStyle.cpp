@@ -2,7 +2,7 @@
 // Created by gheb on 31/07/20.
 //
 
-#include "SymbolStyle.h"1
+#include "SymbolStyle.h"
 
 
 SymbolStyle::SymbolStyle()
