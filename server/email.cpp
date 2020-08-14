@@ -19,7 +19,7 @@ bool email::sendEmail(const std::string& email, const std::string& uri) {
     if(curl) {
         //Source credentials
         curl_easy_setopt(curl, CURLOPT_USERNAME, "editort.noanswer@gmail.com");
-        curl_easy_setopt(curl, CURLOPT_PASSWORD, "password_0");
+        curl_easy_setopt(curl, CURLOPT_PASSWORD, "testpassword0_");
 
         //SMTP server address and port
         curl_easy_setopt(curl, CURLOPT_URL, "smtp://smtp.gmail.com:587");
