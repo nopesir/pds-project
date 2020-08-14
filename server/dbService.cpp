@@ -317,7 +317,7 @@ dbService::DB_RESPONSE dbService::tryOpenFile(const std::string& user, const std
 
     if(db.open()) {
         QSqlQuery query(QSqlDatabase::database("MyConnect2"));
-        query.prepare(QString("SELECT idfile, iduser FROM  permissions  WHERE idfile= :uri and iduser = :username and isConfirmed=true"));
+        query.prepare(QString("SELECT idfile, iduser FROM  permissions  WHERE idfile= :uri and iduser = :username and isConfirmed = 1"));
         query.bindValue(":username", username);
         query.bindValue(":uri", uri);
         if (query.exec()) {
