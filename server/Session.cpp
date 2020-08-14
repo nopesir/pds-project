@@ -296,7 +296,7 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
         edId = shared_from_this()->getId();
 
         if(resp == dbService::LOGOUT_OK) {
-            fileUtility::writeFile(R"(..\Filesystem\)" + uriJSON + ".txt", SharedEditor::getInstance().getMap().at(uriJSON));
+            fileUtility::writeFile(R"(../Filesystem/)" + uriJSON + ".txt", SharedEditor::getInstance().getMap().at(uriJSON));
             shared_from_this()->setSymbols(std::vector<Symbol>());
             db_res = "LOGOUTURI_OK";
         }
@@ -358,7 +358,7 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
         QSqlDatabase::removeDatabase("MyConnect3");
 
         //create file on local filesystem
-       boost::filesystem::ofstream(R"(..\Filesystem\)" + uri.toStdString() + ".txt");
+       boost::filesystem::ofstream(R"(../Filesystem/)" + uri.toStdString() + ".txt");
 
         if (resp == dbService::NEWFILE_OK) {
             db_res = "NEWFILE_OK";
