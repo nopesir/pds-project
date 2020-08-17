@@ -10,7 +10,7 @@
 
 #include <boost/asio/ip/tcp.hpp>
 #include "SharedEditor.h"
-
+using boost::asio::ip::tcp;
 class Server {
 
 private:

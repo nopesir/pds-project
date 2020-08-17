@@ -5,10 +5,14 @@
 #include <boost/asio.hpp>
 #include <iostream>
 #include <QtSql/QSqlDatabase>
-//#include "sqlite3.h"
+#include "sqlite3.h"
 #include "Session.h"
 #include "SharedEditor.h"
+#include "fileUtility.h"
+#include "email.h"
 
+using boost::asio::ip::tcp;
+using json = nlohmann::json;
 Session::Session(boost::asio::ip::tcp::socket socket)
         :_socket(std::move(socket)){}
 
@@ -292,7 +296,7 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
         edId = shared_from_this()->getId();
 
         if(resp == dbService::LOGOUT_OK) {
-            fileUtility::writeFile(R"(..\Filesystem\)" + uriJSON + ".txt", room::getInstance().getMap().at(uriJSON));
+            fileUtility::writeFile(R"(../Filesystem/)" + uriJSON + ".txt", SharedEditor::getInstance().getMap().at(uriJSON));
             shared_from_this()->setSymbols(std::vector<Symbol>());
             db_res = "LOGOUTURI_OK";
         }
@@ -354,14 +358,14 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
         QSqlDatabase::removeDatabase("MyConnect3");
 
         //create file on local filesystem
-        boost::filesystem::ofstream(R"(..\Filesystem\)" + uri.toStdString() + ".txt");
+       boost::filesystem::ofstream(R"(../Filesystem/)" + uri.toStdString() + ".txt");
 
         if (resp == dbService::NEWFILE_OK) {
             db_res = "NEWFILE_OK";
 
             //Update session data
             shared_from_this()->setCurrentFile(uri.toStdString());
-            SharedEditor::getInstance().addEntryInMap(shared_from_this()->getCurrentFile(), std::vector<symbol>());
+            SharedEditor::getInstance().addEntryInMap(shared_from_this()->getCurrentFile(), std::vector<Symbol>());
 
             //Serialize data
             json j;
@@ -680,7 +684,7 @@ std::string Session::handleRequests(const std::string& opJSON, const json& jdata
         return response;
 
     } else if (opJSON == "FONTSIZE_CHANGE_REQUEST") {
-        std::vector<std::pair<int, int> symbolsId;
+        std::vector<std::pair<int, int>> symbolsId;
         int fontSizeJSON;
         jsonUtility::from_json_fontsize_change(jdata_in, symbolsId, fontSizeJSON);
         int newIndex;

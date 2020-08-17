@@ -8,9 +8,11 @@
 
 #include <boost/asio/ip/tcp.hpp>
 #include <deque>
-
+#include<boost/filesystem.hpp>
 #include "SharedEditor.h"
 #include "Message.h"
+#include "jsonUtility.h"
+#include "dbService.h"
 
 class Session: public Client, public std::enable_shared_from_this<Session>{
 private:
@@ -19,7 +21,7 @@ private:
     std::deque<Message> write_msgs_;
     std::string fullBody;
 
-    //dbService dbService_;
+    dbService dbService_;
 
     void do_read_header();
     void do_read_body();
