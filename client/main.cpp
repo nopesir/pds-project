@@ -65,9 +65,9 @@ int main(int argc, char *argv[])
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
-    QCoreApplication::setOrganizationName("legoRT Project");
+    QCoreApplication::setOrganizationName("editoRT Project");
     QCoreApplication::setOrganizationDomain("https://github.com/nopesir/pds-project");
-    QCoreApplication::setApplicationName("legoRT");
+    QCoreApplication::setApplicationName("editoRT");
 
     //Launch the application
     QApplication a(argc, argv);
