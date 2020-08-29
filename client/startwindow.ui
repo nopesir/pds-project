@@ -189,7 +189,7 @@ border-image: url(:/images/hide.png);
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
@@ -256,7 +256,7 @@ color: rgb(255, 255, 255);</string>
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
@@ -279,7 +279,7 @@ background-color: rgb(255, 255, 255);</string>
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
