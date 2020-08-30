@@ -134,7 +134,12 @@ void StartWindow::on_loginButton_clicked()
 {
     if(_client->getStatus()==false){
         _client ->do_connect();
-        Sleep(1000);
+        #ifdef _WIN32
+            Sleep(1000);
+        #else
+            sleep(1);
+        #endif
+
         qDebug () << "IL SERVER é connesso?--> " <<_client->getStatus();
         if(_client->getStatus()==false){
             //secondo controllo se non sono riuscito a ricollegarmi al server
