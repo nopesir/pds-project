@@ -2,6 +2,8 @@ QT += widgets
 requires(qtConfig(filedialog))
 qtHaveModule(printsupport): QT += printsupport
 
+QT += network
+
 TEMPLATE        = app
 TARGET          = editoRT
 

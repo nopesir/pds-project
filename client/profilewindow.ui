@@ -47,7 +47,7 @@ background: white;
 }</string>
     </property>
     <property name="text">
-     <string>UserImage</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="userName">
