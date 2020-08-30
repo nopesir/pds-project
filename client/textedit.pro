@@ -45,3 +45,15 @@ build_all:!build_pass {
     CONFIG -= build_all
     CONFIG += release
 }
+
+#Boost library
+win32 {
+    QMAKE_CXXFLAGS += -DWIN32_LEAN_AND_MEAN
+    INCLUDEPATH += C:/Boost/include/boost-1_74
+    LIBS += -LC:/Boost/lib \
+            -lboost_serialization-mgw8-mt-x64-1_74 \
+            -lboost_filesystem-mgw8-mt-x64-1_74 \
+            -lboost_system-mgw8-mt-x64-1_74 \
+            -lboost_thread-mgw8-mt-x64-1_74 \
+            -lws2_32
+}
