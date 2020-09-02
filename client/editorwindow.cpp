@@ -621,6 +621,18 @@ void EditorWindow::on_RealTextEdit_selectionChanged() {
     QTextCursor c = ui->RealTextEdit->textCursor();
 
     if(!c.hasSelection()) {
+
+        //iterate on the actions of menu modifica and disabled cut and copy, because there isn't a selection
+        foreach (QAction *action, ui->menuModifica->actions()) {
+            if (!action->isSeparator() and !action->menu()) {
+                if(action->text() == "Taglia"){
+                    action->setEnabled(false);
+                }else if(action->text() == "Copia"){
+                    action->setEnabled(false);
+                }
+            }
+        }
+
         if(ui->RealTextEdit->toPlainText().length() == 0) { //there aren't chars
             setupInitialCondition();
         } else {
@@ -648,6 +660,17 @@ void EditorWindow::on_RealTextEdit_selectionChanged() {
         }
         AlignButtonStyleHandler();
         refreshFormatButtons();
+    }else{
+        //iterate on the actions of menu modifica and enabled cut and copy, because there is a selection
+        foreach (QAction *action, ui->menuModifica->actions()) {
+            if (!action->isSeparator() and !action->menu()) {
+                if(action->text() == "Taglia"){
+                    action->setEnabled(true);
+                }else if(action->text() == "Copia"){
+                    action->setEnabled(true);
+                }
+            }
+        }
     }
 }
 
@@ -816,7 +839,7 @@ void EditorWindow::on_RealTextEdit_customContextMenuRequested(const QPoint &pos)
     italic->setStatusTip(tr("Rende corsivo il testo"));
     underl->setStatusTip(tr("Rende sottolineato il testo"));
 
-    //disable some action if cursor hasn't selection
+    //disable some action (in the menu opened with right click) if cursor hasn't selection
     if(!cursor.hasSelection()){
         cut->setEnabled(false);
         copy->setEnabled(false);
@@ -2301,8 +2324,8 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
         if(isOnline) {
             color[1]='f';
             color[2]='f';
-            gradient.setColorAt(0,QColor(color));
-            gradient.setColorAt(1,Qt::transparent);
+            gradient.setColorAt(1,QColor(color));
+            //gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
 
             itemOn->setBackground(brush);
