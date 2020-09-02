@@ -89,7 +89,7 @@ void StartWindow::showPopupSuccess(QString result) {
 
 void StartWindow::showPopupFailure(QString result) {
     if(result == "LOGIN_FAILURE") {
-       QMessageBox::critical(this,"Errore", "Il login non è stato completato correttamente! Riprova!");                                 //Stay in the same window
+       QMessageBox::critical(this,"Errore", "Username e/o password non corretti! Riprova!");                                 //Stay in the same window
     } else if(result == "SIGNUP_FAILURE") {
         QMessageBox::critical(this,"Errore", "La registrazione non è avvenuta correttamente! Riprova!");                                //Stay in the same window
     } else {
@@ -178,7 +178,7 @@ void StartWindow::on_buttonReg_clicked()
                                                     "Riprova più tardi");
     } else {
         if (ui->lineUserForm->text().isEmpty()) {
-            QMessageBox::information(this,"Attenzione", "Inserire una password di almeno sei caratteri!");
+            QMessageBox::information(this,"Attenzione", "Inserire uno username!");
         } else {
 
             if (ui->linePasswordForm->text().length() < 6) {
