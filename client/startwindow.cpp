@@ -23,7 +23,6 @@ StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWind
     ui->setupUi(this);
     //ui->version->setText(qstr);
     ui->loginPage->setFocus();
-    ui->labelError->hide();
 
     setStatus(_client->getStatus());
 
@@ -179,22 +178,19 @@ void StartWindow::on_buttonReg_clicked()
                                                     "Riprova più tardi");
     } else {
         if (ui->lineUserForm->text().isEmpty()) {
-            ui->labelError->show();
+            QMessageBox::information(this,"Attenzione", "Inserire una password di almeno sei caratteri!");
         } else {
-            ui->labelError->hide();
 
             if (ui->linePasswordForm->text().length() < 6) {
-                ui->labelError->show();
+                QMessageBox::information(this,"Attenzione", "Inserire una password di almeno sei caratteri!");
             } else {
-                ui->labelError->hide();
 
                 QRegularExpression mailREX("^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$");
                 regMat = mailREX.match(ui->lineMailForm->text()).hasMatch();
 
                 if (!regMat) {
-                    ui->labelError->show();
+                    QMessageBox::information(this,"Attenzione", "L' email inserita non è valida!");
                 } else {
-                    ui->labelError->hide();
 
                     //Get data from the form
                     QString user = ui->lineUserForm->text();
