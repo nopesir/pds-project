@@ -189,7 +189,7 @@ border-image: url(:/images/hide.png);
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
@@ -256,7 +256,7 @@ color: rgb(255, 255, 255);</string>
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
@@ -279,7 +279,7 @@ background-color: rgb(255, 255, 255);</string>
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
@@ -334,7 +334,7 @@ background-color: rgb(255, 255, 255);</string>
     <property name="font">
      <font>
       <family>Inconsolata</family>
-      <pointsize>27</pointsize>
+      <pointsize>20</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -344,7 +344,7 @@ background-color: rgb(255, 255, 255);</string>
 color: rgb(238, 238, 236);</string>
     </property>
     <property name="text">
-     <string>legoRT</string>
+     <string>editoRT</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

@@ -70,7 +70,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     LoadUserSetting();
     setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
-    this->setWindowTitle("legoRT editor - " + docName);
+    this->setWindowTitle("editoRT - " + docName);
 }
 
 
@@ -2226,7 +2226,7 @@ void EditorWindow::showPopupSuccess(QString result, std::string filename) {
         SetDynamicDocNameLabel();
         _client->setFilename(QString::fromStdString(filename)); //Assign newText to the variable
 
-        this->setWindowTitle("legoRT - " + QString::fromStdString(filename));
+        this->setWindowTitle("editoRT - " + QString::fromStdString(filename));
         ui->RealTextEdit->setFocus();
     } else if(result == "INVITE_URI_SUCCESS") {
         QMessageBox::warning(this,"Invito effettuato con successo", "Il tuo invito a collaborare è stato correttamente eseguito.");
