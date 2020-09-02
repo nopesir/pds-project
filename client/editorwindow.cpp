@@ -290,7 +290,7 @@ void EditorWindow::on_toggle_triggered() {
     ui->dockWidget->setHidden(!ui->dockWidget->isHidden());
 }
 
-
+/*
 void EditorWindow::on_strumentiButton_clicked(){
     QMenu menuStrumenti(this);
 
@@ -312,7 +312,7 @@ void EditorWindow::on_strumentiButton_clicked(){
     //add action to menu
     menuStrumenti.addAction(option);
 }
-
+*/
 void EditorWindow::on_aboutButton_clicked(){
     QMenu menuAbout(this);
 

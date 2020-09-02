@@ -149,207 +149,6 @@
               <number>0</number>
              </property>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <property name="spacing">
-                <number>1</number>
-               </property>
-               <item>
-                <widget class="QPushButton" name="buttonBold">
-                 <property name="minimumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Calibri</family>
-                   <pointsize>23</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                   <underline>false</underline>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">#buttonBold {
-	border-radius: 4px;
-	image: url(:/images/win/textbold.png);
-}
-
-#buttonBold:hover {
-	background-color: #BDC3C7;
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="textedit.qrc">
-                   <normaloff>:/images/win/textbold.png</normaloff>:/images/win/textbold.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>22</width>
-                   <height>22</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="buttonItalic">
-                 <property name="minimumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Calibri</family>
-                   <pointsize>27</pointsize>
-                   <weight>75</weight>
-                   <italic>true</italic>
-                   <bold>true</bold>
-                   <underline>false</underline>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">#buttonItalic {
-	border-radius: 4px;
-	image: url(:/images/win/textitalic.png);
-}
-
-#buttonItalic:hover {
-	background-color: #BDC3C7;
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="textedit.qrc">
-                   <normaloff>:/images/win/textitalic.png</normaloff>:/images/win/textitalic.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>22</width>
-                   <height>22</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="buttonUnderline">
-                 <property name="minimumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Calibri</family>
-                   <pointsize>18</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                   <underline>true</underline>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">#buttonUnderline {
-	border-radius: 4px;
-	image: url(:/images/win/textunder.png);
-}
-
-#buttonUnderline:hover {
-	background-color: #BDC3C7;
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="textedit.qrc">
-                   <normaloff>:/images/win/textunder.png</normaloff>:/images/win/textunder.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>22</width>
-                   <height>22</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="Line" name="line_4">
-               <property name="minimumSize">
-                <size>
-                 <width>1</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>1</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border:none;
-background-color: lightgrey;
-
-</string>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_9">
                <property name="spacing">
                 <number>3</number>
@@ -616,6 +415,261 @@ margin-top: 3px;
                    <string>96</string>
                   </property>
                  </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="Line" name="line_4">
+               <property name="minimumSize">
+                <size>
+                 <width>1</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>1</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">border:none;
+background-color: lightgrey;
+
+</string>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="buttonBold">
+                 <property name="minimumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Calibri</family>
+                   <pointsize>23</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                   <underline>false</underline>
+                   <strikeout>false</strikeout>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#buttonBold {
+	border-radius: 4px;
+	image: url(:/images/win/textbold.png);
+}
+
+#buttonBold:hover {
+	background-color: #BDC3C7;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="textedit.qrc">
+                   <normaloff>:/images/win/textbold.png</normaloff>:/images/win/textbold.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonItalic">
+                 <property name="minimumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Calibri</family>
+                   <pointsize>27</pointsize>
+                   <weight>75</weight>
+                   <italic>true</italic>
+                   <bold>true</bold>
+                   <underline>false</underline>
+                   <strikeout>false</strikeout>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#buttonItalic {
+	border-radius: 4px;
+	image: url(:/images/win/textitalic.png);
+}
+
+#buttonItalic:hover {
+	background-color: #BDC3C7;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="textedit.qrc">
+                   <normaloff>:/images/win/textitalic.png</normaloff>:/images/win/textitalic.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonUnderline">
+                 <property name="minimumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Calibri</family>
+                   <pointsize>18</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                   <underline>true</underline>
+                   <strikeout>false</strikeout>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#buttonUnderline {
+	border-radius: 4px;
+	image: url(:/images/win/textunder.png);
+}
+
+#buttonUnderline:hover {
+	background-color: #BDC3C7;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="textedit.qrc">
+                   <normaloff>:/images/win/textunder.png</normaloff>:/images/win/textunder.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonColor">
+                 <property name="minimumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>34</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>10</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                   <underline>false</underline>
+                   <strikeout>false</strikeout>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">#buttonColor{
+	border-radius: 4px;
+}
+
+#buttonColor:hover{
+	background-color: #BDC3C7;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="textedit.qrc">
+                   <normaloff>:/images/color30.png</normaloff>:/images/color30.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -1093,60 +1147,6 @@ background-color: lightgrey;
                <property name="leftMargin">
                 <number>0</number>
                </property>
-               <item>
-                <widget class="QPushButton" name="buttonColor">
-                 <property name="minimumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>34</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>10</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                   <underline>false</underline>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">#buttonColor{
-	border-radius: 4px;
-}
-
-#buttonColor:hover{
-	background-color: #BDC3C7;
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>:/image/Editor/highlighter.png</normaloff>:/image/Editor/highlighter.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>30</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
               </layout>
              </item>
              <item>
@@ -1758,15 +1758,9 @@ QToolTip {
      <string>Modifica</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuStrumenti">
-    <property name="title">
-     <string>Strumenti</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuVisualizza"/>
    <addaction name="menuModifica"/>
-   <addaction name="menuStrumenti"/>
    <addaction name="menuAiuto"/>
   </widget>
   <action name="actionInvia_tramite_URI">

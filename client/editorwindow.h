@@ -42,7 +42,7 @@ private slots:
 
     //TopMenuBar
     void setup_menu();
-    void on_strumentiButton_clicked();
+    //void on_strumentiButton_clicked();
     void on_aboutButton_clicked();
 
     //CollaboratorBar
