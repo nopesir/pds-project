@@ -3,6 +3,10 @@
 
 #include <QDialog>
 #include <QtGui>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QUrl>
 #include "clientproc.h"
 
 namespace Ui {
@@ -22,8 +26,10 @@ signals:
 
 private slots:
     void on_closeButton_clicked();
+    void replyFinished(QNetworkReply *reply);
 
 private:
+    void getImage(QString url);
     Ui::profilewindow *ui;
     QPoint oldPos;
     ClientProc *_client;

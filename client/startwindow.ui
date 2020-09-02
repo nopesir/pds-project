@@ -189,7 +189,7 @@ border-image: url(:/images/hide.png);
        </rect>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
@@ -255,6 +255,9 @@ color: rgb(255, 255, 255);</string>
         <height>51</height>
        </rect>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
@@ -275,6 +278,9 @@ background-color: rgb(255, 255, 255);</string>
         <height>51</height>
        </rect>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">selection-background-color: rgb(164, 0, 0);
 background-color: rgb(255, 255, 255);</string>
@@ -284,34 +290,6 @@ background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="placeholderText">
        <string> Password</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelError">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>210</y>
-        <width>201</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(193, 125, 17);</string>
-      </property>
-      <property name="text">
-       <string>Campi invalidi! Riprova.</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::AutoText</enum>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -328,7 +306,7 @@ background-color: rgb(255, 255, 255);</string>
     <property name="font">
      <font>
       <family>Inconsolata</family>
-      <pointsize>27</pointsize>
+      <pointsize>20</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -338,7 +316,7 @@ background-color: rgb(255, 255, 255);</string>
 color: rgb(238, 238, 236);</string>
     </property>
     <property name="text">
-     <string>legoRT</string>
+     <string>editoRT</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

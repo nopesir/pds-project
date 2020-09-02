@@ -51,5 +51,6 @@
         <file>images/doc-share.png</file>
         <file>images/logout.png</file>
         <file>images/user.png</file>
+        <file>images/color30.png</file>
     </qresource>
 </RCC>

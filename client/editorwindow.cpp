@@ -70,7 +70,7 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     LoadUserSetting();
     setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
-    this->setWindowTitle("legoRT editor - " + docName);
+    this->setWindowTitle("editoRT - " + docName);
 }
 
 
@@ -290,7 +290,7 @@ void EditorWindow::on_toggle_triggered() {
     ui->dockWidget->setHidden(!ui->dockWidget->isHidden());
 }
 
-
+/*
 void EditorWindow::on_strumentiButton_clicked(){
     QMenu menuStrumenti(this);
 
@@ -312,7 +312,7 @@ void EditorWindow::on_strumentiButton_clicked(){
     //add action to menu
     menuStrumenti.addAction(option);
 }
-
+*/
 void EditorWindow::on_aboutButton_clicked(){
     QMenu menuAbout(this);
 
@@ -621,6 +621,18 @@ void EditorWindow::on_RealTextEdit_selectionChanged() {
     QTextCursor c = ui->RealTextEdit->textCursor();
 
     if(!c.hasSelection()) {
+
+        //iterate on the actions of menu modifica and disabled cut and copy, because there isn't a selection
+        foreach (QAction *action, ui->menuModifica->actions()) {
+            if (!action->isSeparator() and !action->menu()) {
+                if(action->text() == "Taglia"){
+                    action->setEnabled(false);
+                }else if(action->text() == "Copia"){
+                    action->setEnabled(false);
+                }
+            }
+        }
+
         if(ui->RealTextEdit->toPlainText().length() == 0) { //there aren't chars
             setupInitialCondition();
         } else {
@@ -648,6 +660,17 @@ void EditorWindow::on_RealTextEdit_selectionChanged() {
         }
         AlignButtonStyleHandler();
         refreshFormatButtons();
+    }else{
+        //iterate on the actions of menu modifica and enabled cut and copy, because there is a selection
+        foreach (QAction *action, ui->menuModifica->actions()) {
+            if (!action->isSeparator() and !action->menu()) {
+                if(action->text() == "Taglia"){
+                    action->setEnabled(true);
+                }else if(action->text() == "Copia"){
+                    action->setEnabled(true);
+                }
+            }
+        }
     }
 }
 
@@ -816,7 +839,7 @@ void EditorWindow::on_RealTextEdit_customContextMenuRequested(const QPoint &pos)
     italic->setStatusTip(tr("Rende corsivo il testo"));
     underl->setStatusTip(tr("Rende sottolineato il testo"));
 
-    //disable some action if cursor hasn't selection
+    //disable some action (in the menu opened with right click) if cursor hasn't selection
     if(!cursor.hasSelection()){
         cut->setEnabled(false);
         copy->setEnabled(false);
@@ -2226,7 +2249,7 @@ void EditorWindow::showPopupSuccess(QString result, std::string filename) {
         SetDynamicDocNameLabel();
         _client->setFilename(QString::fromStdString(filename)); //Assign newText to the variable
 
-        this->setWindowTitle("legoRT - " + QString::fromStdString(filename));
+        this->setWindowTitle("editoRT - " + QString::fromStdString(filename));
         ui->RealTextEdit->setFocus();
     } else if(result == "INVITE_URI_SUCCESS") {
         QMessageBox::warning(this,"Invito effettuato con successo", "Il tuo invito a collaborare è stato correttamente eseguito.");
@@ -2301,8 +2324,8 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
         if(isOnline) {
             color[1]='f';
             color[2]='f';
-            gradient.setColorAt(0,QColor(color));
-            gradient.setColorAt(1,Qt::transparent);
+            gradient.setColorAt(1,QColor(color));
+            //gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
 
             itemOn->setBackground(brush);

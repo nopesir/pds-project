@@ -47,7 +47,7 @@ background: white;
 }</string>
     </property>
     <property name="text">
-     <string>UserImage</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="userName">
@@ -145,12 +145,12 @@ background: white;
     <rect>
      <x>292</x>
      <y>4</y>
-     <width>32</width>
+     <width>29</width>
      <height>22</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(164, 0, 0);</string>
+    <string notr="true">/*background-color: rgb(164, 0, 0);*/</string>
    </property>
    <property name="text">
     <string>X</string>
@@ -171,7 +171,7 @@ background: white;
     </font>
    </property>
    <property name="text">
-    <string>Profile</string>
+    <string>Profilo</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

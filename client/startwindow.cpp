@@ -23,7 +23,6 @@ StartWindow::StartWindow(QWidget *parent): QMainWindow(parent, Qt::FramelessWind
     ui->setupUi(this);
     //ui->version->setText(qstr);
     ui->loginPage->setFocus();
-    ui->labelError->hide();
 
     setStatus(_client->getStatus());
 
@@ -90,7 +89,7 @@ void StartWindow::showPopupSuccess(QString result) {
 
 void StartWindow::showPopupFailure(QString result) {
     if(result == "LOGIN_FAILURE") {
-       QMessageBox::critical(this,"Errore", "Il login non è stato completato correttamente! Riprova!");                                 //Stay in the same window
+       QMessageBox::critical(this,"Errore", "Username e/o password non corretti! Riprova!");                                 //Stay in the same window
     } else if(result == "SIGNUP_FAILURE") {
         QMessageBox::critical(this,"Errore", "La registrazione non è avvenuta correttamente! Riprova!");                                //Stay in the same window
     } else {
@@ -134,7 +133,12 @@ void StartWindow::on_loginButton_clicked()
 {
     if(_client->getStatus()==false){
         _client ->do_connect();
-        sleep(1);
+        #ifdef _WIN32
+            Sleep(1000);
+        #else
+            sleep(1);
+        #endif
+
         qDebug () << "IL SERVER é connesso?--> " <<_client->getStatus();
         if(_client->getStatus()==false){
             //secondo controllo se non sono riuscito a ricollegarmi al server
@@ -174,22 +178,19 @@ void StartWindow::on_buttonReg_clicked()
                                                     "Riprova più tardi");
     } else {
         if (ui->lineUserForm->text().isEmpty()) {
-            ui->labelError->show();
+            QMessageBox::information(this,"Attenzione", "Inserire uno username!");
         } else {
-            ui->labelError->hide();
 
             if (ui->linePasswordForm->text().length() < 6) {
-                ui->labelError->show();
+                QMessageBox::information(this,"Attenzione", "Inserire una password di almeno sei caratteri!");
             } else {
-                ui->labelError->hide();
 
                 QRegularExpression mailREX("^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$");
                 regMat = mailREX.match(ui->lineMailForm->text()).hasMatch();
 
                 if (!regMat) {
-                    ui->labelError->show();
+                    QMessageBox::information(this,"Attenzione", "L' email inserita non è valida!");
                 } else {
-                    ui->labelError->hide();
 
                     //Get data from the form
                     QString user = ui->lineUserForm->text();
