@@ -5,6 +5,7 @@
 #include "Message.h"
 
 #include <cstring>
+#include <iostream>
 
 Message::Message() : body_length_(0) {
 }
@@ -33,7 +34,7 @@ std::size_t Message::body_length() const {
     return body_length_;
 }
 
-void Message::body_length(std::size_t new_length) {
+void Message::set_body_length(std::size_t new_length) {
     body_length_ = new_length;
 }
 
@@ -41,7 +42,7 @@ void Message::decode_header() {
     char header[header_length + 2] = "";
     std::strncat(header, data_+1, header_length);
     body_length_ = std::atoi(header);
-    this->setLastChunk(*data_);
+    this->set_last_chunk(*data_);
 }
 
 void Message::encode_header() {
@@ -50,25 +51,24 @@ void Message::encode_header() {
     std::memcpy(data_+1, header, header_length);
 }
 
-char& Message::isThisLastChunk() {
+char& Message::is_last_chunk() {
     return isLastChunk;
 }
 
-void Message::setLastChunk(char val) {
+void Message::set_last_chunk(char val) {
     this->isLastChunk = val;
 }
 
-Message Message::constructMsg(const std::string& chunkResponse, char isLastChunk) {
+Message Message::build_msg(const std::string& chunk, char is_last) {
     //Send data (header and body)
     Message msg;
-    msg.setLastChunk(isLastChunk);
-    msg.body_length(chunkResponse.size());
-    std::memcpy(msg.body()+1, chunkResponse.data(), msg.body_length());
-    //perchè lo chiama di nuovo?
-    msg.body_length(chunkResponse.size());
+    msg.set_last_chunk(is_last);
+    msg.set_body_length(chunk.size());
+    std::memcpy(msg.body()+1, chunk.data(), msg.body_length());
+    msg.set_body_length(chunk.size());
 
     msg.body()[msg.body_length()+1] = '\0';
     msg.encode_header();
-    std::memcpy(msg.data(), &msg.isThisLastChunk(), 1);
+    std::memcpy(msg.data(), &msg.is_last_chunk(), 1);
     return msg;
 }

@@ -11,7 +11,7 @@
 using json = nlohmann::json;
 
 void fileUtility::writeFile(const std::string& filename, const std::vector<Symbol>& symbols) {
-    json j = jsonUtility::fromSymToJson(symbols);
+    json j = jsonUtility::from_syms_to_jsons(symbols);
 
     // Write json string on file
     std::ofstream outputFile(filename);
@@ -43,8 +43,8 @@ std::vector<Symbol> fileUtility::readFile(const std::string& filepath) {
     /* Construct symbols vector */
     json jdata_in = json::parse(str);
     std::vector<json> jsonSymbols;
-    jsonUtility::from_json_storedSymbols(jdata_in, jsonSymbols);
-    symbols = jsonUtility::fromJsonToSym(jsonSymbols);
+    jsonUtility::from_json_stored_to_syms(jdata_in, jsonSymbols);
+    symbols = jsonUtility::from_jsons_to_syms(jsonSymbols);
     return symbols;
 }
 

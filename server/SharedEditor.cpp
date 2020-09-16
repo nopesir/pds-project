@@ -4,119 +4,111 @@
 
 #include <iostream>
 #include "SharedEditor.h"
-#include "SymbolStyle.h"
+#include "SymStyle.h"
 #include "fileUtility.h"
 
 
-void SharedEditor::join(const std::shared_ptr<Client>& participant) {
-    _clients.insert(participant);
-    std::cout << "participant #" << participant->getId() << " joined the room" << std::endl;
+void SharedEditor::join(const std::shared_ptr<Client>& client) {
+    clients.insert(client);
+    std::cout << "client #" << client->get_id() << " joined the room" << std::endl;
 }
 
-void SharedEditor::leave(const std::shared_ptr<Client>& participant) {
-    _clients.erase(participant);
-    std::cout << "participant leaved the room" << std::endl;
+void SharedEditor::leave(const std::shared_ptr<Client>& client) {
+    clients.erase(client);
+    std::cout << "client leaved the room" << std::endl;
 }
 
-void SharedEditor::deliver(const Message &msg) {
-    recent_msgs_.push_back(msg);
-    while (recent_msgs_.size() > max_recent_msgs)
-        recent_msgs_.pop_front();
+void SharedEditor::broadcast_deliver(const Message &msg) {
+    recent_msgs.push_back(msg);
+    while (recent_msgs.size() > max_recent_msgs)
+        recent_msgs.pop_front();
 
-    for (const auto& p: _clients)
+    for (const auto& p: clients)
         p->deliver(msg);
 }
 
-void SharedEditor::deliverToAll(const Message &msg, const int& edId, const std::string& curFile, bool includeThisEditor) {
-    recent_msgs_.push_back(msg);
-    while (recent_msgs_.size() > max_recent_msgs)
-        recent_msgs_.pop_front();
+void SharedEditor::deliver_to_all(const Message &msg, const int& ed_id, const std::string& curr_file, bool include_this) {
+    recent_msgs.push_back(msg);
+    while (recent_msgs.size() > max_recent_msgs)
+        recent_msgs.pop_front();
 
-    if(!includeThisEditor) {
-        for (const auto& p: _clients) {
-            if (p->getId() != edId && p->getCurrentFile() == curFile) //don't send the message to the same client and don't send to clients having other file opened
+    if(!include_this) {
+        for (const auto& p: clients) {
+            if (p->get_id() != ed_id && p->get_curr_file() == curr_file) //don't send the message to the same client and don't send to clients having other file opened
                 p->deliver(msg);
         }
     } else {
-        for (const auto& p: _clients) {
-            if (p->getCurrentFile() == curFile) { //don't send the message to the clients having other file opened
+        for (const auto& p: clients) {
+            if (p->get_curr_file() == curr_file) { //don't send the message to the clients having other file opened
                 p->deliver(msg);
             }
         }
     }
 }
 
-std::vector<Symbol> SharedEditor::getSymbolMap(const std::string& filename, bool canReadFromFile) {
-    if(se_map.empty()) //server has nothing in RAM
+std::vector<Symbol> SharedEditor::get_file(const std::string& filename, bool get_from_disk) {
+    if(file_map.empty()) //server has nothing in RAM
         return std::vector<Symbol>();
-    if(se_map.at(filename).empty()) {//server has not in RAM the vector symbols for this filename
-        return canReadFromFile ? fileUtility::readFile(R"(..\Filesystem\)" + filename + ".txt") : std::vector<Symbol>();
+    if(file_map.at(filename).empty()) {//server has not in RAM the vector symbols for this filename
+        return get_from_disk ? fileUtility::readFile(R"(..\Filesystem\)" + filename + ".txt") : std::vector<Symbol>();
     }
     else //server has already in RAM this vector symbols
-        return se_map.at(filename);
+        return file_map.at(filename);
 }
 
-std::map<std::string, std::vector<Symbol>> SharedEditor::getMap() {
-    return this->se_map;
+std::map<std::string, std::vector<Symbol>> SharedEditor::get_map() {
+    return this->file_map;
 }
 
-void SharedEditor::updateMap(const std::string &key, const std::vector<Symbol>& symbols) {
-    this->se_map[key] = symbols; //overwrite symbols in that key(uri)
+void SharedEditor::update_file(const std::string &file, const std::vector<Symbol>& symbols) {
+    this->file_map[file] = symbols; //overwrite symbols in that file(uri)
 }
 
-void SharedEditor::insertInSymbolMap(const std::string &key, int index, const Symbol& s) {
-    this->se_map[key].insert(this->se_map[key].begin() + index, s);
+void SharedEditor::insert_in_file(const std::string &file, int index, const Symbol& s) {
+    this->file_map[file].insert(this->file_map[file].begin() + index, s);
 }
 
-void SharedEditor::eraseInSymbolMap(const std::string &key, int index) {
-    this->se_map[key].erase(this->se_map[key].begin() + index);
+void SharedEditor::erase_from_file(const std::string &file, int index) {
+    this->file_map[file].erase(this->file_map[file].begin() + index);
 }
 
-void SharedEditor::formatInSymbolMap(const std::string &key, int index, int format) {
-    SymbolStyle style = this->se_map[key].at(index).getStyle();
+void SharedEditor::format_in_file(const std::string &file, int index, int format) {
+    SymStyle style = this->file_map[file].at(index).get_style();
     if(format == Client::MAKE_BOLD)
-        style.setBold(true);
+        style.set_bold(true);
     else if(format == Client::MAKE_ITALIC)
-        style.setItalic(true);
+        style.set_italic(true);
     else if(format == Client::MAKE_UNDERLINE)
-        style.setUnderlined(true);
+        style.set_underlined(true);
     else if(format == Client::UNMAKE_BOLD)
-        style.setBold(false);
+        style.set_bold(false);
     else if(format == Client::UNMAKE_ITALIC)
-        style.setItalic(false);
+        style.set_italic(false);
     else if(format == Client::UNMAKE_UNDERLINE)
-        style.setUnderlined(false);
-    this->se_map[key].at(index).setStyle(style);
+        style.set_underlined(false);
+    this->file_map[file].at(index).set_style(style);
 }
 
-void SharedEditor::changeFontSizeInSymbolMap(const std::string &key, int index, int fontSize) {
-    SymbolStyle style = this->se_map[key].at(index).getStyle();
-    style.setFontSize(fontSize);
-    this->se_map[key].at(index).setStyle(style);
+void SharedEditor::ch_font_sz_in_file(const std::string &file, int index, int font_sz) {
+    SymStyle style = this->file_map[file].at(index).get_style();
+    style.set_font_sz(font_sz);
+    this->file_map[file].at(index).set_style(style);
 }
 
-void SharedEditor::changeFontFamilyInSymbolMap(const std::string &key, int index, const std::string& fontFamily) {
-    SymbolStyle style = this->se_map[key].at(index).getStyle();
-    style.setFontFamily(fontFamily);
-    this->se_map[key].at(index).setStyle(style);
+void SharedEditor::ch_font_fam_in_file(const std::string &file, int index, const std::string& family) {
+    SymStyle style = this->file_map[file].at(index).get_style();
+    style.set_font_family(family);
+    this->file_map[file].at(index).set_style(style);
 }
 
-void SharedEditor::changeAlignmentInSymbolMap(const std::string &key, int index, int alignment) {
-    SymbolStyle style = this->se_map[key].at(index).getStyle();
-    style.setAlignment(alignment);
-    this->se_map[key].at(index).setStyle(style);
+void SharedEditor::ch_alignment_in_file(const std::string &key, int index, int alignment) {
+    SymStyle style = this->file_map[key].at(index).get_style();
+    style.set_alignment(alignment);
+    this->file_map[key].at(index).set_style(style);
 }
 
-void SharedEditor::updateSymbolsMap(const std::string &key, int index, const std::vector<Symbol>& symbols) {
-    this->se_map[key].insert(this->se_map[key].begin() + index, symbols.begin(), symbols.end());
-}
-
-void SharedEditor::setMap(const std::map<std::string, std::vector<Symbol>>& m) {
-    this->se_map = m;
-}
-
-void SharedEditor::addEntryInMap(const std::string &key, const std::vector<Symbol> &symbols) {
-    this->se_map.emplace(key, symbols);
+void SharedEditor::add_file(const std::string &file, const std::vector<Symbol> &symbols) {
+    this->file_map.emplace(file, symbols);
 }
 
 

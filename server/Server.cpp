@@ -12,24 +12,24 @@
 using boost::asio::ip::tcp;
 
 Server::Server(boost::asio::io_context& io_context, const boost::asio::ip::tcp::endpoint& endpoint)
-        : acceptor(io_context, endpoint), editor_counter(0) {
-    accept_connection();
+        : acceptor(io_context, endpoint), cnt(0) {
+    accept();
 }
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "InfiniteRecursion"
 
 
-void Server::accept_connection()
+void Server::accept()
 {
     std::cout << "Waiting for clients..."  << std::endl;
     acceptor.async_accept([this](boost::system::error_code ec, boost::asio::ip::tcp::socket socket) {
         if (ec) {
             std::cout << "Error before handle_accept: " << ec.message() << std::endl;
-            return; //TODOSharedEditor _se; Server never return. Maybe is better to change this behaviour
+            return;
         }
-        std::make_shared<Session>(std::move(socket))->session_start(++editor_counter);
-        accept_connection(); //server socket continue accepting new connections
+        std::make_shared<Session>(std::move(socket))->start_session(++cnt);
+        accept();
     });
 }
 #pragma clang diagnostic pop

@@ -26,34 +26,33 @@
 class SharedEditor {
 private:
     SharedEditor(){}
-    std::set<std::shared_ptr<Client>> _clients;
+    std::set<std::shared_ptr<Client>> clients;
     enum { max_recent_msgs = 100 };
-    std::deque<Message> recent_msgs_;
-    std::map<std::string, std::vector<Symbol>> se_map;
-    /*all variables for handling messages and files*/
+    std::deque<Message> recent_msgs;
+    std::map<std::string, std::vector<Symbol>> file_map;
 public:
     static SharedEditor& getInstance() {
         static SharedEditor instance;
         return instance;
     }
+    /*Singleton behaviour*/
     SharedEditor(SharedEditor const&) = delete;
     void operator=(SharedEditor const&) = delete;
-    void join(const std::shared_ptr<Client>& participant);
-    void leave(const std::shared_ptr<Client>& participant);
-    void deliver(const Message& msg); //deliver to the clients
-    void deliverToAll(const Message& msg, const int& edId, const std::string& curFile, bool includeThisEditor=false); //deliver to the clients except the client with id 'edId'
-    std::map<std::string, std::vector<Symbol>> getMap();
-    void updateMap(const std::string& key, const std::vector<Symbol>& symbols);
-    void addEntryInMap(const std::string& key, const std::vector<Symbol>& symbols);
-    void insertInSymbolMap(const std::string &key, int index, const Symbol& s);
-    void eraseInSymbolMap(const std::string &key, int index);
-    void formatInSymbolMap(const std::string &key, int index, int format);
-    void changeFontSizeInSymbolMap(const std::string &key, int index, int fontSize);
-    void changeFontFamilyInSymbolMap(const std::string &key, int index, const std::string& fontFamily);
-    void changeAlignmentInSymbolMap(const std::string &key, int index, int alignment);
-    void updateSymbolsMap(const std::string &key, int index, const std::vector<Symbol>& symbols);
-    void setMap(const std::map<std::string, std::vector<Symbol>>& m);
-    std::vector<Symbol> getSymbolMap(const std::string& filename, bool canReadFromFile);
+
+    void join(const std::shared_ptr<Client>& client);
+    void leave(const std::shared_ptr<Client>& client);
+    void broadcast_deliver(const Message& msg); //deliver to ALL the clients (editor functions)
+    void deliver_to_all(const Message& msg, const int& ed_id, const std::string& curr_file, bool include_this= false); //deliver to the clients except the client with id 'ed_id'
+    std::map<std::string, std::vector<Symbol>> get_map();
+    void update_file(const std::string& file, const std::vector<Symbol>& symbols);
+    void add_file(const std::string& file, const std::vector<Symbol>& symbols);
+    void insert_in_file(const std::string &file, int index, const Symbol& s);
+    void erase_from_file(const std::string &file, int index);
+    void format_in_file(const std::string &file, int index, int format);
+    void ch_font_sz_in_file(const std::string &file, int index, int font_sz);
+    void ch_font_fam_in_file(const std::string &file, int index, const std::string& family);
+    void ch_alignment_in_file(const std::string &key, int index, int alignment);
+    std::vector<Symbol> get_file(const std::string& filename, bool get_from_disk);
 };
 
 

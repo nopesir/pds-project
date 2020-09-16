@@ -6,40 +6,40 @@
 
 
 Symbol::Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos)
-        : _letter(character), _id(std::move(id)), _pos(std::move(pos)), _style() {}
+        : ch(character), id(std::move(id)), pos(std::move(pos)), style() {}
 
-Symbol::Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos, SymbolStyle style)
-        : _letter(character), _id(std::move(id)), _pos(std::move(pos)), _style(std::move(style)) {}
+Symbol::Symbol(wchar_t character, std::pair<int, int> id, std::vector<int> pos, SymStyle style)
+        : ch(character), id(std::move(id)), pos(std::move(pos)), style(std::move(style)) {}
 
-std::vector<int> Symbol::getPos() const {
-    return _pos;
+std::vector<int> Symbol::get_pos() const {
+    return pos;
 }
 
-wchar_t Symbol::getLetter() const {
-    return _letter;
+wchar_t Symbol::get_char() const {
+    return ch;
 }
 
-std::pair<int, int> Symbol::getId() const {
-    return _id;
+std::pair<int, int> Symbol::get_id() const {
+    return id;
 }
 
-SymbolStyle Symbol::getStyle() const {
-    return _style;
+SymStyle Symbol::get_style() const {
+    return style;
 }
 
-void Symbol::setLetter(wchar_t letter) {
-    this->_letter = letter;
+void Symbol::set_char(wchar_t letter) {
+    this->ch = letter;
 }
 
-void Symbol::setId(std::pair<int, int> id) {
-    this->_id = id;
+void Symbol::set_id(std::pair<int, int> id) {
+    this->id = id;
 }
 
-void Symbol::setPos(std::vector<int> pos) {
-    this->_pos = std::move(pos);
+void Symbol::set_pos(std::vector<int> pos) {
+    this->pos = std::move(pos);
 }
 
-void Symbol::setStyle(SymbolStyle style) {
-    this->_style = std::move(style);
+void Symbol::set_style(SymStyle style) {
+    this->style = std::move(style);
 }
 
