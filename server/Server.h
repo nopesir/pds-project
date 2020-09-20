@@ -15,8 +15,8 @@ class Server {
 
 private:
     boost::asio::ip::tcp::acceptor acceptor;
-    int editor_counter;
-    void accept_connection();
+    int cnt;
+    void accept();
 
 public:
     Server(boost::asio::io_context& io_context, const boost::asio::ip::tcp::endpoint& endpoint);

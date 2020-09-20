@@ -7,7 +7,7 @@
 
 
 #include <string>
-#define MAX_CHUNK_LENGTH 65000
+#define MAX_CHUNK_LENGTH 65536 //64K
 
 class Message {
 
@@ -20,12 +20,12 @@ public:
     const char* body() const;
     char* body();
     std::size_t body_length() const;
-    void body_length(std::size_t new_length);
+    void set_body_length(std::size_t new_length);
     void decode_header();
     void encode_header();
-    char& isThisLastChunk();
-    void setLastChunk(char val);
-    static Message constructMsg(const std::string& chunkResponse, char isLastChunk);
+    char& is_last_chunk();
+    void set_last_chunk(char val);
+    static Message build_msg(const std::string& chunk, char is_last);
 
 private:
     char data_[MAX_CHUNK_LENGTH + header_length + 1];

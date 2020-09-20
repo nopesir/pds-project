@@ -17,21 +17,19 @@
 class Session: public Client, public std::enable_shared_from_this<Session>{
 private:
     boost::asio::ip::tcp::socket _socket;
-    Message read_msg_;
-    std::deque<Message> write_msgs_;
-    std::string fullBody;
+    Message msg_in;
+    std::deque<Message> msgs_out;
+    std::string body;
 
-    dbService dbService_;
-
-    void do_read_header();
-    void do_read_body();
-    void do_write(); //for the editor
-    std::string handleRequests(const std::string& opJSON, const json& jdata_in, int& edId, std::string& curFile, bool& onlyToThisEditor);
-    void sendMsg(const std::string& response);
-    void sendMsgAll(const std::string& response, const int& edId, const std::string& curFile, bool includeThisEditor=false); //send msg to all the clients except client with id 'edId' having the curFile opened
+    void read_header();
+    void read_body();
+    void write();
+    std::string process_reqs(const std::string& j_op, const json& j_data, int& ed_id, std::string& curr_file, bool& only_this_ed);
+    void send_msg(const std::string& response);
+    void send_msg_all(const std::string& response, const int& ed_id, const std::string& curr_file, bool include_this_ed= false); //send msg to all the clients except client with id 'ed_id' having the curr_file opened
 public:
     explicit Session(boost::asio::ip::tcp::socket socket);
-    void session_start(int editorId);
+    void start_session(int ed_id);
     void deliver(const Message& msg);
 
 };
