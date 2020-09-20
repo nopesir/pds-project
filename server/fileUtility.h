@@ -13,9 +13,11 @@
 class fileUtility {
 
 public:
-    static std::vector<Symbol> readFile(const std::string& filename);
     static void writeFile(const std::string& filename, const std::vector<Symbol>& symbols);
+    static std::vector<Symbol> readFile(const std::string& filename);
     static bool is_empty(std::ifstream& pFile);
+
+
 };
 
 #endif //PDS_PROJECT_FILEUTILITY_H

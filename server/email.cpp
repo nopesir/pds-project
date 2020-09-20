@@ -9,7 +9,7 @@
 
 bool email::sendEmail(const std::string& email, const std::string& uri) {
     CURL *curl;
-    CURLcode res = CURLE_OK;
+    CURLcode result = CURLE_OK;
     struct curl_slist *recipients = nullptr;
     struct upload_status upload_ctx{};
 
@@ -40,8 +40,8 @@ bool email::sendEmail(const std::string& email, const std::string& uri) {
         curl_easy_setopt(curl, CURLOPT_READDATA, &upload_ctx);
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
-        res = curl_easy_perform(curl);
-        if(res != CURLE_OK) {
+        result = curl_easy_perform(curl);
+        if(result != CURLE_OK) {
             std::cout << "Failed to send email." << std::endl;
             return false;
         }

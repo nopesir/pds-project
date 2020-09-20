@@ -9,20 +9,20 @@
 #include <utility>
 
 File::File(std::string idfile, std::string filename, std::string owner, std::string timestamp)
-        : _idfile(std::move(idfile)), _filename(std::move(filename)), _owner(std::move(owner)), _timestamp(std::move(timestamp)) {}
+        : idfile(std::move(idfile)), filename(std::move(filename)), owner(std::move(owner)), timestamp(std::move(timestamp)) {}
 
-std::string File::getidfile() const {
-    return _idfile;
+std::string File::getIdFile() const {
+    return idfile;
 }
 
-std::string File::getfilename() const {
-    return _filename;
+std::string File::getFileName() const {
+    return filename;
 }
 
-std::string File::getowner() const {
-    return _owner;
+std::string File::getOwner() const {
+    return owner;
 }
 
-std::string File::gettimestamp() const {
-    return _timestamp;
+std::string File::getTimeStamp() const {
+    return timestamp;
 }

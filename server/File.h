@@ -11,17 +11,17 @@
 
 class File {
 private:
-    std::string _idfile;
-    std::string _filename;
-    std::string _owner;
-    std::string _timestamp;
+    std::string idfile;
+    std::string filename;
+    std::string owner;
+    std::string timestamp;
 
 public:
     File(std::string idfile, std::string filename, std::string owner, std::string timestamp);
-    std::string getidfile() const;
-    std::string getfilename() const;
-    std::string getowner() const;
-    std::string gettimestamp() const;
+    std::string getIdFile() const;
+    std::string getFileName() const;
+    std::string getOwner() const;
+    std::string getTimeStamp() const;
 };
 
 

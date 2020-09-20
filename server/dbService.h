@@ -25,21 +25,22 @@ public:
 
     };
     static inline const char* enumToStr(dbService::DB_RESPONSE db_resp);
-    static QString generateURI(int len);
     static QString generateColor();
+    static QString generateURI(int len);
     static QString getTimestamp();
-    static DB_RESPONSE tryLogin(const std::string& user, const std::string& pass, QString& color, QString& mail);
-    static DB_RESPONSE tryLogout(const std::string& user, const std::string& urifile);
-    static DB_RESPONSE tryLogout(const std::string& user);
-    static DB_RESPONSE trySignup(const std::string& user, const std::string& pass, const std::string& email);
-    static DB_RESPONSE tryNewFile(const std::string& user, const std::string& file_name, const QString& uri);
-    static DB_RESPONSE tryListFile(const std::string& user, std::vector<File>& vectorFile);
-    static DB_RESPONSE tryOpenFile(const std::string& user, const std::string& urifile);
-    static DB_RESPONSE tryOpenWithURIFile(const std::string& user, const std::string& urifile, std::string& filename);
-    static DB_RESPONSE tryRenameFile(const std::string& newNameFile, const std::string& urifile, const std::string& user);
-    static DB_RESPONSE tryGetEmail(const std::string& invited, std::string& email_invited);
-    static DB_RESPONSE tryAddFriend(const std::string& invited, const std::string& urifile);
-    static DB_RESPONSE tryGetCollabColors(const std::string& uri, std::map<std::string, std::pair<std::string, bool>>& collabColorsMap);
-    static DB_RESPONSE tryCleanAll();
+    static DB_RESPONSE logout(const std::string &user, const std::string &urifile);
+    static DB_RESPONSE logout(const std::string &user);
+    static DB_RESPONSE login(const std::string &user, const std::string &pass, QString &color, QString &mail);
+    static DB_RESPONSE signup(const std::string &user, const std::string &pass, const std::string &email);
+    static DB_RESPONSE newFile(const std::string &user, const std::string &file_name, const QString &uri);
+    static DB_RESPONSE listFile(const std::string &user, std::vector<File> &vectorFile);
+    static DB_RESPONSE renameFile(const std::string &newNameFile, const std::string &urifile, const std::string &user);
+    static DB_RESPONSE openFile(const std::string &user, const std::string &urifile);
+    static DB_RESPONSE openURIFile(const std::string &user, const std::string &urifile, std::string &filename);
+    static DB_RESPONSE addFriend(const std::string &invited, const std::string &urifile);
+    static DB_RESPONSE getEmail(const std::string &invited, std::string &email_invited);
+    static DB_RESPONSE getColors(const std::string &uri,
+                                 std::map<std::string, std::pair<std::string, bool>> &collabColorsMap);
+    static DB_RESPONSE cleanAll();
 };
 #endif //PDS_PROJECT_DBSERVICE_H

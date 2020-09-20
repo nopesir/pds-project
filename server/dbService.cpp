@@ -11,155 +11,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QDateTime>
 
-dbService::DB_RESPONSE dbService::tryCleanAll() {
-    QSqlDatabase db;
-    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
-    if(db.open()) {
-        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
-        query.prepare(QString("UPDATE permissions SET isOpen=0"));
-
-        if(query.exec()) {
-            QSqlQuery query2(QSqlDatabase::database("MyConnect2"));
-            query2.prepare(QString("UPDATE users SET isLogged=0"));
-
-            if(query2.exec()) {
-                db.close();
-                return LOGOUT_OK;
-            } else {
-                db.close();
-                return QUERY_ERROR;
-            }
-        } else {
-            db.close();
-            return QUERY_ERROR;
-        }
-    } else {
-        QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
-        return DB_ERROR;
-    }
-}
-
-dbService::DB_RESPONSE dbService::tryLogout(const std::string& user) {
-    QSqlDatabase db;
-    QString username = QString::fromUtf8(user.data(), user.size());
-
-    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
-    if(db.open()) {
-        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
-        query.prepare(QString("UPDATE users SET isLogged=0 WHERE username= :username"));
-        query.bindValue(":username", username);
-
-        if(query.exec()) {
-            std::cout << "LOGOUT without URI success" << std::endl;
-            db.close();
-            return LOGOUT_OK;
-        } else {
-            std::cout << "Error on UPDATE" << std::endl;
-            db.close();
-            return QUERY_ERROR;
-        }
-    } else {
-        QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
-        return DB_ERROR;
-    }
-}
-
-dbService::DB_RESPONSE dbService::tryLogout(const std::string& user, const std::string& urifile) {
-    QSqlDatabase db;
-    QString username = QString::fromUtf8(user.data(), user.size());
-    QString uri = QString::fromUtf8(urifile.data(), urifile.size());
-
-    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
-
-    if(db.open()) {
-        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
-        query.prepare(QString("UPDATE permissions SET isOpen=0 WHERE iduser= :username and idfile = :uri"));
-        query.bindValue(":username", username);
-        query.bindValue(":uri", uri);
-
-        if(query.exec()) {
-            std::cout << "LOGOUT with URI success" << std::endl;
-            db.close();
-            return LOGOUT_OK;
-        } else {
-            std::cout << "Error on UPDATE isOpen" << std::endl;
-            db.close();
-            return QUERY_ERROR;
-        }
-    } else {
-        QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
-        return DB_ERROR;
-    }
-}
-
-dbService::DB_RESPONSE dbService::tryLogin(const std::string& user, const std::string& pass, QString& color, QString& mail) {
-    QSqlDatabase db;
-    QString username = QString::fromUtf8(user.data(), user.size());
-    QString password = QString::fromUtf8(pass.data(), pass.size());
-
-    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
-
-    if(db.open()) {
-        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
-        query.prepare(QString("SELECT * FROM users WHERE username = :username AND password = :password"));
-        query.bindValue(":username", username);
-        query.bindValue(":password", password);
-
-        if(query.exec()) {
-            if(query.next()) {
-                QString usernameFromDb = query.value(0).toString();
-                QString passwordFromDb = query.value(1).toString();
-                QString mailFromDb = query.value(2).toString();
-                bool isLoggedFromDb = query.value(3).toBool();
-                QString colorFromDb = query.value(4).toString();
-
-                if(usernameFromDb == username && passwordFromDb == password) {
-                    if(!isLoggedFromDb) {
-                        QSqlQuery query2(QSqlDatabase::database("MyConnect2"));
-                        query2.prepare(QString("UPDATE users SET isLogged=1 WHERE username= :username and password= :password"));
-                        query2.bindValue(":username", usernameFromDb);
-                        query2.bindValue(":password", passwordFromDb);
-
-                        if(query2.exec()) {
-                            std::cout << "Login success" << std::endl;
-                            color = colorFromDb;
-                            mail = mailFromDb;
-                            return LOGIN_OK;
-                        } else {
-                            std::cout << "Error on UPDATE" << std::endl;
-                            return QUERY_ERROR;
-                        }
-                    }
-                    else {
-                        std::cout << "Already logged user" << std::endl;
-                        return ALREADY_LOGGED;
-                    }
-                }
-            } else {
-                std::cout << "Login failed" << std::endl;
-                return LOGIN_FAILED;
-            }
-            db.close();
-        } else {
-            std::cout << "Error on SELECT" << std::endl;
-            db.close();
-            return QUERY_ERROR;
-        }
-    } else {
-        QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
-        return DB_ERROR;
-    }
-}
-
-dbService::DB_RESPONSE dbService::trySignup(const std::string& user, const std::string& pass, const std::string& email) {
+dbService::DB_RESPONSE dbService::signup(const std::string &user, const std::string &pass, const std::string &email) {
     QSqlDatabase db;
 
     QString username = QString::fromUtf8(user.data(), user.size());
@@ -212,7 +64,156 @@ dbService::DB_RESPONSE dbService::trySignup(const std::string& user, const std::
     }
 }
 
-dbService::DB_RESPONSE dbService::tryNewFile(const std::string& user, const std::string& file_name, const QString& uri) {
+dbService::DB_RESPONSE dbService::logout(const std::string &user) {
+    QSqlDatabase db;
+    QString username = QString::fromUtf8(user.data(), user.size());
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
+    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
+    if(db.open()) {
+        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
+        query.prepare(QString("UPDATE users SET isLogged=0 WHERE username= :username"));
+        query.bindValue(":username", username);
+
+        if(query.exec()) {
+            std::cout << "LOGOUT without URI success" << std::endl;
+            db.close();
+            return LOGOUT_OK;
+        } else {
+            std::cout << "Error on UPDATE" << std::endl;
+            db.close();
+            return QUERY_ERROR;
+        }
+    } else {
+        QSqlError error = db.lastError();
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
+        return DB_ERROR;
+    }
+}
+
+dbService::DB_RESPONSE dbService::cleanAll() {
+    QSqlDatabase db;
+    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
+    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
+    if(db.open()) {
+        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
+        query.prepare(QString("UPDATE permissions SET isOpen=0"));
+
+        if(query.exec()) {
+            QSqlQuery query2(QSqlDatabase::database("MyConnect2"));
+            query2.prepare(QString("UPDATE users SET isLogged=0"));
+
+            if(query2.exec()) {
+                db.close();
+                return LOGOUT_OK;
+            } else {
+                db.close();
+                return QUERY_ERROR;
+            }
+        } else {
+            db.close();
+            return QUERY_ERROR;
+        }
+    } else {
+        QSqlError error = db.lastError();
+        std::cout << "Error connection to DataBase:" << error.text().data() << std::endl;
+        return DB_ERROR;
+    }
+}
+
+dbService::DB_RESPONSE dbService::logout(const std::string &user, const std::string &urifile) {
+    QSqlDatabase db;
+    QString username = QString::fromUtf8(user.data(), user.size());
+    QString uri = QString::fromUtf8(urifile.data(), urifile.size());
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
+    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
+
+    if(db.open()) {
+        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
+        query.prepare(QString("UPDATE permissions SET isOpen=0 WHERE iduser= :username and idfile = :uri"));
+        query.bindValue(":username", username);
+        query.bindValue(":uri", uri);
+
+        if(query.exec()) {
+            std::cout << "Succefully Logged out with uri" << std::endl;
+            db.close();
+            return LOGOUT_OK;
+        } else {
+            std::cout << "Error on UPDATE isOpen" << std::endl;
+            db.close();
+            return QUERY_ERROR;
+        }
+    } else {
+        QSqlError error = db.lastError();
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
+        return DB_ERROR;
+    }
+}
+
+dbService::DB_RESPONSE dbService::login(const std::string &user, const std::string &pass, QString &color, QString &mail) {
+    QSqlDatabase db;
+    QString username = QString::fromUtf8(user.data(), user.size());
+    QString password = QString::fromUtf8(pass.data(), pass.size());
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
+    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
+
+    if(db.open()) {
+        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
+        query.prepare(QString("SELECT * FROM users WHERE username = :username AND password = :password"));
+        query.bindValue(":username", username);
+        query.bindValue(":password", password);
+
+        if(query.exec()) {
+            if(query.next()) {
+                QString usernameFromDb = query.value(0).toString();
+                QString passwordFromDb = query.value(1).toString();
+                QString mailFromDb = query.value(2).toString();
+                bool isLoggedFromDb = query.value(3).toBool();
+                QString colorFromDb = query.value(4).toString();
+
+                if(usernameFromDb == username && passwordFromDb == password) {
+                    if(!isLoggedFromDb) {
+                        QSqlQuery query2(QSqlDatabase::database("MyConnect2"));
+                        query2.prepare(QString("UPDATE users SET isLogged=1 WHERE username= :username and password= :password"));
+                        query2.bindValue(":username", usernameFromDb);
+                        query2.bindValue(":password", passwordFromDb);
+
+                        if(query2.exec()) {
+                            std::cout << "Login success" << std::endl;
+                            color = colorFromDb;
+                            mail = mailFromDb;
+                            return LOGIN_OK;
+                        } else {
+                            std::cout << "Error on UPDATE" << std::endl;
+                            return QUERY_ERROR;
+                        }
+                    }
+                    else {
+                        std::cout << "ERROR user already logged in" << std::endl;
+                        return ALREADY_LOGGED;
+                    }
+                }
+            } else {
+                std::cout << "Login failed" << std::endl;
+                return LOGIN_FAILED;
+            }
+            db.close();
+        } else {
+            std::cout << "Error on SELECT" << std::endl;
+            db.close();
+            return QUERY_ERROR;
+        }
+    } else {
+        QSqlError error = db.lastError();
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
+        return DB_ERROR;
+    }
+}
+
+
+dbService::DB_RESPONSE dbService::newFile(const std::string &user, const std::string &file_name, const QString &uri) {
     QSqlDatabase db;
 
     QString username = QString::fromUtf8(user.data(), user.size());
@@ -267,47 +268,9 @@ dbService::DB_RESPONSE dbService::tryNewFile(const std::string& user, const std:
         return DB_ERROR;
     }
 }
-dbService::DB_RESPONSE dbService::tryListFile(const std::string& user, std::vector<File>& vectorFile) {
-    QSqlDatabase db;
-    QString username = QString::fromUtf8(user.data(), user.size());
 
-    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
-    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
 
-    if(db.open()) {
-        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
-        query.prepare(QString("SELECT uri, filename, owner, timestamp FROM files F, permissions P  WHERE F.uri=P.idfile AND iduser = :username AND isConfirmed=1"));
-        query.bindValue(":username", username);
-        if (query.exec()) {
-            bool check = false;
-            while (query.next()) {
-                std::string uriDb = query.value(0).toString().toStdString();
-                std::string filenameDb = query.value(1).toString().toStdString();
-                std::string ownerDb = query.value(2).toString().toStdString();
-                std::string timestampDb = query.value(3).toString().toStdString();
-
-                File file = File{uriDb, filenameDb, ownerDb, timestampDb};
-                vectorFile.push_back(file);
-                check = true;
-            }
-            db.close();
-            if(check)
-                return LIST_EXIST;
-            else
-                return LIST_DOESNT_EXIST;
-        } else {
-            std::cout << "Error on SELECT" << std::endl;
-            db.close();
-            return QUERY_ERROR;
-        }
-    } else {
-        QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
-        return DB_ERROR;
-    }
-}
-
-dbService::DB_RESPONSE dbService::tryOpenFile(const std::string& user, const std::string& urifile) {
+dbService::DB_RESPONSE dbService::openFile(const std::string &user, const std::string &urifile) {
     QSqlDatabase db;
     QString username = QString::fromUtf8(user.data(), user.size());
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
@@ -347,12 +310,54 @@ dbService::DB_RESPONSE dbService::tryOpenFile(const std::string& user, const std
         }
     } else {
         QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
         return DB_ERROR;
     }
 }
 
-dbService::DB_RESPONSE dbService::tryOpenWithURIFile(const std::string& user, const std::string& urifile, std::string& filename) {
+dbService::DB_RESPONSE dbService::listFile(const std::string &user, std::vector<File> &vectorFile) {
+    QSqlDatabase db;
+    QString username = QString::fromUtf8(user.data(), user.size());
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect2");
+    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
+
+    if(db.open()) {
+        QSqlQuery query(QSqlDatabase::database("MyConnect2"));
+        query.prepare(QString("SELECT uri, filename, owner, timestamp FROM files F, permissions P  WHERE F.uri=P.idfile AND iduser = :username AND isConfirmed=1"));
+        query.bindValue(":username", username);
+        if (query.exec()) {
+            bool check = false;
+            while (query.next()) {
+                std::string uriDb = query.value(0).toString().toStdString();
+                std::string filenameDb = query.value(1).toString().toStdString();
+                std::string ownerDb = query.value(2).toString().toStdString();
+                std::string timestampDb = query.value(3).toString().toStdString();
+
+                File file = File{uriDb, filenameDb, ownerDb, timestampDb};
+                vectorFile.push_back(file);
+                check = true;
+            }
+            db.close();
+            if(check)
+                return LIST_EXIST;
+            else
+                return LIST_DOESNT_EXIST;
+        } else {
+            std::cout << "Error on SELECT" << std::endl;
+            db.close();
+            return QUERY_ERROR;
+        }
+    } else {
+        QSqlError error = db.lastError();
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
+        return DB_ERROR;
+    }
+}
+
+
+dbService::DB_RESPONSE dbService::openURIFile(const std::string &user, const std::string &urifile,
+                                              std::string &filename) {
     QSqlDatabase db;
     QString username = QString::fromUtf8(user.data(), user.size());
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
@@ -396,12 +401,15 @@ dbService::DB_RESPONSE dbService::tryOpenWithURIFile(const std::string& user, co
         }
     } else {
         QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
         return DB_ERROR;
     }
 }
 
-dbService::DB_RESPONSE dbService::tryGetEmail(const std::string &invited, std::string &email_invited) {
+
+
+
+dbService::DB_RESPONSE dbService::getEmail(const std::string &invited, std::string &email_invited) {
     QSqlDatabase db;
     QString username = QString::fromUtf8(invited.data(), invited.size());
 
@@ -427,12 +435,12 @@ dbService::DB_RESPONSE dbService::tryGetEmail(const std::string &invited, std::s
         }
     } else {
         QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
         return DB_ERROR;
     }
 }
 
-dbService::DB_RESPONSE dbService::tryAddFriend(const std::string &invited, const std::string &urifile) {
+dbService::DB_RESPONSE dbService::addFriend(const std::string &invited, const std::string &urifile) {
     QSqlDatabase db;
     QString username = QString::fromUtf8(invited.data(), invited.size());
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
@@ -489,75 +497,12 @@ dbService::DB_RESPONSE dbService::tryAddFriend(const std::string &invited, const
         }
     } else {
         QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
         return DB_ERROR;
     }
 }
 
-dbService::DB_RESPONSE dbService::tryGetCollabColors(const std::string& uri, std::map<std::string, std::pair<std::string, bool>>& collabColorsMap) {
-    QSqlDatabase db;
-    std::map<std::string, std::string> onlineCollabColorsMap;
-    std::map<std::string, std::string> offlineCollabColorsMap;
-    QString _uri = QString::fromUtf8(uri.data(), uri.size());
 
-    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect");
-    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
-
-    if(db.open()) {
-        /* Get online collaborators (with their color) */
-        QSqlQuery query(QSqlDatabase::database("MyConnect"));
-        query.prepare(QString("SELECT username, color FROM users, permissions WHERE users.username = permissions.iduser AND idfile = :uri AND isOpen = 1;"));
-        query.bindValue(":uri", _uri);
-        if (query.exec()) {
-            while(query.next()) {
-                onlineCollabColorsMap.insert(std::make_pair(query.value(0).toString().toStdString(), query.value(1).toString().toStdString()));
-            }
-            /* Get offline collaborators (with their color) */
-            QSqlQuery query2(QSqlDatabase::database("MyConnect"));
-            query2.prepare(QString("SELECT username, color FROM users, permissions WHERE users.username = permissions.iduser AND idfile = :uri AND isOpen = 0;"));
-            query2.bindValue(":uri", _uri);
-            if (query2.exec()) {
-                while(query2.next()) {
-                    offlineCollabColorsMap.insert(std::make_pair(query2.value(0).toString().toStdString(), query2.value(1).toString().toStdString()));
-                }
-                /* Concatenate the two maps in one single map */
-                for (const auto& item : onlineCollabColorsMap)
-                    collabColorsMap.insert(std::make_pair(item.first, std::make_pair(item.second, 1)));
-                for (const auto& item : offlineCollabColorsMap)
-                    collabColorsMap.insert(std::make_pair(item.first, std::make_pair(item.second, 0)));
-
-                return GET_COLLAB_COLORS_MAP_OK;
-            } else {
-                std::cout << "Error on SELECT" << std::endl;
-                db.close();
-                return QUERY_ERROR;
-            }
-        } else {
-            std::cout << "Error on SELECT" << std::endl;
-            db.close();
-            return QUERY_ERROR;
-        }
-    } else {
-        QSqlError error = db.lastError();
-        std::cout << "Error on db connection. " << error.text().data() << std::endl;
-        return DB_ERROR;
-    }
-}
-
-inline const char* dbService::enumToStr(dbService::DB_RESPONSE db_resp) {
-    switch (db_resp) {
-        case dbService::LOGIN_OK:       return "LOGIN_OK";
-        case dbService::LOGIN_FAILED:   return "LOGIN_FAILED";
-        case dbService::LOGOUT_OK:      return "LOGOUT_OK";
-        case dbService::LOGOUT_FAILED:  return "LOGOUT_FAILED";
-        case dbService::SIGNUP_OK:      return "SIGNUP_OK";
-        case dbService::SIGNUP_FAILED:  return "SIGNUP_FAILED";
-        case dbService::DB_ERROR:       return "DB_ERROR";
-        case dbService::QUERY_ERROR:    return "QUERY_ERROR";
-        case dbService::ALREADY_LOGGED: return "ALREADY_LOGGED";
-        default:                        return "[Unknown db response]";
-    }
-}
 
 QString dbService::generateURI(int len) {
     std::string str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -568,23 +513,9 @@ QString dbService::generateURI(int len) {
     return(QString::fromUtf8(URI.data(), URI.size()));
 }
 
-QString dbService::generateColor() {
-    std::string hex = "abcdef0123456789";
-    int n = hex.length();
-    std::string color = "#88"; //alpha will be fixed to 88
-    for (int i=1; i<=6; i++)
-        color.push_back(hex[rand() % n]);
-    return(QString::fromUtf8(color.data(), color.size()));
-}
 
-QString dbService::getTimestamp() {
-    qint64 utcTime = QDateTime::currentMSecsSinceEpoch();
-    QDateTime dt;
-    dt.setTime_t(utcTime/1000);
-    return dt.toString("yyyy-MM-dd hh:mm:ss");
-}
-
-dbService::DB_RESPONSE dbService::tryRenameFile(const std::string &newNameFile, const std::string &urifile, const std::string &user) {
+dbService::DB_RESPONSE dbService::renameFile(const std::string &newNameFile, const std::string &urifile,
+                                             const std::string &user) {
     QSqlDatabase db;
     QString username = QString::fromUtf8(user.data(), user.size());
     QString uri = QString::fromUtf8(urifile.data(), urifile.size());
@@ -643,5 +574,91 @@ dbService::DB_RESPONSE dbService::tryRenameFile(const std::string &newNameFile, 
     } else {
         QSqlError error = db.lastError();
         return DB_ERROR;
+    }
+}
+
+QString dbService::getTimestamp() {
+    qint64 utcTime = QDateTime::currentMSecsSinceEpoch();
+    QDateTime dt;
+    dt.setTime_t(utcTime/1000);
+    return dt.toString("yyyy-MM-dd hh:mm:ss");
+}
+
+
+QString dbService::generateColor() {
+    std::string hex = "abcdef0123456789";
+    int n = hex.length();
+    std::string color = "#88"; //alpha will be fixed to 88
+    for (int i=1; i<=6; i++)
+        color.push_back(hex[rand() % n]);
+    return(QString::fromUtf8(color.data(), color.size()));
+}
+
+
+
+dbService::DB_RESPONSE dbService::getColors(const std::string &uri,
+                                            std::map<std::string, std::pair<std::string, bool>> &collabColorsMap) {
+    QSqlDatabase db;
+    std::map<std::string, std::string> onlineCollabColorsMap;
+    std::map<std::string, std::string> offlineCollabColorsMap;
+    QString _uri = QString::fromUtf8(uri.data(), uri.size());
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "MyConnect");
+    db.setDatabaseName("../DataBase/texteditor_users.sqlite");
+
+    if(db.open()) {
+        /* Get online collaborators (with their color) */
+        QSqlQuery query(QSqlDatabase::database("MyConnect"));
+        query.prepare(QString("SELECT username, color FROM users, permissions WHERE users.username = permissions.iduser AND idfile = :uri AND isOpen = 1;"));
+        query.bindValue(":uri", _uri);
+        if (query.exec()) {
+            while(query.next()) {
+                onlineCollabColorsMap.insert(std::make_pair(query.value(0).toString().toStdString(), query.value(1).toString().toStdString()));
+            }
+            /* Get offline collaborators (with their color) */
+            QSqlQuery query2(QSqlDatabase::database("MyConnect"));
+            query2.prepare(QString("SELECT username, color FROM users, permissions WHERE users.username = permissions.iduser AND idfile = :uri AND isOpen = 0;"));
+            query2.bindValue(":uri", _uri);
+            if (query2.exec()) {
+                while(query2.next()) {
+                    offlineCollabColorsMap.insert(std::make_pair(query2.value(0).toString().toStdString(), query2.value(1).toString().toStdString()));
+                }
+                /* Concatenate the two maps in one single map */
+                for (const auto& item : onlineCollabColorsMap)
+                    collabColorsMap.insert(std::make_pair(item.first, std::make_pair(item.second, 1)));
+                for (const auto& item : offlineCollabColorsMap)
+                    collabColorsMap.insert(std::make_pair(item.first, std::make_pair(item.second, 0)));
+
+                return GET_COLLAB_COLORS_MAP_OK;
+            } else {
+                std::cout << "Error on SELECT" << std::endl;
+                db.close();
+                return QUERY_ERROR;
+            }
+        } else {
+            std::cout << "Error on SELECT" << std::endl;
+            db.close();
+            return QUERY_ERROR;
+        }
+    } else {
+        QSqlError error = db.lastError();
+        std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
+        return DB_ERROR;
+    }
+}
+
+
+inline const char* dbService::enumToStr(dbService::DB_RESPONSE db_resp) {
+    switch (db_resp) {
+        case dbService::LOGIN_OK:       return "LOGIN_OK";
+        case dbService::LOGIN_FAILED:   return "LOGIN_FAILED";
+        case dbService::LOGOUT_OK:      return "LOGOUT_OK";
+        case dbService::LOGOUT_FAILED:  return "LOGOUT_FAILED";
+        case dbService::SIGNUP_OK:      return "SIGNUP_OK";
+        case dbService::SIGNUP_FAILED:  return "SIGNUP_FAILED";
+        case dbService::DB_ERROR:       return "DB_ERROR";
+        case dbService::QUERY_ERROR:    return "QUERY_ERROR";
+        case dbService::ALREADY_LOGGED: return "ALREADY_LOGGED";
+        default:                        return "[Unknown db response]";
     }
 }

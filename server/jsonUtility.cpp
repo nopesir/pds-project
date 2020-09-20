@@ -94,10 +94,10 @@ void jsonUtility::to_json_open_w_uri_resp(json &j, const std::string &op, const 
 
 void jsonUtility::to_json_file(json &j, const File &file) {
     j = json{
-            {"idfile", file.getidfile()},
-            {"filename", file.getfilename()},
-            {"owner", file.getowner()},
-            {"timestamp",  file.gettimestamp()}
+            {"idfile", file.getIdFile()},
+            {"filename", file.getFileName()},
+            {"owner", file.getOwner()},
+            {"timestamp", file.getTimeStamp()}
     };
 }
 
