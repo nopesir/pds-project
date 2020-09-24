@@ -30,7 +30,7 @@ bool email::sendEmail(const std::string& email, const std::string& uri) {
         payload_text[0] = conc.c_str();
 
         //set URI to send
-        std::string msgURI = "Sei stato invitato a collaborare su un documento. Inserisci questo URI per modificare il file: " + uri;
+        std::string msgURI = "You have been invited to contribute on a file. Please insert this uri in the app to start modifying the document: " + uri;
         payload_text[4] = msgURI.c_str();
 
         //Destination email address
