@@ -19,7 +19,7 @@ static const char *payload_text[] = {
         "\r\n", /* empty line to divide headers from body, see RFC5322 */
         "The body of the message starts here.\r\n", //this will be substituted with the URI of the file
         "\r\n",
-        "Buon lavoro!\r\n",
+        "Enjoy!\r\n",
         "TEAM EditoRT.\r\n",
         nullptr
 };
