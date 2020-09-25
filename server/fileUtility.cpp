@@ -27,20 +27,21 @@ std::vector<Symbol> fileUtility::readFile(const std::string& filepath) {
     std::vector<Symbol> symbols;
 
     /* Read bytes from file */
-    std::ifstream f(filepath);
-    std::string str = "[]";
+    std::ifstream f(filepath,std::ifstream::in);
+    std::string str;
+
     if(f.is_open()) {
         if(fileUtility::is_empty(f)){
             return std::vector<Symbol>();
         }
 
         std::string line;
-        str = "";
         while(getline(f, line)) {
             str.append(line);
         }
         f.close();
     }
+
 
     /* Construct symbols vector */
     json jdata_in = json::parse(str);
