@@ -69,7 +69,7 @@ void Session::read_body() {
                                     std::string j_op;
                                     json j_data;
                                     try {
-                                        std::cout << "body of message: " << body << std::endl;
+
                                         j_data = json::parse(body);
                                         jsonUtility::from_json_simple_op(j_data, j_op); //get json value and put into JSON variables
 
@@ -464,18 +464,17 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
     } else if (j_op == "OPENFILE_REQUEST") {
         std::string user_JSON;
         std::string uri_JSON;
+
         jsonUtility::from_json_uri(j_data, user_JSON, uri_JSON); //get json value and put into JSON variables
 
         //update tables on db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::openFile(user_JSON, uri_JSON);
         QSqlDatabase::removeDatabase("MyConnect2");
-
         if(resp == dbService::OPENFILE_OK) {
             //Update session data
             shared_from_this()->set_curr_file(uri_JSON);
             shared_from_this()->set_symbols(SharedEditor::getInstance().get_file(uri_JSON, true));
-
             SharedEditor::getInstance().update_file(shared_from_this()->get_curr_file(),
                                                     shared_from_this()->get_symbols());
 
@@ -491,6 +490,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
             json j;
             jsonUtility::to_json_symbols_vector_response(j, "OPENFILE_RESPONSE", db_res,
                                                          shared_from_this()->get_symbols());
+
             const std::string response = j.dump();
             return response;
         }

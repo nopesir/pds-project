@@ -28,12 +28,14 @@ std::vector<Symbol> fileUtility::readFile(const std::string& filepath) {
 
     /* Read bytes from file */
     std::ifstream f(filepath);
-    std::string str;
+    std::string str = "[]";
     if(f.is_open()) {
-        if(fileUtility::is_empty(f))
+        if(fileUtility::is_empty(f)){
             return std::vector<Symbol>();
+        }
 
         std::string line;
+        str = "";
         while(getline(f, line)) {
             str.append(line);
         }
