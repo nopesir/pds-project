@@ -69,6 +69,7 @@ void Session::read_body() {
                                     std::string j_op;
                                     json j_data;
                                     try {
+                                        std::cout << "body of message: " << body << std::endl;
                                         j_data = json::parse(body);
                                         jsonUtility::from_json_simple_op(j_data, j_op); //get json value and put into JSON variables
 
