@@ -842,5 +842,6 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
 
     } else { //editor functions
         SharedEditor::getInstance().broadcast_deliver(msg_in); //deliver to all the participants
+        return "Message delivered";
     }
 }
