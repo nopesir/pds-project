@@ -62,6 +62,7 @@ dbService::DB_RESPONSE dbService::signup(const std::string &user, const std::str
         QSqlError error = db.lastError();
         return DB_ERROR;
     }
+    return DB_ERROR;
 }
 
 dbService::DB_RESPONSE dbService::logout(const std::string &user) {
@@ -210,6 +211,7 @@ dbService::DB_RESPONSE dbService::login(const std::string &user, const std::stri
         std::cout << "Error connection to DataBase: " << error.text().data() << std::endl;
         return DB_ERROR;
     }
+    return DB_ERROR;
 }
 
 
