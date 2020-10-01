@@ -49,6 +49,7 @@ bool email::sendEmail(const std::string& email, const std::string& uri) {
         curl_easy_cleanup(curl);
         return true;
     }
+
 }
 
 size_t email::payload_source(void *ptr, size_t size, size_t nmemb, void *userp) {

@@ -45,7 +45,37 @@ void Session::read_header()
                                     //Disconnect user and leave the room
                                     if(!shared_from_this()->get_username().empty()) { //it can be empty at the beginning (if a crash happens)
                                         dbService::logout(shared_from_this()->get_username());
-                                        QSqlDatabase::removeDatabase("MyConnect2");
+                                        QSqlDatabase::removeDatabase("DBConnection");
+                                        if(shared_from_this()->get_curr_file()!= "") {
+                                            dbService::logout(shared_from_this()->get_username(),
+                                                              shared_from_this()->get_curr_file());
+                                            QSqlDatabase::removeDatabase("DBConnection");
+                                            const char *db_res;
+                                            std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
+                                            dbService::DB_RESPONSE resp = dbService::getColors(
+                                                    shared_from_this()->get_curr_file(),
+                                                    mapCollabColors);
+                                            QSqlDatabase::removeDatabase("DBConnection");
+
+                                            if (resp == dbService::GET_COLLAB_COLORS_MAP_OK)
+                                                db_res = "GET_USER_OFFLINE_OK";
+                                            else if (resp == dbService::DB_ERROR)
+                                                db_res = "DB_ERROR";
+                                            else if (resp == dbService::QUERY_ERROR)
+                                                db_res = "QUERY_ERROR";
+                                            else
+                                                db_res = "DB_ERROR";
+
+                                            json j;
+                                            jsonUtility::to_json_user_on_off(j, "GET_USER_OFFLINE_RESPONSE", db_res,
+                                                                             shared_from_this()->get_username(),
+                                                                             mapCollabColors);
+                                            QSqlDatabase::removeDatabase("DBConnection");
+                                            const std::string response2 = j.dump();
+                                            std::cout << "Sent:" << response2 << "END" << std::endl;
+                                            this->send_msg_all(response2, shared_from_this()->get_id(),
+                                                               shared_from_this()->get_curr_file()); //send
+                                        }
                                     }
                                     SharedEditor::getInstance().leave(shared_from_this());
                                 }
@@ -97,7 +127,7 @@ void Session::read_body() {
                                                 std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
                                                 dbService::DB_RESPONSE resp = dbService::getColors(curFile,
                                                                                                    mapCollabColors);
-                                                QSqlDatabase::removeDatabase("MyConnect");
+                                                QSqlDatabase::removeDatabase("DBConnection");
 
                                                 if (resp == dbService::GET_COLLAB_COLORS_MAP_OK)
                                                     db_res = "GET_USER_OFFLINE_OK";
@@ -127,7 +157,7 @@ void Session::read_body() {
                                                 std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
                                                 dbService::DB_RESPONSE resp = dbService::getColors(
                                                         shared_from_this()->get_curr_file(), mapCollabColors);
-                                                QSqlDatabase::removeDatabase("MyConnect");
+                                                QSqlDatabase::removeDatabase("DBConnection");
 
                                                 if (resp == dbService::GET_COLLAB_COLORS_MAP_OK)
                                                     db_res = "GET_USER_ONLINE_OK";
@@ -163,7 +193,37 @@ void Session::read_body() {
                                     //Disconnect user and leave the room
                                     if(!shared_from_this()->get_username().empty()) { //it can be empty at the beginning (if a crash happens)
                                         dbService::logout(shared_from_this()->get_username());
-                                        QSqlDatabase::removeDatabase("MyConnect2");
+                                        QSqlDatabase::removeDatabase("DBConnection");
+                                        if(shared_from_this()->get_curr_file()!= "") {
+                                            dbService::logout(shared_from_this()->get_username(),
+                                                              shared_from_this()->get_curr_file());
+                                            QSqlDatabase::removeDatabase("DBConnection");
+                                            const char *db_res;
+                                            std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
+                                            dbService::DB_RESPONSE resp = dbService::getColors(
+                                                    shared_from_this()->get_curr_file(),
+                                                    mapCollabColors);
+                                            QSqlDatabase::removeDatabase("DBConnection");
+
+                                            if (resp == dbService::GET_COLLAB_COLORS_MAP_OK)
+                                                db_res = "GET_USER_OFFLINE_OK";
+                                            else if (resp == dbService::DB_ERROR)
+                                                db_res = "DB_ERROR";
+                                            else if (resp == dbService::QUERY_ERROR)
+                                                db_res = "QUERY_ERROR";
+                                            else
+                                                db_res = "DB_ERROR";
+
+                                            json j;
+                                            jsonUtility::to_json_user_on_off(j, "GET_USER_OFFLINE_RESPONSE", db_res,
+                                                                             shared_from_this()->get_username(),
+                                                                             mapCollabColors);
+                                            QSqlDatabase::removeDatabase("DBConnection");
+                                            const std::string response2 = j.dump();
+                                            std::cout << "Sent:" << response2 << "END" << std::endl;
+                                            this->send_msg_all(response2, shared_from_this()->get_id(),
+                                                               shared_from_this()->get_curr_file()); //send
+                                        }
                                     }
                                     SharedEditor::getInstance().leave(shared_from_this());
                                 }
@@ -171,7 +231,7 @@ void Session::read_body() {
 }
 
 void Session::write() {
-    //std::this_thread::sleep_for (std::chrono::seconds(2));
+
     auto self(shared_from_this());
     boost::asio::async_write(_socket,
                              boost::asio::buffer(msgs_out.front().data(), msgs_out.front().length() + 1),
@@ -186,7 +246,37 @@ void Session::write() {
                                      //Disconnect user and leave the room
                                      if(!shared_from_this()->get_username().empty()) { //it can be empty at the beginning (if a crash happens)
                                          dbService::logout(shared_from_this()->get_username());
-                                         QSqlDatabase::removeDatabase("MyConnect2");
+                                         QSqlDatabase::removeDatabase("DBConnection");
+                                         if(shared_from_this()->get_curr_file()!= "") {
+                                             dbService::logout(shared_from_this()->get_username(),
+                                                               shared_from_this()->get_curr_file());
+                                             QSqlDatabase::removeDatabase("DBConnection");
+                                             const char *db_res;
+                                             std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
+                                             dbService::DB_RESPONSE resp = dbService::getColors(
+                                                     shared_from_this()->get_curr_file(),
+                                                     mapCollabColors);
+                                             QSqlDatabase::removeDatabase("DBConnection");
+
+                                             if (resp == dbService::GET_COLLAB_COLORS_MAP_OK)
+                                                 db_res = "GET_USER_OFFLINE_OK";
+                                             else if (resp == dbService::DB_ERROR)
+                                                 db_res = "DB_ERROR";
+                                             else if (resp == dbService::QUERY_ERROR)
+                                                 db_res = "QUERY_ERROR";
+                                             else
+                                                 db_res = "DB_ERROR";
+
+                                             json j;
+                                             jsonUtility::to_json_user_on_off(j, "GET_USER_OFFLINE_RESPONSE", db_res,
+                                                                              shared_from_this()->get_username(),
+                                                                              mapCollabColors);
+                                             QSqlDatabase::removeDatabase("DBConnection");
+                                             const std::string response2 = j.dump();
+                                             std::cout << "Sent:" << response2 << "END" << std::endl;
+                                             this->send_msg_all(response2, shared_from_this()->get_id(),
+                                                                shared_from_this()->get_curr_file()); //send
+                                         }
                                      }
                                      SharedEditor::getInstance().leave(shared_from_this());
                                  }
@@ -238,7 +328,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         QString color_JSON = "#00ffffff";
         QString mail = "";
         dbService::DB_RESPONSE resp = dbService::login(user_JSON, pass_JSON, color_JSON, mail);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if(resp == dbService::LOGIN_OK) {
             shared_from_this()->set_username(user_JSON);
@@ -270,7 +360,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         //Get data from db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::logout(user_JSON);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if(resp == dbService::LOGOUT_OK)
             db_res = "LOGOUT_OK";
@@ -296,7 +386,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         //Get data from db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::logout(user_JSON, uri_JSON);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
         curr_file = shared_from_this()->get_curr_file(); //send only the message to clients that have this curr_file opened
         ed_id = shared_from_this()->get_id();
 
@@ -328,7 +418,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         //Get data from db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::signup(user_JSON, pass_JSON, email_JSON);
-        QSqlDatabase::removeDatabase("MyConnect");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if(resp == dbService::SIGNUP_OK)
             db_res = "SIGNUP_OK";
@@ -360,7 +450,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         const char *db_res;
         QString uri = dbService::generateURI(12);
         dbService::DB_RESPONSE resp = dbService::newFile(user_JSON, filename_JSON, uri);
-        QSqlDatabase::removeDatabase("MyConnect3");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         //create file on local filesystem
        boost::filesystem::ofstream(R"(../Filesystem/)" + uri.toStdString() + ".txt");
@@ -401,7 +491,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         const char *db_res;
         std::vector<File> vectorFile;
         dbService::DB_RESPONSE resp = dbService::listFile(user_JSON, vectorFile);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if(resp == dbService::LIST_EXIST) {
             if(SharedEditor::getInstance().get_map().empty()) {
@@ -441,7 +531,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         //Get data from db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::renameFile(new_file_name_JSON, uri_JSON, user_JSON);
-        QSqlDatabase::removeDatabase("MyConnect3");
+        QSqlDatabase::removeDatabase("DBConnection");
         curr_file = shared_from_this()->get_curr_file(); //send only the message to clients that have this curr_file opened
 
         if (resp == dbService::RENAME_OK)
@@ -470,7 +560,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         //update tables on db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::openFile(user_JSON, uri_JSON);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
         if(resp == dbService::OPENFILE_OK) {
             //Update session data
             shared_from_this()->set_curr_file(uri_JSON);
@@ -518,7 +608,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         //update tables on db
         const char *db_res;
         dbService::DB_RESPONSE resp = dbService::openURIFile(user_JSON, uri_JSON, filename_JSON);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if (resp == dbService::OPENWITHURI_OK) {
             //Update session data
@@ -568,7 +658,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         const char *db_res2;
         std::string email_invited;
         dbService::DB_RESPONSE resp2 = dbService::getEmail(invited_JSON, email_invited);
-        QSqlDatabase::removeDatabase("MyConnect2");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if(resp2 == dbService::GET_EMAIL_OK) {
             // Send email
@@ -578,7 +668,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
                     db_res = "SAME_USER";
                 } else {
                     dbService::DB_RESPONSE resp = dbService::addFriend(invited_JSON, uri_JSON);
-                    QSqlDatabase::removeDatabase("MyConnect2");
+                    QSqlDatabase::removeDatabase("DBConnection");
 
                     if(resp == dbService::ALREADY_PARTECIPANT)
                         db_res = "ALREADY_PARTECIPANT";
@@ -797,7 +887,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         const char *db_res;
         std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
         dbService::DB_RESPONSE resp = dbService::getColors(uri_JSON, mapCollabColors);
-        QSqlDatabase::removeDatabase("MyConnect");
+        QSqlDatabase::removeDatabase("DBConnection");
 
         if (resp == dbService::GET_COLLAB_COLORS_MAP_OK)
             db_res = "COLLAB_COLORS_MAP_OK";

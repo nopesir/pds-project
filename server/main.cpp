@@ -14,7 +14,7 @@
 
 void cleanDBFlags() {
     dbService::cleanAll();
-    QSqlDatabase::removeDatabase("MyConnect2");
+    QSqlDatabase::removeDatabase("DBConnection");
 }
 
 int main(){
