@@ -7,7 +7,7 @@
 
 
 #include <string>
-#define MAX_CHUNK_LENGTH 65536 //64K
+#define MAX_CHUNK_LENGTH 65000
 
 class Message {
 
