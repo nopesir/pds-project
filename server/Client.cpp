@@ -18,7 +18,7 @@ int Client::pos_cmp_reverse(std::vector<int> curr_sym_pos, std::pair<int,int> cu
     else if (curr_sym_pos.at(pos_index) == new_sym_pos.at(pos_index)) {
         if (new_sym_pos.size() > pos_index + 1 &&
             curr_sym_pos.size() <= pos_index + 1) //new_sym_pos[pos_index+1] != null && curr_sym_pos[pos_index+1] == null
-            return 1; // correct position found
+            return 1; // correct position founds
         else if (new_sym_pos.size() <= pos_index + 1 &&
                  curr_sym_pos.size() > pos_index + 1) //new_sym_pos[pos_index+1] == null && curr_sym_pos[pos_index+1] != null
             return -1; //curr_sym_pos > new_sym_pos  -> make another cycle taking the next symbol from symbols
