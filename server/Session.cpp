@@ -47,9 +47,14 @@ void Session::read_header()
                                         dbService::logout(shared_from_this()->get_username());
                                         QSqlDatabase::removeDatabase("DBConnection");
                                         if(shared_from_this()->get_curr_file()!= "") {
-                                            dbService::logout(shared_from_this()->get_username(),
-                                                              shared_from_this()->get_curr_file());
+                                            dbService::DB_RESPONSE res= dbService::logout(shared_from_this()->get_username(),
+                                                                                          shared_from_this()->get_curr_file());
                                             QSqlDatabase::removeDatabase("DBConnection");
+
+                                            if(res == dbService::LOGOUT_OK) {
+                                                fileUtility::writeFile(R"(../Filesystem/)" + shared_from_this()->get_curr_file() + ".txt", SharedEditor::getInstance().get_map().at(shared_from_this()->get_curr_file()));
+                                                shared_from_this()->set_symbols(std::vector<Symbol>());
+                                            }
                                             const char *db_res;
                                             std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
                                             dbService::DB_RESPONSE resp = dbService::getColors(
@@ -195,9 +200,14 @@ void Session::read_body() {
                                         dbService::logout(shared_from_this()->get_username());
                                         QSqlDatabase::removeDatabase("DBConnection");
                                         if(shared_from_this()->get_curr_file()!= "") {
-                                            dbService::logout(shared_from_this()->get_username(),
-                                                              shared_from_this()->get_curr_file());
+                                            dbService::DB_RESPONSE res= dbService::logout(shared_from_this()->get_username(),
+                                                                                          shared_from_this()->get_curr_file());
                                             QSqlDatabase::removeDatabase("DBConnection");
+
+                                            if(res == dbService::LOGOUT_OK) {
+                                                fileUtility::writeFile(R"(../Filesystem/)" + shared_from_this()->get_curr_file() + ".txt", SharedEditor::getInstance().get_map().at(shared_from_this()->get_curr_file()));
+                                                shared_from_this()->set_symbols(std::vector<Symbol>());
+                                            }
                                             const char *db_res;
                                             std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
                                             dbService::DB_RESPONSE resp = dbService::getColors(
@@ -248,9 +258,14 @@ void Session::write() {
                                          dbService::logout(shared_from_this()->get_username());
                                          QSqlDatabase::removeDatabase("DBConnection");
                                          if(shared_from_this()->get_curr_file()!= "") {
-                                             dbService::logout(shared_from_this()->get_username(),
+                                             dbService::DB_RESPONSE res= dbService::logout(shared_from_this()->get_username(),
                                                                shared_from_this()->get_curr_file());
                                              QSqlDatabase::removeDatabase("DBConnection");
+
+                                             if(res == dbService::LOGOUT_OK) {
+                                                 fileUtility::writeFile(R"(../Filesystem/)" + shared_from_this()->get_curr_file() + ".txt", SharedEditor::getInstance().get_map().at(shared_from_this()->get_curr_file()));
+                                                 shared_from_this()->set_symbols(std::vector<Symbol>());
+                                             }
                                              const char *db_res;
                                              std::map<std::string, std::pair<std::string, bool>> mapCollabColors;
                                              dbService::DB_RESPONSE resp = dbService::getColors(
