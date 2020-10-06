@@ -48,6 +48,8 @@ build_all:!build_pass {
     CONFIG += release
 }
 
+win32:RC_ICONS += logo.ico
+
 #Boost library
 win32 {
     QMAKE_CXXFLAGS += -DWIN32_LEAN_AND_MEAN
