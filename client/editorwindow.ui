@@ -1318,7 +1318,7 @@ border-left: 2px solid #404040
     <enum>Qt::ClickFocus</enum>
    </property>
    <property name="floating">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
@@ -1748,11 +1748,6 @@ QToolTip {
      <string>Visualizza</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuAiuto">
-    <property name="title">
-     <string>Aiuto</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuModifica">
     <property name="title">
      <string>Modifica</string>
@@ -1761,7 +1756,6 @@ QToolTip {
    <addaction name="menuFile"/>
    <addaction name="menuVisualizza"/>
    <addaction name="menuModifica"/>
-   <addaction name="menuAiuto"/>
   </widget>
   <action name="actionInvia_tramite_URI">
    <property name="text">

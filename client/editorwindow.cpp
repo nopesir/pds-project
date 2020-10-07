@@ -67,8 +67,8 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     this->installEventFilter(this);
     ui->RealTextEdit->installEventFilter(this);
     collabColorsRequest(_client->getFileURI());
-    LoadUserSetting();
-    setupTitlebarTimer();
+    //LoadUserSetting();
+    //setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
     this->setWindowTitle("editoRT - " + docName);
 }
@@ -146,11 +146,11 @@ void EditorWindow::setupFontIcon() {
     }
 }
 
-void EditorWindow::setupTitlebarTimer() {
-    titlebarTimer = new QTimer(this);
-    connect(titlebarTimer, SIGNAL(timeout()), this, SLOT(TitlebarChangeByTimer()));
-    titlebarTimer->start(1);
-}
+//void EditorWindow::setupTitlebarTimer() {
+//    titlebarTimer = new QTimer(this);
+//    connect(titlebarTimer, SIGNAL(timeout()), this, SLOT(TitlebarChangeByTimer()));
+//    titlebarTimer->start(1);
+//}
 
 EditorWindow::~EditorWindow() {
     emit closeEditor();
@@ -2156,11 +2156,6 @@ void EditorWindow::SetDynamicDocNameLabel(){
 
     ui->DocNameLabel_2->adjustSize();
     ui->DocNameLabel_2->resize(ui->DocNameLabel_2->sizeHint());
-    /*if(ui->DocNameLabel_2->width() > 240){
-        QFontMetrics metrics(ui->DocNameLabel_2->font());
-        QString elidedText = metrics.elidedText(docName, Qt::ElideLeft, ui->DocNameLabel_2->width());
-        ui->DocNameLabel_2->setText(elidedText);
-    }*/
 }
 
 
@@ -2277,29 +2272,19 @@ void EditorWindow::showPopupFailure(QString result) {
 }
 
 void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
-//    myCollabColorsMap first;
-//    first[std::string("nicola")] = std::make_pair(std::string("a8dadc"),true);
-//    first[std::string("zupa")] = std::make_pair(std::string("2a9d8f"),true);
-//    first[std::string("francesco")] = std::make_pair(std::string("2a9d8f"),true);
-//    first[std::string("gennaro")] = std::make_pair(std::string("e9c46a"),false);
-
 
     //this will show remote cursor of other users
     cursorChangeRequest(ui->RealTextEdit->textCursor().position());
 
     ui->listWidgetOn_2->clear();
-    //ui->listWidgetOff_2->clear();
 
     QString username=nullptr, itemString=nullptr, user=nullptr, color=nullptr, ic=nullptr;
-    QChar firstLetter;
     QList<QListWidgetItem*> fileItem;
-    QListWidgetItem* itemOn;
-    //QListWidgetItem* itemOff;
+    QListWidgetItem* item;
     QLinearGradient gradient = QLinearGradient(35, 35, 36, 35);
     QBrush brush;
 
     for(std::map<std::string, std::pair<std::string,bool>>::const_iterator it = collabColorsMap.begin(); it != collabColorsMap.end(); ++it){
-    //for(std::map<std::string, std::pair<std::string,bool>>::const_iterator it = first.begin(); it != first.end(); ++it){
         user = QString::fromStdString(it->first);
         color = QString::fromStdString(it->second.first);
         bool isOnline = it->second.second;
@@ -2308,49 +2293,33 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
         if(username==user)
             user ="TU";
 
-        for (int i=0;i<user.length();i++) {
-            firstLetter = user.at(i);
-            if(firstLetter.isLetter())
-                break;
-        }
-
-        firstLetter = SimplifySingleCharForSorting(firstLetter,1);
-        ic = QString(":/image/Letters/%1.png").arg(firstLetter.toUpper());
-
-        itemOn = new QListWidgetItem(itemString);
-        itemOn->setText(" "+user);
-        itemOn->setIcon(QIcon(ic));
+        item = new QListWidgetItem(itemString);
+        item->setText("  "+user);
 
         if(isOnline) {
             color[1]='f';
             color[2]='f';
-            gradient.setColorAt(1,QColor(color));
-            //gradient.setColorAt(1,Qt::transparent);
-            brush = QBrush(gradient);
-
-            itemOn->setBackground(brush);
-            //fileItem.insert(1,itemOn);
-            //fileItem.append(itemOn);
-            ui->listWidgetOn_2->insertItem(0,itemOn);
-        }
-            ui->listWidgetOn_2->addItem(itemOn);
-            fileItem.append(itemOn);
-
-
-
-           /* gradient.setColorAt(0,QColor(color));
+            gradient.setColorAt(0,QColor(color));
             gradient.setColorAt(1,Qt::transparent);
             brush = QBrush(gradient);
-            itemOff = new QListWidgetItem(itemString, ui->listWidgetOff_2);
-            itemOff->setText("- "+user);
-            itemOff->setIcon(QIcon(ic));
-            //itemOff->setBackground(brush);
-            fileItem.append(itemOff);
-*/
+            item->setText(item->text()+" - online");
+            item->setBackground(brush);
+            ui->listWidgetOn_2->insertItem(0,item);
+        }else{
+            color[1]='f';
+            color[2]='f';
+            gradient.setColorAt(0,QColor(color));
+            gradient.setColorAt(1,Qt::transparent);
+            brush = QBrush(gradient);
+
+            item->setBackground(brush);
+            ui->listWidgetOn_2->addItem(item);
+
+        }
+        fileItem.append(item);
      }
 
-    ui->listWidgetOn_2->setStyleSheet("#listWidgetOn_2{\nborder:transparent;\nbackground: white;\n}");
-    //ui->listWidgetOff_2->setStyleSheet("#listWidgetOff_2{\nborder:transparent;\nbackground: white;\ncolor: rgb(159,159,159);\n}");
+    ui->listWidgetOn_2->setStyleSheet("#listWidgetOn_2{\nborder:transparent;\nbackground: white;\n}");//ui->listWidgetOff_2->setStyleSheet("#listWidgetOff_2{\nborder:transparent;\nbackground: white;\ncolor: rgb(159,159,159);\n}");
 
 }
 
@@ -2434,7 +2403,6 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
 }
 
 void EditorWindow::showSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style) {
-    std::cout << "AHZZZZ" << std::endl;
     int pos = tuple.first;
     wchar_t c = tuple.second;
     QTextCharFormat format;
