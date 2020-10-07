@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4441012e-7ba4-46ff-b9a5-c98adfffe5db" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/client/clientproc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/client/clientproc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/editorwindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/client/editorwindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/textedit.pro.user" beforeDir="false" afterPath="$PROJECT_DIR$/client/textedit.pro.user" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="ProjectId" id="1hzo7R83Pz2jvW6yNyTdtWG2aKR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4441012e-7ba4-46ff-b9a5-c98adfffe5db" name="Default Changelist" comment="" />
+      <created>1601023113584</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601023113584</updated>
+      <workItem from="1601023115309" duration="3920000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix open file not modified">
+      <created>1601026404569</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1601026404569</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix open file not modified" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix open file not modified" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="247" y="28" width="912" height="740" key="CommitChangelistDialog2" timestamp="1601026404411">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state x="247" y="28" width="912" height="740" key="CommitChangelistDialog2/50.28.1316.740@50.28.1316.740" timestamp="1601026404411" />
+    <state width="1270" height="363" key="GridCell.Tab.0.bottom" timestamp="1601035959939">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state width="1270" height="363" key="GridCell.Tab.0.bottom/50.28.1316.740@50.28.1316.740" timestamp="1601035959939" />
+    <state width="1270" height="363" key="GridCell.Tab.0.center" timestamp="1601035959939">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state width="1270" height="363" key="GridCell.Tab.0.center/50.28.1316.740@50.28.1316.740" timestamp="1601035959939" />
+    <state width="1270" height="363" key="GridCell.Tab.0.left" timestamp="1601035959938">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state width="1270" height="363" key="GridCell.Tab.0.left/50.28.1316.740@50.28.1316.740" timestamp="1601035959938" />
+    <state width="1270" height="363" key="GridCell.Tab.0.right" timestamp="1601035959939">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state width="1270" height="363" key="GridCell.Tab.0.right/50.28.1316.740@50.28.1316.740" timestamp="1601035959939" />
+    <state x="303" y="120" width="800" height="563" key="Vcs.Push.Dialog.v2" timestamp="1601026407363">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state x="303" y="120" width="800" height="563" key="Vcs.Push.Dialog.v2/50.28.1316.740@50.28.1316.740" timestamp="1601026407363" />
+    <state x="479" y="313" width="458" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601023471926">
+      <screen x="50" y="28" width="1316" height="740" />
+    </state>
+    <state x="479" y="313" width="458" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/50.28.1316.740@50.28.1316.740" timestamp="1601023471926" />
+  </component>
+</project>
