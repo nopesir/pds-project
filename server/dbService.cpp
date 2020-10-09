@@ -650,17 +650,3 @@ dbService::DB_RESPONSE dbService::getColors(const std::string &uri,
 }
 
 
-inline const char* dbService::enumToStr(dbService::DB_RESPONSE db_resp) {
-    switch (db_resp) {
-        case dbService::LOGIN_OK:       return "LOGIN_OK";
-        case dbService::LOGIN_FAILED:   return "LOGIN_FAILED";
-        case dbService::LOGOUT_OK:      return "LOGOUT_OK";
-        case dbService::LOGOUT_FAILED:  return "LOGOUT_FAILED";
-        case dbService::SIGNUP_OK:      return "SIGNUP_OK";
-        case dbService::SIGNUP_FAILED:  return "SIGNUP_FAILED";
-        case dbService::DB_ERROR:       return "DB_ERROR";
-        case dbService::QUERY_ERROR:    return "QUERY_ERROR";
-        case dbService::ALREADY_LOGGED: return "ALREADY_LOGGED";
-        default:                        return "[Unknown db response]";
-    }
-}
