@@ -14,8 +14,7 @@
 
 class dbService {
 
-private:
-    sqlite3* _db;
+
 
 public:
     enum DB_RESPONSE {LOGIN_OK, LOGIN_FAILED, SIGNUP_OK, SIGNUP_FAILED, NEWFILE_OK, NEWFILE_FAILED, OPENFILE_OK, OPENFILE_FAILED,
