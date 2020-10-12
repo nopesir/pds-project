@@ -43,7 +43,7 @@ private slots:
     //TopMenuBar
     void setup_menu();
     //void on_strumentiButton_clicked();
-    void on_aboutButton_clicked();
+    //void on_aboutButton_clicked();
 
     //CollaboratorBar
 
@@ -85,55 +85,17 @@ private slots:
      *              ACTION              *
      ************************************/
     void on_actionFullscreen_triggered();
-    void on_actionAbout_triggered();
     void on_actionClose_triggered();
     void on_actionRinomina_triggered();
     void on_actionEsporta_come_PDF_triggered();
     void on_actionInvita_tramite_URI_triggered();
-    void on_actionDark_Mode_triggered();
     void on_actionCollaboratori_triggered();
     void on_actionGrassetto_triggered();
     void on_actionCorsivo_triggered();
     void on_actionSottolineato_triggered();
     void on_actionSeleziona_Tutto_triggered();
     void on_actionToolbar_triggered();
-    void on_actionOpzioni_triggered();
     void on_toggle_triggered();
-
-    /************************************
-     * STANDALONE FUNCTION FOR GRAPHIC  *
-     ************************************/
-    void PaintItBlack();
-    void ApplyDayMode();
-    void ApplyDarkMode();
-    void SetIconPackDayMode();
-    void SetIconPackDarkMode();
-    void LoadUserSetting();
-    void TitlebarChangeByTimer();
-    /**********THEME SELECTOR***********/
-    void installTheme_Day_ClassicBlue();
-    void installTheme_Day_PlainBlue();
-    void installTheme_Day_ElectricBlue();
-    void installTheme_Day_ClassicPurple();
-    void installTheme_Day_ClassicOrange();
-    void installTheme_Day_ClassicGreen();
-    void installTheme_Day_ClassicRed();
-    void installTheme_Day_Rainbow();
-    void installTheme_Day_FountainRainbow();
-    void installTheme_Day_Polito();
-    void installTheme_Day_Special();
-    void installTheme_Dark_ClassicOrange();
-    void installTheme_Dark_PlainOrange();
-    void installTheme_Dark_ElectricOrange();
-    void installTheme_Dark_ClassicPurple();
-    void installTheme_Dark_ClassicBlue();
-    void installTheme_Dark_ClassicGreen();
-    void installTheme_Dark_ClassicRed();
-    void installTheme_Dark_Rainbow();
-    void installTheme_Dark_FountainRainbow();
-    void installTheme_Dark_Polito();
-    void installTheme_Dark_Special();
-
 
     /************************************
      *        STANDALONE FUNCTION       *
@@ -157,12 +119,6 @@ private slots:
     /************************************
      *  ONE INSTANCE HANDLER FUNCTION   *
      ************************************/
-    //void on_profileButton_clicked();
-    void setUserProfileClosed();
-    void setSettingsClosed();
-    void openSettingsWindows();
-    void setInfoWindowClosed();
-    void openInfoWindows();
     void goodbyeClient();
 
 signals:
@@ -202,7 +158,6 @@ private:
     void setupTextEdit();
     void setupColor();
     void setupValidator();
-    void setupFirstLetter();
     void setupFontIcon();
     void setupTitlebarTimer();
     SymbolStyle getCurCharStyle();

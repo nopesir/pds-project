@@ -48,18 +48,12 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     connect(&ui->RealTextEdit->timer, &QTimer::timeout, ui->RealTextEdit, &MyQTextEdit::hideHorizontalRect);
     connect(_client, &ClientProc::statusChanged, this, &EditorWindow::goodbyeClient);
 
-
-    //auto cut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_T), this);
-    //connect(cut, &QShortcut::activated, this, &EditorWindow::on_toggle_triggered);
-
-    setupListWidgets();
-    setupFirstLetter();
-    setupColor();
-    setupValidator();
-    setupTextEdit();
-    setupFontIcon();
-    setup_menu();
-    cursorChangeRequest(0);
+    setupListWidgets(); //set the widget that list the collaborator
+    setupValidator(); //set the limit of the size in the font size box
+    setupTextEdit(); //set default value for the textEdit
+    setupFontIcon(); //set current font
+    setup_menu(); //set the action on the menu bar
+    cursorChangeRequest(0); //set the initial position of the cursor
     hideLastAddedItem(ui->fontFamilyBox);
     qRegisterMetaType<std::vector<Symbol>>("std::vector<symbol>");
     qRegisterMetaType<myCollabColorsMap>("std::map<std::string,std::pair<std::string,bool>");
@@ -67,8 +61,6 @@ EditorWindow::EditorWindow(ClientProc* client, QWidget *parent): QMainWindow(par
     this->installEventFilter(this);
     ui->RealTextEdit->installEventFilter(this);
     collabColorsRequest(_client->getFileURI());
-    //LoadUserSetting();
-    //setupTitlebarTimer();
     SetDynamicDocNameLabel(); //set docName on CollabBar
     this->setWindowTitle("editoRT - " + docName);
 }
@@ -85,21 +77,7 @@ void EditorWindow::setupListWidgets() {
     ui->listWidgetOn_2->setAlternatingRowColors(false);
     ui->listWidgetOn_2->setMovement(QListView::Static);
     ui->listWidgetOn_2->setTextElideMode(Qt::ElideRight);
-
-
-//    ui->listWidgetOff_2->setViewMode(QListView::ListMode);
-//    ui->listWidgetOff_2->setGridSize(QSize(215,40));
-//    ui->listWidgetOff_2->setIconSize(QSize(30,30));
-//    ui->listWidgetOff_2->setFlow(QListView::LeftToRight);
-//    ui->listWidgetOff_2->setWrapping(true);
-//    ui->listWidgetOff_2->setWordWrap(true);
-//    ui->listWidgetOff_2->setResizeMode(QListView::Adjust);
-//    ui->listWidgetOff_2->setAlternatingRowColors(false);
-//    ui->listWidgetOff_2->setMovement(QListView::Static);
-//    ui->listWidgetOff_2->setTextElideMode(Qt::ElideRight);
-
     ui->listWidgetOn_2->setVerticalScrollBar(ui->verticalScrollBarOn);
-    //ui->listWidgetOff_2->setVerticalScrollBar(ui->verticalScrollBarOff);
 }
 
 void EditorWindow::setupTextEdit() {
@@ -111,55 +89,20 @@ void EditorWindow::setupTextEdit() {
     ui->RealTextEdit->setEditorColor(_client->getColor());
 }
 
-void EditorWindow::setupFirstLetter() {
-    QString user = _client->getUsername();
-    //ui->labelUser_2->setText(user);
-
-    QChar firstLetter;
-    for (int i=0;i<user.length();i++) {
-        firstLetter = user.at(i);
-        if(firstLetter.isLetter()) {
-            break;
-        }
-    }
-    SimplifySingleCharForSorting(firstLetter,1);
-    //ui->profileButton->setText(firstLetter.toUpper());
-}
-
 void EditorWindow::setupValidator() {
     QRegularExpressionValidator* fontSizeValidator;
     fontSizeValidator = new QRegularExpressionValidator(QRegularExpression("^(200|[1-9]|[1-9][0-9]|1[0-9][0-9])")); //from 1 to 200
     ui->fontSizeBox->lineEdit()->setValidator(fontSizeValidator);
 }
 
-void EditorWindow::setupColor() {
-    QColor color = _client->getColor();
-    QString qss = QString("border-radius: 5px; \nbackground-color: %1; color:white;").arg(color.name());
-    //ui->profileButton->setStyleSheet(qss);
-}
-
 void EditorWindow::setupFontIcon() {
-    QIcon fontIcon(":/image/Editor/font.png");
-    ui->fontFamilyBox->setCurrentText(ui->RealTextEdit->currentFont().family());
-    for(int i=0; i<ui->fontFamilyBox->count(); i++) {
-        ui->fontFamilyBox->setItemIcon(i, fontIcon);
-    }
+        ui->fontFamilyBox->setCurrentText(ui->RealTextEdit->currentFont().family());
 }
-
-//void EditorWindow::setupTitlebarTimer() {
-//    titlebarTimer = new QTimer(this);
-//    connect(titlebarTimer, SIGNAL(timeout()), this, SLOT(TitlebarChangeByTimer()));
-//    titlebarTimer->start(1);
-//}
 
 EditorWindow::~EditorWindow() {
     emit closeEditor();
     delete ui;
 }
-
-/***************************************************************************************************************************************
- *                                                           INTERFACE                                                                 *
-***************************************************************************************************************************************/
 
 /***********************************************************************************
 *                                 TOP BAR FUNCTION                                 *
@@ -167,80 +110,32 @@ EditorWindow::~EditorWindow() {
 
 void EditorWindow::setup_menu() {
 
-    //prepare icon
-    QIcon icoSAVELORD;
-    icoSAVELORD.addPixmap(QPixmap(":/image/Editor/save(1).png"),QIcon::Normal,QIcon::On);
-
     //prepare action
+    //for menu file
     QAction *uri = new QAction(tr("Invita tramite URI"), this);
-    QAction *pdfExport = new QAction(icoSAVELORD, tr("Esporta come PDF"), this);
+    QAction *pdfExport = new QAction(tr("Esporta come PDF"), this);
     QAction *rename = new QAction(tr("Rinomina"), this);
     QAction *close = new QAction(tr("Chiudi Documento"), this);
-
+    //for menu visualizza
+    QAction *toggle = new QAction( tr("Toggle barra dei collaboratori"), this);
+    //for menu modifica
+    QAction *cut = new QAction(tr("Taglia"), this);
+    QAction *copy = new QAction(tr("Copia"), this);
+    QAction *paste = new QAction(tr("Incolla"), this);
+    QAction *selectAll = new QAction(tr("Seleziona tutto"), this);
+    QAction *bold = new QAction(tr("Grassetto"), this);
+    QAction *italic = new QAction(tr("Corsivo"), this);
+    QAction *underl = new QAction(tr("Sottolineato"), this);
 
     //connect action
+    //for menu file
     connect(uri, &QAction::triggered, this, &EditorWindow::on_actionInvita_tramite_URI_triggered);
     connect(pdfExport, &QAction::triggered, this, &EditorWindow::on_actionEsporta_come_PDF_triggered);
     connect(rename, &QAction::triggered, this, &EditorWindow::on_actionRinomina_triggered);
     connect(close, &QAction::triggered, this, &EditorWindow::on_actionClose_triggered);
-
-    //set tip
-    uri->setStatusTip(tr("Invita un amico a collaborare su questo documento"));
-    pdfExport->setStatusTip(tr("Esporta questo documento in formato PDF"));
-    rename->setStatusTip(tr("Modifica il nome di questo documento"));
-    close->setStatusTip(tr("Chiudi il documento corrente e torna al menu"));
-
-    //prepare list of Shortcut
-    QList<QKeySequence> shortcutUri, shortcutPdf, shortcutRinomina, shortcutClose;
-    //shortcutUri.append(QKeySequence(Qt::CTRL + Qt::Key_?));       //WE HAVE A SHORTCUT FOR THIS?
-    shortcutPdf.append(QKeySequence(Qt::CTRL + Qt::Key_S));         //CTRL+S
-    shortcutRinomina.append(QKeySequence(Qt::CTRL + Qt::Key_R));    //CTRL+R
-    shortcutClose.append(QKeySequence(Qt::CTRL + Qt::Key_Q));       //CTRL+Q
-
-    //set Shortcut
-    uri->setShortcuts(shortcutUri);
-    pdfExport->setShortcuts(shortcutPdf);
-    rename->setShortcuts(shortcutRinomina);
-    close->setShortcuts(shortcutClose);
-
-    //dock->setVisible(!dock->isVisible());
-
-    //add action to menu
-    ui->menuFile->addAction(uri);
-    ui->menuFile->addAction(pdfExport);
-    ui->menuFile->addAction(rename);
-    ui->menuFile->addSeparator();
-    ui->menuFile->addAction(close);
-
-    //prepare action
-    QAction *toggle = new QAction( tr("Toggle barra dei collaboratori"), this);
+    //for menu visualizza
     connect(toggle, &QAction::triggered, this, &EditorWindow::on_toggle_triggered);
-
-    //add action to menu
-
-    QList<QKeySequence> shortcutToggle;
-    shortcutToggle.append(QKeySequence(Qt::CTRL + Qt::Key_T)); // CRTL+T
-    toggle->setShortcuts(shortcutToggle);
-
-    ui->menuVisualizza->addAction(toggle);
-
-    QTextCursor cursor = ui->RealTextEdit->textCursor();
-
-    //prepare icon
-    QIcon icoCPY, icoCUT, icoPAS, v2B, v2I, v2U;
-    v2B.addPixmap(QPixmap(":/image/Editor/v2bold.png"),QIcon::Normal,QIcon::On);
-    v2I.addPixmap(QPixmap(":/image/Editor/v2italic.png"),QIcon::Normal,QIcon::On);
-    v2U.addPixmap(QPixmap(":/image/Editor/v2underline.png"),QIcon::Normal,QIcon::On);
-
-    //prepare action
-    QAction *cut = new QAction(icoCUT, tr("Taglia"), this);
-    QAction *copy = new QAction(icoCPY, tr("Copia"), this);
-    QAction *paste = new QAction(icoPAS, tr("Incolla"), this);
-    QAction *selectAll = new QAction(tr("Seleziona tutto"), this);
-    QAction *bold = new QAction(v2B, tr("Grassetto"), this);
-    QAction *italic = new QAction(v2I, tr("Corsivo"), this);
-    QAction *underl = new QAction(v2U, tr("Sottolineato"), this);
-
+    //for menu modifica
     //connect action
     connect(cut, &QAction::triggered, this, &EditorWindow::on_buttonCut_clicked);
     connect(copy, &QAction::triggered, this, &EditorWindow::on_buttonCopy_clicked);
@@ -250,22 +145,25 @@ void EditorWindow::setup_menu() {
     connect(italic, &QAction::triggered, this, &EditorWindow::on_actionCorsivo_triggered);
     connect(underl, &QAction::triggered, this, &EditorWindow::on_actionSottolineato_triggered);
 
-    //set tip
-    cut->setStatusTip(tr("Taglia il codice selezionato"));
-    copy->setStatusTip(tr("Copia il codice selezionato"));
-    paste->setStatusTip(tr("Incolla il codice selezionato"));
-    selectAll->setStatusTip(tr("Seleziona tutto il testo"));
-    bold->setStatusTip(tr("Rende grassetto il testo"));
-    italic->setStatusTip(tr("Rende corsivo il testo"));
-    underl->setStatusTip(tr("Rende sottolineato il testo"));
 
-    //disable some action if cursor hasn't selection
-    if(!cursor.hasSelection()){
-        cut->setEnabled(false);
-        copy->setEnabled(false);
-    }
+    //prepare list of Shortcut
+    //for menu file
+    QList<QKeySequence> shortcutPdf, shortcutRinomina, shortcutClose;
+    shortcutPdf.append(QKeySequence(Qt::CTRL + Qt::Key_S));         //CTRL+S
+    shortcutRinomina.append(QKeySequence(Qt::CTRL + Qt::Key_R));    //CTRL+R
+    shortcutClose.append(QKeySequence(Qt::CTRL + Qt::Key_Q));       //CTRL+Q
+    //for menu visualizza
+    QList<QKeySequence> shortcutToggle;
+    shortcutToggle.append(QKeySequence(Qt::CTRL + Qt::Key_T)); // CRTL+T
 
     //set Shortcut
+    //for menu file
+    pdfExport->setShortcuts(shortcutPdf);
+    rename->setShortcuts(shortcutRinomina);
+    close->setShortcuts(shortcutClose);
+    //for menu visualizza
+    toggle->setShortcuts(shortcutToggle);
+    //for menu modifica
     cut->setShortcuts(QKeySequence::Cut);
     copy->setShortcuts(QKeySequence::Copy);
     paste->setShortcuts(QKeySequence::Paste);
@@ -275,6 +173,15 @@ void EditorWindow::setup_menu() {
     underl->setShortcuts(QKeySequence::Underline);
 
     //add action to menu
+    //for menu file
+    ui->menuFile->addAction(uri);
+    ui->menuFile->addAction(pdfExport);
+    ui->menuFile->addAction(rename);
+    ui->menuFile->addSeparator();
+    ui->menuFile->addAction(close);
+    //for menu visualizza
+    ui->menuVisualizza->addAction(toggle);
+    //for menu modifica
     ui->menuModifica->addAction(bold);
     ui->menuModifica->addAction(italic);
     ui->menuModifica->addAction(underl);
@@ -284,62 +191,15 @@ void EditorWindow::setup_menu() {
     ui->menuModifica->addAction(paste);
     ui->menuModifica->addSeparator();
     ui->menuModifica->addAction(selectAll);
+
+    QTextCursor cursor = ui->RealTextEdit->textCursor();
+
+    //disable cut and copy if cursor hasn't selection
+    if(!cursor.hasSelection()){
+        cut->setEnabled(false);
+        copy->setEnabled(false);
+    }
 }
-
-void EditorWindow::on_toggle_triggered() {
-    ui->dockWidget->setHidden(!ui->dockWidget->isHidden());
-}
-
-/*
-void EditorWindow::on_strumentiButton_clicked(){
-    QMenu menuStrumenti(this);
-
-    QAction *option = new QAction(tr("Opzioni..."), this);
-
-    //connect action
-    connect(option, &QAction::triggered, this, &EditorWindow::on_actionOpzioni_triggered);
-
-    //set tip
-    option->setStatusTip(tr("Apre una finestra per regolare le impostazioni"));
-
-    //prepare list of Shortcut
-    QList<QKeySequence> shortcutOpzioni;
-    shortcutOpzioni.append(QKeySequence(Qt::CTRL + Qt::Key_O));     //CTRL+O
-
-    //set Shortcut
-    option->setShortcuts(shortcutOpzioni);
-
-    //add action to menu
-    menuStrumenti.addAction(option);
-}
-*/
-void EditorWindow::on_aboutButton_clicked(){
-    QMenu menuAbout(this);
-
-    QAction *about = new QAction(tr("About"), this);
-
-    //connect action
-    connect(about, &QAction::triggered, this, &EditorWindow::on_actionAbout_triggered);
-
-    //set tip
-    about->setStatusTip(tr("Apre una finestra con le informazioni "));
-
-    //prepare list of Shortcut
-    QList<QKeySequence> shortcutAbout;
-    shortcutAbout.append(QKeySequence(Qt::CTRL + Qt::Key_H));     //CTRL+H
-
-    //set Shortcut
-    about->setShortcuts(shortcutAbout);
-
-    //add action to menu
-    menuAbout.addAction(about);
-}
-
-
-/***********************************************************************************
-*                                  COLLABORATOR BAR                                *
-************************************************************************************/
-
 
 /***********************************************************************************
 *                                TEXT FORMAT BUTTONS                               *
@@ -355,7 +215,7 @@ void EditorWindow::on_buttonBold_clicked() {
         ui->RealTextEdit->setFontWeight(QFont::Normal);
         format = UNMAKE_BOLD;
     }
-    refreshFormatButtons();
+    refreshFormatButtons(); //set button style
     sendFormatRequest(format);
     ui->RealTextEdit->setFocus();
 }
@@ -371,7 +231,7 @@ void EditorWindow::on_buttonItalic_clicked() {
         ui->RealTextEdit->setFontItalic(false);
         format = UNMAKE_ITALIC;
     }
-    refreshFormatButtons();
+    refreshFormatButtons(); //set button style
     sendFormatRequest(format);
     ui->RealTextEdit->setFocus();
 }
@@ -387,9 +247,17 @@ void EditorWindow::on_buttonUnderline_clicked() {
         ui->RealTextEdit->setFontUnderline(false);
         format = UNMAKE_UNDERLINE;
     }
-    refreshFormatButtons();
+    refreshFormatButtons(); //set button style
     sendFormatRequest(format);
     ui->RealTextEdit->setFocus();
+}
+
+/***********************************************************************************
+*                        COLLABORATOR HIDDEN BUTTON                                *
+************************************************************************************/
+
+void EditorWindow::on_toggle_triggered() {
+    ui->dockWidget->setHidden(!ui->dockWidget->isHidden());
 }
 
 /***********************************************************************************
@@ -883,12 +751,12 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
         QList<Qt::Key> modifiersList;
 
         //*********************************************** CTRL-H *************************************************
-        if((key == Qt::Key_H) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
+        /*if((key == Qt::Key_H) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
             on_actionAbout_triggered();
             return true;
-        }
+        }*/
         //*********************************************** CTRL-S *************************************************
-        else if((key == Qt::Key_S) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
+        if((key == Qt::Key_S) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
             on_actionEsporta_come_PDF_triggered();
             return true;
         }
@@ -908,20 +776,20 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
             return true;
         }
         //*********************************************** CTRL-D *************************************************
-        else if((key == Qt::Key_D) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
-            on_actionDark_Mode_triggered();
-            return true;
-        }
+//        else if((key == Qt::Key_D) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
+//            on_actionDark_Mode_triggered();
+//            return true;
+//        }
         //*********************************************** CTRL-M *************************************************
         else if((key == Qt::Key_M) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
             on_actionToolbar_triggered();
             return true;
         }
         //*********************************************** CTRL-O *************************************************
-        else if((key == Qt::Key_O) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
-            on_actionOpzioni_triggered();
-            return true;
-        }
+//        else if((key == Qt::Key_O) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
+//            on_actionOpzioni_triggered();
+//            return true;
+//        }
 
     /* Trigger these shortcuts only if you are inside doc */
     if (obj == ui->RealTextEdit) {
@@ -1288,9 +1156,9 @@ void EditorWindow::on_actionFullscreen_triggered() {
 }
 
 //ABOUT ACTION           -->     CTRL+H
-void EditorWindow::on_actionAbout_triggered() {
+/*void EditorWindow::on_actionAbout_triggered() {
     openInfoWindows();
-}
+}*/
 
 //CLOSE DOCUMENT ACTION  -->     CTRL+Q
 void EditorWindow::on_actionClose_triggered() {
@@ -1404,9 +1272,9 @@ void EditorWindow::on_actionInvita_tramite_URI_triggered() {
 }
 
 //DARK MODE TRIGGERED       -->     CTRL+D
-void EditorWindow::on_actionDark_Mode_triggered() {
-    PaintItBlack();
-}
+//void EditorWindow::on_actionDark_Mode_triggered() {
+//    PaintItBlack();
+//}
 
 //COLLABORATOR TRIGGERED
 void EditorWindow::on_actionCollaboratori_triggered() {
@@ -1451,495 +1319,10 @@ void EditorWindow::on_actionToolbar_triggered(){/*
     */
 }
 
-//OPZIONI TRIGGERED    -->  CTRL + O
-void EditorWindow::on_actionOpzioni_triggered(){
-    openSettingsWindows();
-}
-
-
-/***************************************************************************************************************************************
- *                                               STANDALONE FUNCTION FOR GRAPHIC                                                       *
- *                                                                                                                                     *
- ***************************************************************************************************************************************/
-
-void EditorWindow::PaintItBlack() {
-    /*if(estate.GetDarkMode()==false) {
-        qDebug() << estate.GetThemeDay();
-        //I see a red door and I want it painted black, no colors anymore I want them to turn black
-        estate.SetDarkMode(true);
-
-        ApplyDarkMode();
-
-        //Change the icon on TopBar menu
-        QIcon menuIcon;
-        menuIcon.addPixmap(QPixmap(":/image/Editor/DarkSun.png"),QIcon::Normal,QIcon::On);
-        ui->actionDark_Mode->setIcon(menuIcon);
-
-    }else if(estate.GetDarkMode()==true){
-        //Shine on you crazy diamond
-        estate.SetDarkMode(false);
-
-        ApplyDayMode();
-
-        //Change the icon on TopBar menu
-        QIcon menuIcon;
-        menuIcon.addPixmap(QPixmap(":/image/Editor/DarkMoon.png"),QIcon::Normal,QIcon::On);
-        ui->actionDark_Mode->setIcon(menuIcon);
-    }
-
-    //Set Other CSS
-    AlignButtonStyleHandler();
-    refreshFormatButtons();
-    ui->RealTextEdit->setFocus();*/
-
-}
-
-void EditorWindow::ApplyDayMode(){/*
-    if(estate.GetThemeDay()==1){
-        installTheme_Day_ClassicBlue();
-    }else if(estate.GetThemeDay()==2){
-        installTheme_Day_PlainBlue();
-    }else if(estate.GetThemeDay()==3){
-        installTheme_Day_ElectricBlue();
-    }else if(estate.GetThemeDay()==4){
-        installTheme_Day_ClassicPurple();
-    }else if(estate.GetThemeDay()==5){
-        installTheme_Day_ClassicOrange();
-    }else if(estate.GetThemeDay()==6){
-        installTheme_Day_ClassicGreen();
-    }else if(estate.GetThemeDay()==7){
-        installTheme_Day_ClassicRed();
-    }else if(estate.GetThemeDay()==8){
-        installTheme_Day_Rainbow();
-    }else if(estate.GetThemeDay()==9){
-        installTheme_Day_FountainRainbow();
-    }else if(estate.GetThemeDay()==10){
-        installTheme_Day_Polito();
-    }else if(estate.GetThemeDay()==11){
-        installTheme_Day_Special();
-    }
-
-    SetIconPackDayMode();
-
-    //COLLAB BAR
-    ui->label->setStyleSheet("color: grey");
-    ui->label_2->setStyleSheet("color: grey");
-    ui->label_3->setStyleSheet("color: grey");
-    ui->labelCollOn->setStyleSheet("color: grey");
-    ui->labelCollOff->setStyleSheet("color: grey");
-    ui->listWidgetOn->setStyleSheet("border:none;\n background:transparent;\n color:black");
-    ui->labelUser->setStyleSheet("color:black;");*/
-}
-
-void EditorWindow::ApplyDarkMode(){/*
-    if(estate.GetThemeDark()==1){
-        installTheme_Dark_ClassicOrange();
-    }else if(estate.GetThemeDark()==2){
-        installTheme_Dark_PlainOrange();
-    }else if(estate.GetThemeDark()==3){
-        installTheme_Dark_ElectricOrange();
-    }else if(estate.GetThemeDark()==4){
-        installTheme_Dark_ClassicPurple();
-    }else if(estate.GetThemeDark()==5){
-        installTheme_Dark_ClassicBlue();
-    }else if(estate.GetThemeDark()==6){
-        installTheme_Dark_ClassicGreen();
-    }else if(estate.GetThemeDark()==7){
-        installTheme_Dark_ClassicRed();
-    }else if(estate.GetThemeDark()==8){
-        installTheme_Dark_Rainbow();
-    }else if(estate.GetThemeDark()==9){
-        installTheme_Dark_FountainRainbow();
-    }else if(estate.GetThemeDark()==10){
-        installTheme_Dark_Polito();
-    }else if(estate.GetThemeDark()==11){
-        installTheme_Dark_Special();
-    }
-
-    SetIconPackDarkMode();
-
-    //COLLAB BAR
-    ui->label->setStyleSheet("color: #FFFFFF");
-    ui->label_2->setStyleSheet("color: #FFFFFF");
-    ui->label_3->setStyleSheet("color: #FFFFFF");
-    ui->labelCollOn->setStyleSheet("color: #FFFFFF");
-    ui->labelCollOff->setStyleSheet("color: #FFFFFF");
-    ui->listWidgetOn->setStyleSheet("border:none;\n background:transparent;\n color:white");
-    ui->labelUser->setStyleSheet("color:white;");*/
-
-}
-
-void EditorWindow::SetIconPackDayMode(){
-    QIcon icoAC, icoAD, icoAS, icoJS, icoCPY, icoCUT, icoPAS, icoMAGN, icoCOL, v2B, v2I, v2U;
-    icoAC.addPixmap(QPixmap(":/image/Editor/center-align.png"),QIcon::Normal,QIcon::On);
-    icoAS.addPixmap(QPixmap(":/image/Editor/left-align.png"),QIcon::Normal,QIcon::On);
-    icoAD.addPixmap(QPixmap(":/image/Editor/right-align.png"),QIcon::Normal,QIcon::On);
-    icoJS.addPixmap(QPixmap(":/image/Editor/justify.png"),QIcon::Normal,QIcon::On);
-    icoCPY.addPixmap(QPixmap(":/image/Editor/copy.png"),QIcon::Normal,QIcon::On);
-    icoCUT.addPixmap(QPixmap(":/image/Editor/cut.png"),QIcon::Normal,QIcon::On);
-    icoPAS.addPixmap(QPixmap(":/image/Editor/paste.png"),QIcon::Normal,QIcon::On);
-    icoMAGN.addPixmap(QPixmap(":/image/Editor/Magnifier.png"),QIcon::Normal,QIcon::On);
-    icoCOL.addPixmap(QPixmap(":/image/Editor/highlighter.png"),QIcon::Normal,QIcon::On);
-    v2B.addPixmap(QPixmap(":/image/Editor/v2bold.png"),QIcon::Normal,QIcon::On);
-    v2I.addPixmap(QPixmap(":/image/Editor/v2italic.png"),QIcon::Normal,QIcon::On);
-    v2U.addPixmap(QPixmap(":/image/Editor/v2underline.png"),QIcon::Normal,QIcon::On);
-
-    ui->buttonAlignCX->setIcon(icoAC);
-    ui->buttonAlignSX->setIcon(icoAS);
-    ui->buttonAlignDX->setIcon(icoAD);
-    ui->buttonAlignJFX->setIcon(icoJS);
-    ui->buttonCopy->setIcon(icoCPY);
-    ui->buttonCut->setIcon(icoCUT);
-    ui->buttonPaste->setIcon(icoPAS);
-    ui->buttonColor->setIcon(icoCOL);
-    ui->buttonBold->setIcon(v2B);
-    ui->buttonItalic->setIcon(v2I);
-    ui->buttonUnderline->setIcon(v2U);
-}
-
-void EditorWindow::SetIconPackDarkMode(){
-    QIcon icoAC, icoAD, icoAS, icoJS, icoCPY, icoCUT, icoPAS, icoMAGN, icoCOL, v2B, v2I, v2U;
-    icoAC.addPixmap(QPixmap(":/image/DarkEditor/center-align.png"),QIcon::Normal,QIcon::On);
-    icoAS.addPixmap(QPixmap(":/image/DarkEditor/left-align.png"),QIcon::Normal,QIcon::On);
-    icoAD.addPixmap(QPixmap(":/image/DarkEditor/right-align.png"),QIcon::Normal,QIcon::On);
-    icoJS.addPixmap(QPixmap(":/image/DarkEditor/justify.png"),QIcon::Normal,QIcon::On);
-    icoCPY.addPixmap(QPixmap(":/image/DarkEditor/copy.png"),QIcon::Normal,QIcon::On);
-    icoCUT.addPixmap(QPixmap(":/image/DarkEditor/cut.png"),QIcon::Normal,QIcon::On);
-    icoPAS.addPixmap(QPixmap(":/image/DarkEditor/paste.png"),QIcon::Normal,QIcon::On);
-    icoMAGN.addPixmap(QPixmap(":/image/DarkEditor/Magnifier.png"),QIcon::Normal,QIcon::On);
-    icoCOL.addPixmap(QPixmap(":/image/DarkEditor/highlighter.png"),QIcon::Normal,QIcon::On);
-    v2B.addPixmap(QPixmap(":/image/DarkEditor/v2bold.png"),QIcon::Normal,QIcon::On);
-    v2I.addPixmap(QPixmap(":/image/DarkEditor/v2italic.png"),QIcon::Normal,QIcon::On);
-    v2U.addPixmap(QPixmap(":/image/DarkEditor/v2underline.png"),QIcon::Normal,QIcon::On);
-
-    ui->buttonAlignCX->setIcon(icoAC);
-    ui->buttonAlignSX->setIcon(icoAS);
-    ui->buttonAlignDX->setIcon(icoAD);
-    ui->buttonAlignJFX->setIcon(icoJS);
-    ui->buttonCopy->setIcon(icoCPY);
-    ui->buttonCut->setIcon(icoCUT);
-    ui->buttonPaste->setIcon(icoPAS);
-    ui->buttonColor->setIcon(icoCOL);
-    ui->buttonBold->setIcon(v2B);
-    ui->buttonItalic->setIcon(v2I);
-    ui->buttonUnderline->setIcon(v2U);
-}
-
-void EditorWindow::LoadUserSetting(){
-    /*
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "C.A.R.T.E. Studio", "C.A.R.T.E.");
-
-    // LOAD AND SET "START" VALUE
-    //*****************************************************************************************************
-    settings.beginGroup("Start");
-    estate.SetDarkMode(settings.value("darkmode", estate.GetDarkMode()).toBool());
-    estate.SetCollaboratorBar(settings.value("collaboratorbar", estate.GetCollaboratorBar()).toBool());
-    estate.SetToolbar(settings.value("toolbar", estate.GetToolbar()).toBool());
-    settings.endGroup();
-
-    if(estate.GetDarkMode() == true){
-        //ApplyDarkMode();      <-- Not now! It has to be done after the LOAD AND SET "THEME" VALUE
-        //SetIconPackDarkMode();<-- Not now! It inside ApplyDarkMode
-        //Change the icon on TopBar menu
-        QIcon menuIcon;
-        menuIcon.addPixmap(QPixmap(":/image/Editor/DarkSun.png"),QIcon::Normal,QIcon::On);
-        ui->actionDark_Mode->setIcon(menuIcon);
-    }
-    if(estate.GetCollaboratorBar() == false){
-        hideCollab();
-    }
-    if(estate.GetToolbar() == false){
-        hideToolbar();
-    }
-
-
-    // LOAD AND SET "TITLEBAR" VALUE
-    //*****************************************************************************************************
-    settings.beginGroup("Titlebar");
-    estate.SetTitlebar(settings.value("titlebar", estate.GetTitlebar()).toInt());
-    settings.endGroup();
-
-    if(estate.GetTitlebar()==1){            // [1]=DocName
-        textOnTitleBar = docName;
-    }else if(estate.GetTitlebar()==2){      // [2]=ProgName
-        textOnTitleBar = "C.A.R.T.E.";
-    }else if(estate.GetTitlebar()==3){      // [3]=Prog+Doc
-        textOnTitleBar = "C.A.R.T.E. - " + docName;
-    }else if(estate.GetTitlebar()==4){      // [4]=Alternate
-        //Do nothing. TitlebarChangeByTimer is handle it by titlebarTimer, and is started/enabled when I load titlebar value to [4]
-    }else if(estate.GetTitlebar()==5){      // [4]=Animated
-        //Do nothing. TitlebarChangeByTimer is handle it by titlebarTimer, and is started/enabled when I load titlebar value to [4]
-    }
-    this->setWindowTitle(textOnTitleBar);
-
-
-    // LOAD AND SET "THEME" VALUE
-    //*****************************************************************************************************
-    settings.beginGroup("Theme");
-    estate.SetThemeDay(settings.value("dayTheme", estate.GetThemeDay()).toInt());
-    estate.SetThemeDark(settings.value("darkTheme", estate.GetThemeDark()).toInt());
-    settings.endGroup();
-
-    // SET THEME COLOUR SCHEME
-    //*****************************************************************************************************
-    if(estate.GetDarkMode() == true){
-        ApplyDarkMode();
-    }else{
-        ApplyDayMode();
-    }*/
-}
-
-void EditorWindow::TitlebarChangeByTimer(){
-    /*
-    if(estate.GetTitlebar()==4){
-
-        titlebarTimer->start(3000);
-        if(estate.GetTitlebarAlternate()==true){
-            textOnTitleBar = "C.A.R.T.E.";
-            estate.SetTitlebarAlternate(false);
-        }else{
-            textOnTitleBar = docName;
-            estate.SetTitlebarAlternate(true);
-        }
-        this->setWindowTitle(textOnTitleBar);
-
-    }else if(estate.GetTitlebar()==5){
-
-       titlebarTimer->start(250);
-       textOnTitleBar = "C.A.R.T.E.";
-       int a = estate.GetTitlebarCounter();
-       if(estate.GetTitlebarAlternate()==true){
-           a-=-1;
-           estate.SetTitlebarCounter(a);
-           for(int i=0; i<=a; i++){
-               textOnTitleBar.push_front("         ");
-           }
-           if(a>=25){
-               estate.SetTitlebarAlternate(false);
-           }
-       }else{
-           textOnTitleBar = "C.A.R.T.E.";
-           estate.SetTitlebarAlternate(true);
-           estate.SetTitlebar(5);
-           estate.SetTitlebarCounter(0);
-       }
-       this->setWindowTitle(textOnTitleBar);
-    }*/
-
-}
-
-void EditorWindow::installTheme_Day_ClassicBlue(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-}
-
-
-void EditorWindow::installTheme_Day_PlainBlue(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-    //TOP FRAME
-}
-
-void EditorWindow::installTheme_Day_ElectricBlue(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: white;}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-    //TOP FRAME
-}
-
-void EditorWindow::installTheme_Day_ClassicPurple(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Day_ClassicOrange(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Day_ClassicGreen(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Day_ClassicRed(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-void EditorWindow::installTheme_Day_Rainbow(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-    //TOP FRAME
-
-}
-
-void EditorWindow::installTheme_Day_FountainRainbow(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-void EditorWindow::installTheme_Day_Polito(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/polilogo.png)");
-
-}
-
-void EditorWindow::installTheme_Day_Special(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/Editor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: black; background: #FFFFFF; border-left: 2px solid #404040;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{ background-color:transparent; border: transparent; color: #505050;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-/*****************************************************************DARK THEME BEGIN*************************************************************************************/
-
-void EditorWindow::installTheme_Dark_ClassicOrange(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Dark_PlainOrange(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: #1A1A1A;}");
-    ui->RealTextEdit->setStyleSheet("  #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{  background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Dark_ElectricOrange(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("    #editorFrame{   background: black;}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #111111; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Dark_ClassicPurple(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Dark_ClassicBlue(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-
-void EditorWindow::installTheme_Dark_ClassicGreen(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-void EditorWindow::installTheme_Dark_ClassicRed(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-void EditorWindow::installTheme_Dark_Rainbow(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-void EditorWindow::installTheme_Dark_FountainRainbow(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
-
-void EditorWindow::installTheme_Dark_Polito(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/polilogo.png)");
-
-}
-
-void EditorWindow::installTheme_Dark_Special(){
-    //GENERAL COLOR
-    ui->editorFrame->setStyleSheet("   #editorFrame{   background: url(:/image/DarkEditor/sfondo.png);}");
-    ui->RealTextEdit->setStyleSheet("   #RealTextEdit{  color: white; background: #333333; border-left: 2px solid #e6e6e6;}");
-    ui->DocNameLabel_2->setStyleSheet("  #DocNameLabel_2{   background-color:transparent; border: transparent; color: #F0F0F0;}");
-    //ui->opaqueLogo->setStyleSheet("background: url(:/image/Editor/logo.png)");
-
-}
+////OPZIONI TRIGGERED    -->  CTRL + O
+//void EditorWindow::on_actionOpzioni_triggered(){
+//    openSettingsWindows();
+//}
 
 /***************************************************************************************************************************************
  *                                                    STANDALONE FUNCTION                                                              *
@@ -2158,77 +1541,6 @@ void EditorWindow::SetDynamicDocNameLabel(){
     ui->DocNameLabel_2->resize(ui->DocNameLabel_2->sizeHint());
 }
 
-
-/***************************************************************************************************************************************
- *                                                ONE INSTANCE HANDLER FUNCTION                                                        *
- *                                                                                                                                     *
- ***************************************************************************************************************************************/
-void EditorWindow:: setUserProfileClosed(){
-    profile_closed = true;
-}
-
-/*void EditorWindow::on_profileButton_clicked() {
-    if(profile_closed){//you can access to the stats, else you must close the current UserProfile Window
-
-        QString filename, owner, timestamp;
-        QList<QListWidgetItem*> fileItem;
-        int Contafile=0;
-        int ContaFileOwner=0;
-
-        if(!_client->getVectorFile().empty()) {
-            std::vector<File> files = _client->getVectorFile();
-            foreach (File f, files) {
-                filename  = QString::fromUtf8(f.getfilename().c_str());
-                owner     = QString::fromUtf8(f.getowner().c_str());
-                timestamp = QString::fromUtf8(f.gettimestamp().c_str());
-                Contafile++;
-                if(owner==_client->getUsername()){
-                    ContaFileOwner++;
-                }
-            }
-        } else {
-            Contafile=0;
-            ContaFileOwner=0;
-        }
-
-        //up = new UserProfile(_client, _client->getUsername(), _client->getMail(), Contafile, ContaFileOwner); //with parameters
-        //connect(up, &UserProfile::closeUserProfile, this, &EditorWindow::setUserProfileClosed);
-        //profile_closed = false;
-        //up->show(); Not necessary is done by the costructor
-    }
-}*/
-
-void EditorWindow::setSettingsClosed(){
-    settings_closed = true;
-    LoadUserSetting(); //Load Users settings after close "settings window"
-}
-
-void EditorWindow::openSettingsWindows(){
-    if(settings_closed){//you can access to the stats, else you must close the current Settings Window
-
-        //s = new Settings(estate);
-        //connect(s, &Settings::closeSettings, this, &EditorWindow::setSettingsClosed);
-        //s->show();
-        //settings_closed = false;
-    }
-}
-
-void EditorWindow::setInfoWindowClosed(){
-    infowindow_closed = true;
-}
-
-void EditorWindow::openInfoWindows(){
-    if(infowindow_closed){//you can access to the stats, else you must close the current Settings Window
-        //iw = new infoWindow();
-        //connect(iw, &infoWindow::closeInfoWindow, this, &EditorWindow::setInfoWindowClosed);
-        //->show() is already done by constructo of infowindow
-        //iw->show();
-        //infowindow_closed = false;
-    }
-}
-
-
-
 /***************************************************************************************************************************************
  *                                                    OTHER SLOT FUNCTION                                                              *
  *                                                                                                                                     *
@@ -2281,7 +1593,8 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
     QString username=nullptr, itemString=nullptr, user=nullptr, color=nullptr, ic=nullptr;
     QList<QListWidgetItem*> fileItem;
     QListWidgetItem* item;
-    QLinearGradient gradient = QLinearGradient(35, 35, 36, 35);
+    //QLinearGradient gradient = QLinearGradient(35, 35, 36, 35);
+    QLinearGradient gradient = QLinearGradient(19, 0, 20, 0);
     QBrush brush;
 
     for(std::map<std::string, std::pair<std::string,bool>>::const_iterator it = collabColorsMap.begin(); it != collabColorsMap.end(); ++it){
@@ -2294,7 +1607,7 @@ void EditorWindow::showCollabColorsMap(myCollabColorsMap collabColorsMap) {
             user ="TU";
 
         item = new QListWidgetItem(itemString);
-        item->setText("  "+user);
+        item->setText("   "+user);
 
         if(isOnline) {
             color[1]='f';
@@ -2630,7 +1943,7 @@ void EditorWindow::changeAlignment(int startBlock, int endBlock, int alignment) 
 }
 
 SymbolStyle EditorWindow::getCurCharStyle() {
-    bool isBold = ui->RealTextEdit->fontWeight()==QFont::Bold;
+    bool isBold = ui->RealTextEdit->fontWeight()==QFont::Bold; //fontWeight return int (we need bool), so we compare with Bold which is worth 75
     int alignment = detectAlignment();
     std::string color = _client->getColor().toStdString();
     SymbolStyle style = {isBold, ui->RealTextEdit->fontItalic(), ui->RealTextEdit->fontUnderline(), ui->fontFamilyBox->currentText().toStdString(), ui->fontSizeBox->currentText().toInt(), alignment, color};

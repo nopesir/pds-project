@@ -37,7 +37,6 @@ SOURCES         = \
                   startwindow.cpp \
                   symbol.cpp
 FORMS           += startwindow.ui \
-    editor.ui \
     editorwindow.ui \
     homewindow.ui \
     profilewindow.ui

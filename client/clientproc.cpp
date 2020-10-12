@@ -27,7 +27,7 @@ ClientProc::~ClientProc() {
 }
 
 void ClientProc::do_connect() {
-    auto endpoints = resolver_.resolve("192.168.1.172", "63505");
+    auto endpoints = resolver_.resolve("127.0.0.1", "63505");
     boost::asio::async_connect(socket_, endpoints,
                                [this](boost::system::error_code ec, const tcp::endpoint&) {
        if (!ec) {

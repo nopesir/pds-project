@@ -11,8 +11,19 @@
   <component name="ChangeListManager">
     <list default="true" id="4441012e-7ba4-46ff-b9a5-c98adfffe5db" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/client/clientproc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/client/clientproc.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/editorwindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/client/editorwindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/editor.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/textedit.pro" beforeDir="false" afterPath="$PROJECT_DIR$/client/textedit.pro" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/textedit.pro.user" beforeDir="false" afterPath="$PROJECT_DIR$/client/textedit.pro.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/DataBase/texteditor_users.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/server/DataBase/texteditor_users.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/Message.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/Message.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/Server.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/Server.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/Session.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/Session.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/SharedEditor.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/SharedEditor.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/dbService.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/dbService.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/email.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/email.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/CMakeFiles/ServerModule.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build/ServerModule" beforeDir="false" afterPath="$PROJECT_DIR$/server/build/ServerModule" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +60,7 @@
       <option name="presentableId" value="Default" />
       <updated>1601023113584</updated>
       <workItem from="1601023115309" duration="3920000" />
+      <workItem from="1602082488830" duration="6000" />
     </task>
     <task id="LOCAL-00001" summary="fix open file not modified">
       <created>1601026404569</created>
