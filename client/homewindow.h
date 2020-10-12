@@ -7,7 +7,6 @@
 #include "editorwindow.h"
 #include "clientproc.h"
 #include "profilewindow.h"
-//#include "userprofile.h"
 
 namespace Ui{class HomeWindow;}
 
@@ -19,30 +18,14 @@ public:
     ~HomeWindow();
 
 private slots:
-    //void on_LogoutButton_clicked();
-    //void on_Username_clicked();
-    //void on_newDoc_clicked();
-    //void on_uriDoc_clicked();
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
     void on_listFiles_clicked();
-    //void on_exitButton_clicked();
-    //void on_backButton_clicked();
-    //void closeEvent(QCloseEvent * event);
-    //void RapidUserLogout();
     void handleTheConnectionLoss();
-
     void on_newFile_clicked();
-
     void on_openFiles_clicked();
-
     void on_sharedFiles_clicked();
-
     void on_pushButton_clicked();
-
-    //void on_openUrlButton_clicked();
-
     void on_logoutButton_clicked();
-
     void on_viewProfile_clicked();
 
 public slots:
