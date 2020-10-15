@@ -1,6 +1,8 @@
 server/build
-/build*/*
+build*/*
+
 .vscode/*
 client/textedit.pro.user
 server/build/*
 server/cmake-*/*
+.idea/*
