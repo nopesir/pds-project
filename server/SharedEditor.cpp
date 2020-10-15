@@ -46,10 +46,19 @@ void SharedEditor::deliver_to_all(const Message &msg, const int& ed_id, const st
     }
 }
 
-std::vector<Symbol> SharedEditor::get_file(const std::string& filename, bool get_from_disk) {
+std::vector<Symbol> SharedEditor::get_file(const int& ed_id,const std::string& filename, bool get_from_disk) {
     if(file_map.empty()) //server has nothing in RAM
         return std::vector<Symbol>();
     if(file_map.at(filename).empty()) {//server has not in RAM the vector symbols for this filename
+       int count =0;
+        for (const auto& p: clients) {
+            if (p->get_id() != ed_id && p->get_curr_file() == filename) {
+                count++;
+            }
+            if(count!=0)
+                get_from_disk=false;
+        }
+
         return get_from_disk ? fileUtility::readFile(R"(../Filesystem/)" + filename + ".txt") : std::vector<Symbol>();
     }
     else //server has already in RAM this vector symbols
