@@ -549,9 +549,9 @@ void EditorWindow::on_RealTextEdit_cursorPositionChanged() {
     if(!ui->RealTextEdit->getRemoteCursors().empty())
         cursorChangeRequest(c.position());
 
-    // Personal Solution to handle the QTBUG-29393 --> https://bugreports.qt.io/browse/QTBUG-29393
-    // https://github.com/giovannic96/Real-time-collaborative-text-editor/issues/29
-    //*****************************************************************************************************
+    //solution to know bug: https://bugreports.qt.io/browse/QTBUG-29393
+    //when all text in the TextEditor is deleted, the Font and font size are changed to default values
+    //if point size less or equal to 0 the editor behaves in this way.
     if(ui->RealTextEdit->fontPointSize() <= 0) {
         int dimensionFromOtherSide = (ui->fontSizeBox->currentText()).toInt();
         QString fontFamily = ui->fontFamilyBox->currentText();
@@ -568,7 +568,7 @@ void EditorWindow::on_RealTextEdit_cursorPositionChanged() {
         ui->fontFamilyBox->setCurrentIndex(ui->fontFamilyBox->findText(ui->fontFamilyBox->currentText()));
     }
     else {
-        QString fontFamilyCalculated = calculateFontFamilyComboBox(c);
+        QString fontFamilyCalculated = calculateFontFamilyComboBox(c); //if in the selection there are more than one font return FONT_UNKNOWN
         if(fontFamilyCalculated == "FONT_UNKNOWN") {
             ui->fontSizeBox->setCurrentText(""); //blank text on item combobox
             ui->fontFamilyBox->setCurrentIndex(ui->fontFamilyBox->findText(""));
@@ -585,7 +585,7 @@ void EditorWindow::on_RealTextEdit_cursorPositionChanged() {
         ui->fontSizeBox->setCurrentText(QString::number(fontPointSize));
         ui->fontSizeBox->setCurrentIndex(ui->fontSizeBox->findText(ui->fontSizeBox->currentText()));
     }else{
-        int fontSizeCalculated = calculateFontSizeComboBox(c);
+        int fontSizeCalculated = calculateFontSizeComboBox(c); //if in the selection there are more than one font size return -1
         if(fontSizeCalculated == -1) {
             ui->fontSizeBox->setCurrentText(""); //blank text on item combobox
         }else{
@@ -750,11 +750,6 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
         Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
         QList<Qt::Key> modifiersList;
 
-        //*********************************************** CTRL-H *************************************************
-        /*if((key == Qt::Key_H) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
-            on_actionAbout_triggered();
-            return true;
-        }*/
         //*********************************************** CTRL-S *************************************************
         if((key == Qt::Key_S) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
             on_actionEsporta_come_PDF_triggered();
@@ -775,21 +770,11 @@ bool EditorWindow::eventFilter(QObject *obj, QEvent *ev) {
             on_actionRinomina_triggered();
             return true;
         }
-        //*********************************************** CTRL-D *************************************************
-//        else if((key == Qt::Key_D) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
-//            on_actionDark_Mode_triggered();
-//            return true;
-//        }
         //*********************************************** CTRL-M *************************************************
         else if((key == Qt::Key_M) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
             on_actionToolbar_triggered();
             return true;
         }
-        //*********************************************** CTRL-O *************************************************
-//        else if((key == Qt::Key_O) && (modifiers == Qt::ControlModifier) && QApplication::keyboardModifiers()) {
-//            on_actionOpzioni_triggered();
-//            return true;
-//        }
 
     /* Trigger these shortcuts only if you are inside doc */
     if (obj == ui->RealTextEdit) {
@@ -1110,20 +1095,7 @@ void EditorWindow::closeEvent(QCloseEvent * event) {
             int replay = message.exec();
             switch(replay){
                 case 0:
-                  /*event->ignore();
-                  //close userProfile Window if it was opened;
-                  if(!profile_closed){
-                    //  delete up;
-                  }
-                  //close infoWindow if it was opened;
-                  if(!infowindow_closed){
-                    //  delete iw;
-                  }
-                  //close Settings Window if it was opened;
-                  if(!settings_closed){
-                    //  delete s;
-                  }*/
-                  std::cout << "ECCO QUA"  << std::endl;
+                  //std::cout << "ECCO QUA"  << std::endl;
                   CloseDocumentRequest(); //Return to MenuWindow (close only the current document)
                   break;
                 case 1:
@@ -1154,11 +1126,6 @@ void EditorWindow::on_actionFullscreen_triggered() {
     //}
     //ui->RealTextEdit->setFocus(); //Return focus to textedit
 }
-
-//ABOUT ACTION           -->     CTRL+H
-/*void EditorWindow::on_actionAbout_triggered() {
-    openInfoWindows();
-}*/
 
 //CLOSE DOCUMENT ACTION  -->     CTRL+Q
 void EditorWindow::on_actionClose_triggered() {
@@ -1271,11 +1238,6 @@ void EditorWindow::on_actionInvita_tramite_URI_triggered() {
     }
 }
 
-//DARK MODE TRIGGERED       -->     CTRL+D
-//void EditorWindow::on_actionDark_Mode_triggered() {
-//    PaintItBlack();
-//}
-
 //COLLABORATOR TRIGGERED
 void EditorWindow::on_actionCollaboratori_triggered() {
     if(ui->listWidgetOn_2->isHidden()){
@@ -1318,11 +1280,6 @@ void EditorWindow::on_actionToolbar_triggered(){/*
     ui->RealTextEdit->setFocus(); //Return focus to textedit
     */
 }
-
-////OPZIONI TRIGGERED    -->  CTRL + O
-//void EditorWindow::on_actionOpzioni_triggered(){
-//    openSettingsWindows();
-//}
 
 /***************************************************************************************************************************************
  *                                                    STANDALONE FUNCTION                                                              *
@@ -1650,6 +1607,7 @@ void EditorWindow::showSymbolsAt(int firstIndex, std::vector<Symbol> symbols) {
     int index = firstIndex;
     QTextCursor c = ui->RealTextEdit->textCursor();
 
+    //the operation between beginEditBLock() and endEditBlock() appear as a single operation from an undo/redo point of view
     c.beginEditBlock();
     foreach (Symbol s, symbols) {
         letter = s.getLetter();
@@ -2318,7 +2276,7 @@ QString EditorWindow::calculateFontFamilyComboBox(QTextCursor c) {
     int oldPos = c.position();
 
     while(endIndex > startIndex) { //loop over the cursor selection
-        c.setPosition(endIndex--, QTextCursor::KeepAnchor);
+        c.setPosition(endIndex--, QTextCursor::KeepAnchor); //If mode is KeepAnchor, the cursor keep the previous selection until the new index.
         curFontFamily = c.charFormat().fontFamily();
         vec.push_back(curFontFamily);
         if(curFontFamily != vec.at(0)) {
