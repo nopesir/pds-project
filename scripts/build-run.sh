@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# This is a comment!
-
 cwd=$(pwd)
 
 cd ~/
@@ -14,7 +12,7 @@ fi
 
 cd $cwd
 
-cd server
+cd ../server
 if [ -d "build" ]; then
   # Take action if $DIR exists. #
   cd build
