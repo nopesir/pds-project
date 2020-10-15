@@ -19,12 +19,10 @@ public:
 
 private slots:
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-    void on_listFiles_clicked();
     void handleTheConnectionLoss();
     void on_newFile_clicked();
     void on_openFiles_clicked();
     void on_sharedFiles_clicked();
-    void on_pushButton_clicked();
     void on_logoutButton_clicked();
     void on_viewProfile_clicked();
 
@@ -47,7 +45,8 @@ private:
     bool FirstTimeWindowOpens=true;
     bool profile_closed = true;
     bool editor_closed = true;
-    //UserProfile *up;
+    void on_listFiles_clicked();
+    void on_pushButton_clicked();
 
 protected:
     //Function for mouse related event
