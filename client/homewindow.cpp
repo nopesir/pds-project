@@ -79,11 +79,7 @@ void HomeWindow::on_listFiles_clicked() {
 
 //OPEN ONE DOCUMENT FROM A LIST OF USER'S DOC
 void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
-    //close userProfile Window if it was opened;
-    if(!profile_closed){
-        //delete up;
-    }
-    auto t_start1 = std::chrono::high_resolution_clock::now();
+
     if(_client->getStatus()==false) {
         handleTheConnectionLoss();
     } else {
@@ -112,9 +108,6 @@ void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
         //Send data (header and body)
         _client->sendRequestMsg(req);
     }
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    std::cout << "ITEM DOUBLE CLICKED - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
 
 void HomeWindow:: setEditorClosed(){
@@ -204,7 +197,6 @@ void HomeWindow::showListFile(std::vector<File> files) {
     } else {
         QString user = _client->getUsername();
         QString filename, owner, timestamp;
-        //int littlechar=0;
         QString itemString;
         QList<QListWidgetItem*> fileItem;
 
@@ -246,7 +238,6 @@ void HomeWindow::showListFile(std::vector<File> files) {
 void HomeWindow::resumeWindow() {
     on_openFiles_clicked();
     this->show();
-    //ui->stackedWidget->setCurrentIndex(1);
 }
 
 void HomeWindow:: setprofileWindowClosed(){
@@ -422,8 +413,6 @@ void HomeWindow::on_viewProfile_clicked()
         int Nfile=0;
         if(profile_closed){
             QList<QListWidgetItem*> fileItem;
-
-
             if(!_client->getVectorFile().empty()){
                 std::vector<File> files = _client->getVectorFile();
                 foreach (File f, files) {
