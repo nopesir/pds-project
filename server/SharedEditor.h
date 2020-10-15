@@ -52,7 +52,7 @@ public:
     void ch_font_sz_in_file(const std::string &file, int index, int font_sz);
     void ch_font_fam_in_file(const std::string &file, int index, const std::string& family);
     void ch_alignment_in_file(const std::string &key, int index, int alignment);
-    std::vector<Symbol> get_file(const std::string& filename, bool get_from_disk);
+    std::vector<Symbol> get_file(const int& ed_id,const std::string& filename, bool get_from_disk);
 };
 
 

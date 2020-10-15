@@ -38,6 +38,7 @@ std::vector<int> CRDT::generatePosBetween(std::vector<int> pos1, std::vector<int
             return newPos;
         }
     }
+    return newPos;
 }
 
 int CRDT::comparePosdx(std::vector<int> curSymPos, std::pair<int,int> curSymId, std::vector<int> newSymPos, std::pair<int,int> newSymId, int posIndex) {
@@ -152,7 +153,7 @@ std::vector<Symbol> CRDT::localInsert(int startIndex, std::vector<Symbol> symbol
         symbolVector.push_back(sym);
     });
     _symbols.insert(_symbols.begin() + startIndex, symbolVector.begin(), symbolVector.end());
-    return std::move(symbolVector);
+    return symbolVector;
 }
 
 std::vector<sId> CRDT::localErase(int startIndex, int endIndex) noexcept(false) {
@@ -281,6 +282,7 @@ int CRDT::process(int type, int indexEditor, Symbol newSym) {
         _symbols.insert(_symbols.begin() + startIndex, newSym);
         return startIndex;
     }
+    return -1;
 }
 
 int CRDT::process(int type, int indexEditor, std::vector<Symbol> newSymbols) {
@@ -320,6 +322,7 @@ int CRDT::process(int type, int indexEditor, std::vector<Symbol> newSymbols) {
         _symbols.insert(_symbols.begin() + startIndex, newSymbols.begin(), newSymbols.end());
         return startIndex;
     }
+    return -1;
 }
 
 int CRDT::processErase(sId id) {
@@ -390,7 +393,7 @@ int CRDT::processFontFamily(sId id, const std::string& fontFamily) {
 
 int CRDT::processAlignment(sId id, int alignment) {
     //check also if alignments are different because server send to all clients (including me) in case of ALIGNMENT_UPDATE
-    auto it = std::find_if(_symbols.begin(), _symbols.end(), [id, alignment](const Symbol& s) {
+    auto it = std::find_if(_symbols.begin(), _symbols.end(), [id](const Symbol& s) {
         return s.getId() == id /*&& s.getStyle().getAlignment() != alignment*/;});
     if (it != _symbols.end()) {
         int index = it - _symbols.begin();

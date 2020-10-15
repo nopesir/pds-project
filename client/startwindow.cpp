@@ -89,9 +89,9 @@ void StartWindow::showPopupSuccess(QString result) {
 
 void StartWindow::showPopupFailure(QString result) {
     if(result == "LOGIN_FAILURE") {
-       QMessageBox::critical(this,"Errore", "Username e/o password non corretti! Riprova!");                                 //Stay in the same window
+       QMessageBox::critical(this,"Errore", "Username e/o password non corretti! Riprova!");    //Stay in the same window
     } else if(result == "SIGNUP_FAILURE") {
-        QMessageBox::critical(this,"Errore", "La registrazione non è avvenuta correttamente! Riprova!");                                //Stay in the same window
+        QMessageBox::critical(this,"Errore", "La registrazione non è avvenuta correttamente! Riprova!");    //Stay in the same window
     } else {
         QMessageBox::information(nullptr, "Attenzione", "Qualcosa è andato storto! Riprova!");
     }
@@ -189,7 +189,7 @@ void StartWindow::on_buttonReg_clicked()
                 regMat = mailREX.match(ui->lineMailForm->text()).hasMatch();
 
                 if (!regMat) {
-                    QMessageBox::information(this,"Attenzione", "L' email inserita non è valida!");
+                    QMessageBox::information(this,"Attenzione", "L'email inserita non è valida!");
                 } else {
 
                     //Get data from the form

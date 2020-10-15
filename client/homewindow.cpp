@@ -13,7 +13,6 @@ HomeWindow::HomeWindow(ClientProc* client, QWidget *parent) : QMainWindow(parent
     connect(_client, &ClientProc::opResultSuccess, this, &HomeWindow::showPopupSuccess);
     connect(_client, &ClientProc::opResultFailure, this, &HomeWindow::showPopupFailure);
     connect(_client, &ClientProc::listFileResult, this, &HomeWindow::showListFile);
-    //connect(_client, &ClientProc::backToHomeWindow,this, &HomeWindow::resumeWindow);
 
     this->show();
     ui->logoutButton->setToolTip("Esci dalla sessione");
@@ -41,31 +40,6 @@ HomeWindow::~HomeWindow() {
     delete _ew;
 }
 
-//CHECK HOW THIS WINDOW IS CLOSED
-/*void HomeWindow::closeEvent(QCloseEvent * event) {
-    if(Logout==false){
-        //If isn't a simple logout, but a forced close then disconnect the user
-        RapidUserLogout();
-        qDebug()<<"FORCED CLOSE - USER " << _client->getUsername() <<"DISCONNECT";
-    }
-}
-
-//SEE UP
-void HomeWindow::RapidUserLogout() {
-    //Get data from the form
-    QString user = _client->getUsername();
-    QByteArray ba_user = user.toLocal8Bit();
-    const char *c_user = ba_user.data();
-
-    //Serialize data
-    json j;
-    Jsonize::to_jsonUser(j, "LOGOUT_REQUEST", c_user);
-    const std::string req = j.dump();
-
-    _client->sendRequestMsg(req);    //Send data (header and body)
-}
-
-*/
 void HomeWindow::mousePressEvent(QMouseEvent *evt){
     oldPos = evt->globalPos();
 }
@@ -75,125 +49,7 @@ void HomeWindow::mouseMoveEvent(QMouseEvent *evt){
     move(x()+delta.x(), y()+delta.y());
     oldPos = evt->globalPos();
 }
-/*
-//USERNAME BUTTON
-void HomeWindow::on_Username_clicked(){
-    if(_client->getStatus()==false){
-        handleTheConnectionLoss();
-    }else{
 
-        if(profile_closed){//you can access to the stats, else you must close the current UserProfile Window
-
-            profile = true;
-            on_listFiles_clicked();
-            on_backButton_clicked();
-            QString filename, owner, timestamp;
-            QList<QListWidgetItem*> fileItem;
-            int Contafile=0;
-            int ContaFileOwner=0;
-
-            if(!_client->getVectorFile().empty()){
-                std::vector<File> files = _client->getVectorFile();
-                foreach (File f, files) {
-                    filename  = QString::fromUtf8(f.getfilename().c_str());
-                    owner     = QString::fromUtf8(f.getowner().c_str());
-                    timestamp = QString::fromUtf8(f.gettimestamp().c_str());
-                    Contafile++;
-                    if(owner==_client->getUsername()){
-                        ContaFileOwner++;
-                    }
-                }
-            }else{
-                Contafile=0;
-                ContaFileOwner=0;
-            }
-
-            //up = new UserProfile(_client, _client->getUsername(), _client->getMail(), Contafile, ContaFileOwner); //with parameters
-            //connect(up, &UserProfile::closeUserProfile, this, &HomeWindow::setUserProfileClosed);
-            profile_closed = false;
-            //up->show(); Not necessary is done by the costructor
-        }
-    }
-}
-
-//EXIT BUTTON
-void HomeWindow::on_exitButton_clicked() {
-
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Uscita", "Sei sicuro di voler uscire?",
-                                  QMessageBox::Yes|QMessageBox::No);
-    if (reply == QMessageBox::Yes) {
-        if(_client->getStatus()==false){
-            handleTheConnectionLoss();
-        }else{
-            //Get data from the form
-            QString user = _client->getUsername();
-            QByteArray ba_user = user.toLocal8Bit();
-            const char *c_user = ba_user.data();
-
-            //Serialize data
-            json j;
-            Jsonize::to_jsonUser(j, "LOGOUT_REQUEST", c_user);
-            const std::string req = j.dump();
-
-            //Send data (header and body)
-            _client->sendRequestMsg(req);
-        }
-    }
-}
-
-//BACK BUTTON
-void HomeWindow::on_backButton_clicked() {
-    //ui->stackedWidget->setCurrentIndex(0);
-}
-
-//NEW DOCUMENT
-void HomeWindow::on_newDoc_clicked(){
-    //close userProfile Window if it was opened;
-    if(!profile_closed){
-        //delete up;
-    }
-    if(_client->getStatus()==false){
-        handleTheConnectionLoss();
-    }else{
-        bool ok;
-        QString text = QInputDialog::getText(this, tr("Titolo documento"),
-                                             tr("Inserisci un nome per il nuovo documento:"), QLineEdit::Normal,
-                                             "", &ok);
-        if (ok && !text.isEmpty() && text.size()<=25){
-
-            //Get data from the form
-            QString user = _client->getUsername();
-            QByteArray ba_user = user.toLocal8Bit();
-            const char *c_user = ba_user.data();
-
-            QString filename = QLatin1String(text.toUtf8());
-            QByteArray ba_filename = filename.toLocal8Bit();
-            const char *c_filename = ba_filename.data();
-
-            //Serialize data
-            json j;
-            Jsonize::to_jsonFilename(j, "NEWFILE_REQUEST", c_user, c_filename);
-            const std::string req = j.dump();
-
-            //update client data
-            _client->setUsername(user);
-            _client->setFilename(filename);
-
-            //Send data (header and body)
-            _client->sendRequestMsg(req);
-        }
-        else if (ok && !text.isEmpty() && text.size()>25) {
-            QMessageBox::critical(this,"Errore", "Inserire un nome minore di 25 caratteri!");
-            on_newDoc_clicked();
-        }
-        else if (ok && text.isEmpty()) {
-            QMessageBox::critical(this,"Errore", "Inserire il nome del documento!");
-            on_newDoc_clicked();
-        }
-    }
-}
-*/
 void HomeWindow::on_listFiles_clicked() {
     //close userProfile Window if it was opened;
     if(!profile_closed){
@@ -220,60 +76,10 @@ void HomeWindow::on_listFiles_clicked() {
 
     }
 }
-/*
-void HomeWindow::on_uriDoc_clicked() {
-    //close userProfile Window if it was opened;
-    if(!profile_closed){
-        //delete up;
-    }
-    if(_client->getStatus()==false) {
-        handleTheConnectionLoss();
-    } else {
-        bool ok;
-        QString text = QInputDialog::getText(this, tr("Titolo documento"),
-                                             tr("Inserisci URI del documento:"), QLineEdit::Normal,
-                                             "", &ok);
-        if (ok && !text.isEmpty() && text.size()<=25) { //TODO: better controls
-            //TODO controllo file database (nome e utente)
 
-            //Get data from the form
-            QString user = _client->getUsername();
-            QByteArray ba_user = user.toLocal8Bit();
-            const char *c_user = ba_user.data();
-            QString uri = text;
-            QByteArray ba_uri = uri.toLocal8Bit();
-            const char *c_uri = ba_uri.data();
-
-            //Serialize data
-            json j;
-            Jsonize::to_jsonUri(j, "OPENWITHURI_REQUEST", c_user, c_uri);
-            const std::string req = j.dump();
-
-            //update client data
-            _client->setUsername(user);
-            _client->setFileURI(uri);
-
-            //Send data (header and body)
-            _client->sendRequestMsg(req);
-        }
-        else if (ok && !text.isEmpty() && text.size()>25) {
-            QMessageBox::critical(this,"Errore", "Inserire un nome minore di 25 caratteri!!");
-            on_uriDoc_clicked();
-        }
-        else if (ok && text.isEmpty()){
-            QMessageBox::critical(this,"Errore", "Inserire il nome del documento!");
-            on_uriDoc_clicked();
-        }
-    }
-}
-*/
 //OPEN ONE DOCUMENT FROM A LIST OF USER'S DOC
 void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
-    //close userProfile Window if it was opened;
-    if(!profile_closed){
-        //delete up;
-    }
-    auto t_start1 = std::chrono::high_resolution_clock::now();
+
     if(_client->getStatus()==false) {
         handleTheConnectionLoss();
     } else {
@@ -302,9 +108,6 @@ void HomeWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item) {
         //Send data (header and body)
         _client->sendRequestMsg(req);
     }
-    auto t_end1 = std::chrono::high_resolution_clock::now();
-    double elapsed_time_ms1 = std::chrono::duration<double, std::milli>(t_end1-t_start1).count();
-    std::cout << "ITEM DOUBLE CLICKED - ELAPSED (ms): " << elapsed_time_ms1 << std::endl;
 }
 
 void HomeWindow:: setEditorClosed(){
@@ -394,7 +197,6 @@ void HomeWindow::showListFile(std::vector<File> files) {
     } else {
         QString user = _client->getUsername();
         QString filename, owner, timestamp;
-        //int littlechar=0;
         QString itemString;
         QList<QListWidgetItem*> fileItem;
 
@@ -436,7 +238,6 @@ void HomeWindow::showListFile(std::vector<File> files) {
 void HomeWindow::resumeWindow() {
     on_openFiles_clicked();
     this->show();
-    //ui->stackedWidget->setCurrentIndex(1);
 }
 
 void HomeWindow:: setprofileWindowClosed(){
@@ -541,11 +342,7 @@ void HomeWindow::on_sharedFiles_clicked()
             QString user = _client->getUsername();
             QByteArray ba_user = user.toLocal8Bit();
             const char *c_user = ba_user.data();
-            //std::vector<QString> uriAndFilename = item->data(Qt::UserRole).value<std::vector<QString>>();
-            //QString uri = uriAndFilename.at(0);
-            //QString filename = uriAndFilename.at(1);
             qDebug() << "Opening file with URI: " << uri;
-            //filename = QLatin1String(filename.toUtf8());
             QByteArray ba_uri = uri.toLocal8Bit();
             const char *c_uri = ba_uri.data();
             std::cout << "url messo è :" << c_uri << std::endl;
@@ -557,7 +354,6 @@ void HomeWindow::on_sharedFiles_clicked()
             //update client data
             _client->setUsername(user);
             _client->setFileURI(uri);
-            //_client->setFilename(filename);
 
             //Send data (header and body)
             _client->sendRequestMsg(req);
@@ -582,39 +378,6 @@ void HomeWindow::on_pushButton_clicked()
     s->show();
 }
 
-
-/*void HomeWindow::on_openUrlButton_clicked()
-{
-    if(_client->getStatus()==false) {
-        handleTheConnectionLoss();
-    } else {
-        //Get data from the urltextedit
-        QString uri = ui->urlTextEdit->toPlainText();
-        QString user = _client->getUsername();
-        QByteArray ba_user = user.toLocal8Bit();
-        const char *c_user = ba_user.data();
-        //std::vector<QString> uriAndFilename = item->data(Qt::UserRole).value<std::vector<QString>>();
-        //QString uri = uriAndFilename.at(0);
-        //QString filename = uriAndFilename.at(1);
-        qDebug() << "Opening file with URI: " << uri;
-        //filename = QLatin1String(filename.toUtf8());
-        QByteArray ba_uri = uri.toLocal8Bit();
-        const char *c_uri = ba_uri.data();
-        std::cout << "url messo è :" << c_uri << std::endl;
-        //Serialize data
-        json j;
-        Jsonize::to_jsonUri(j, "OPENWITHURI_REQUEST", c_user, c_uri);
-        const std::string req = j.dump();
-
-        //update client data
-        _client->setUsername(user);
-        _client->setFileURI(uri);
-        //_client->setFilename(filename);
-
-        //Send data (header and body)
-        _client->sendRequestMsg(req);
-    }
-}*/
 
 void HomeWindow::on_logoutButton_clicked()
 {
@@ -650,8 +413,6 @@ void HomeWindow::on_viewProfile_clicked()
         int Nfile=0;
         if(profile_closed){
             QList<QListWidgetItem*> fileItem;
-
-
             if(!_client->getVectorFile().empty()){
                 std::vector<File> files = _client->getVectorFile();
                 foreach (File f, files) {
@@ -667,14 +428,5 @@ void HomeWindow::on_viewProfile_clicked()
         _pw->setModal(true);
         connect(_pw, &profilewindow::closeUserProfile, this, &HomeWindow::setprofileWindowClosed);
         profile_closed = false;
-        //_pw->setModal(true);
-        //_pw->exec();
-    /*
-        _ew = new EditorWindow(_client);
-        connect(_ew, &EditorWindow::closeEditor, this, &HomeWindow::setEditorClosed);
-        editor_closed = false;
-        this->hide();
-        _ew->showMaximized();
-    */
     }
 }

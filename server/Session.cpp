@@ -579,7 +579,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         if(resp == dbService::OPENFILE_OK) {
             //Update session data
             shared_from_this()->set_curr_file(uri_JSON);
-            shared_from_this()->set_symbols(SharedEditor::getInstance().get_file(uri_JSON, true));
+            shared_from_this()->set_symbols(SharedEditor::getInstance().get_file(shared_from_this()->get_id(),uri_JSON, true));
             SharedEditor::getInstance().update_file(shared_from_this()->get_curr_file(),
                                                     shared_from_this()->get_symbols());
 
@@ -628,7 +628,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         if (resp == dbService::OPENWITHURI_OK) {
             //Update session data
             shared_from_this()->set_curr_file(uri_JSON);
-            shared_from_this()->set_symbols(SharedEditor::getInstance().get_file(uri_JSON, true));
+            shared_from_this()->set_symbols(SharedEditor::getInstance().get_file(shared_from_this()->get_id(),uri_JSON, true));
 
             SharedEditor::getInstance().update_file(shared_from_this()->get_curr_file(),
                                                     shared_from_this()->get_symbols());
@@ -730,7 +730,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
 
         //process received symbol and retrieve new calculated index
         int newIndex = process(index_ed_JSON,
-                               SharedEditor::getInstance().get_file(shared_from_this()->get_curr_file(),
+                               SharedEditor::getInstance().get_file(shared_from_this()->get_id(),shared_from_this()->get_curr_file(),
                                                                     false), symbol_JSON);
 
         //Update room symbols for this file
@@ -753,7 +753,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         for(const std::pair<int,int>& id : symbolsId) {
             //process received symbol and retrieve new calculated index
             newIndex = get_index_by_id(
-                    SharedEditor::getInstance().get_file(shared_from_this()->get_curr_file(), false), id);
+                    SharedEditor::getInstance().get_file(shared_from_this()->get_id(),shared_from_this()->get_curr_file(), false), id);
             if(newIndex != -1) {
                 //Update SE symbols for this file
                 SharedEditor::getInstance().erase_from_file(shared_from_this()->get_curr_file(), newIndex);
@@ -783,7 +783,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         for(const std::pair<int, int>& id : symbols_id) {
             //process received symbol and retrieve new calculated index
             new_index = get_index_by_id(SharedEditor::getInstance().get_file(
-                    shared_from_this()->get_curr_file(), false), id);
+                   shared_from_this()->get_id(), shared_from_this()->get_curr_file(), false), id);
             if(new_index != -1) {
                 //Update room symbols for this file
                 SharedEditor::getInstance().format_in_file(shared_from_this()->get_curr_file(), new_index, format_JSON);
@@ -808,7 +808,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         for(const std::pair<int, int>& id : symbols_id) {
             //process received symbol and retrieve new calculated index
             new_index = get_index_by_id(
-                    SharedEditor::getInstance().get_file(shared_from_this()->get_curr_file(), false), id);
+                    SharedEditor::getInstance().get_file(shared_from_this()->get_id(),shared_from_this()->get_curr_file(), false), id);
             if(new_index != -1) {
                 //Update room symbols for this file
                 SharedEditor::getInstance().ch_font_sz_in_file(shared_from_this()->get_curr_file(), new_index,
@@ -834,7 +834,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         for(const std::pair<int, int>& id : symbols_id) {
             //process received symbol and retrieve new calculated index
             new_index = get_index_by_id(
-                    SharedEditor::getInstance().get_file(shared_from_this()->get_curr_file(), false), id);
+                    SharedEditor::getInstance().get_file(shared_from_this()->get_id(),shared_from_this()->get_curr_file(), false), id);
             if(new_index != -1) {
                 //Update room symbols for this file
                 SharedEditor::getInstance().ch_font_fam_in_file(shared_from_this()->get_curr_file(), new_index,
@@ -860,7 +860,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         for (const std::pair<int, int> &id : symbols_id) {
             //process received symbol and retrieve new calculated index
             new_index = get_index_by_id(
-                    SharedEditor::getInstance().get_file(shared_from_this()->get_curr_file(), false), id);
+                    SharedEditor::getInstance().get_file(shared_from_this()->get_id(),shared_from_this()->get_curr_file(), false), id);
             if (new_index != -1) {
                 //Update room symbols for this file
                 SharedEditor::getInstance().ch_alignment_in_file(shared_from_this()->get_curr_file(), new_index,
@@ -929,7 +929,7 @@ std::string Session::process_reqs(const std::string& j_op, const json& j_data, i
         for(const Symbol& s : symbols) {
             //process received symbol and retrieve new calculated index
             new_index = process(new_index, SharedEditor::getInstance().get_file(
-                    shared_from_this()->get_curr_file(), false), s);
+                   shared_from_this()->get_id(), shared_from_this()->get_curr_file(), false), s);
 
             //Update room symbols for this file
             SharedEditor::getInstance().insert_in_file(shared_from_this()->get_curr_file(), new_index, s);

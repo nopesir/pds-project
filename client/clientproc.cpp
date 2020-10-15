@@ -52,7 +52,7 @@ void ClientProc::do_read_header() {
             do_read_body();
         }
         else {
-            qDebug() << ec.message().c_str() << endl;
+            qDebug() << ec.message().c_str() << Qt::endl;
             closeConnection();
         }
     });
@@ -81,7 +81,7 @@ void ClientProc::do_read_body() {
                     Jsonize::from_json_resp(jdata_in, db_responseJSON);
 
                     if(db_responseJSON == "LOGIN_OK") {
-                        qDebug() << "Login success" << endl;
+                        qDebug() << "Login success" << Qt::endl;
                         std::string db_usernameLoginJSON;
                         std::string db_colorJSON;
                         std::string db_mailJSON;
@@ -99,7 +99,7 @@ void ClientProc::do_read_body() {
 
                         emit formResultSuccess("LOGIN_SUCCESS");
                     } else {
-                        qDebug() << "Wrong user or password" << endl;
+                        qDebug() << "Wrong user or password" << Qt::endl;
                         emit formResultFailure("LOGIN_FAILURE");
                     }
                 } else if(opJSON == "SIGNUP_RESPONSE") {
@@ -137,7 +137,7 @@ void ClientProc::do_read_body() {
                         emit removeRemoteCursor(db_usernameJSON);
                         emit getUserOffline(db_mapJSON);
                     } else {
-                        qDebug() << "Something went wrong with db" << endl;
+                        qDebug() << "Something went wrong with db" << Qt::endl;
                     }
                 } else if(opJSON == "GET_USER_ONLINE_RESPONSE") {
                     std::string db_responseJSON;
@@ -149,7 +149,7 @@ void ClientProc::do_read_body() {
                         Jsonize::from_json_user_offline(jdata_in, db_usernameJSON, db_mapJSON);
                         emit getUserOnline(db_mapJSON);
                     } else {
-                        qDebug() << "Something went wrong with db" << endl;
+                        qDebug() << "Something went wrong with db" << Qt::endl;
                     }
                 } else if(opJSON == "LOGOUTURI_RESPONSE") {
                     std::string db_responseJSON;
@@ -217,7 +217,7 @@ void ClientProc::do_read_body() {
                         this->setFilename(QString::fromStdString(filenameJSON));
                         this->crdt.setSymbols(symbolsJSON);
 
-                        qDebug() << "OPENWITHURI success" << endl;
+                        qDebug() << "OPENWITHURI success" << Qt::endl;
                         emit opResultSuccess("OPENWITHURI_SUCCESS");
                     } else if(db_responseJSON == "OPENFILE_FILE_EMPTY") {
                         std::string filenameJSON;
@@ -228,7 +228,7 @@ void ClientProc::do_read_body() {
                         this->crdt.setSymbols(std::vector<Symbol>());
                         emit opResultSuccess("OPENFILE_SUCCESS");
                     } else {
-                        qDebug() << "Something went wrong" << endl;
+                        qDebug() << "Something went wrong" << Qt::endl;
                         emit opResultFailure("OPENWITHURI_FAILURE");
                     }
                 } else if(opJSON == "LISTFILE_RESPONSE") {
@@ -252,13 +252,13 @@ void ClientProc::do_read_body() {
                         }
                         emit listFileResult(files);
 
-                        qDebug() << "Listfile success" << endl;
+                        qDebug() << "Listfile success" << Qt::endl;
                         emit opResultSuccess("LISTFILE_SUCCESS");
                     } else if (db_responseJSON == "LIST_DOESNT_EXIST"){
-                        qDebug() << "Non ha nessuna lista di file" << endl;
+                        qDebug() << "Non ha nessuna lista di file" << Qt::endl;
                         emit opResultFailure("LISTFILE_FAILURE_LISTNOTEXIST");
                     } else {
-                        qDebug() << "Something went wrong" << endl;
+                        qDebug() << "Something went wrong" << Qt::endl;
                         emit opResultFailure("LISTFILE_FAILURE");
                     }
                 } else if(opJSON == "INVITE_URI_RESPONSE") {
@@ -381,7 +381,7 @@ void ClientProc::do_read_body() {
                     std::vector<sId> symbolsId;
                     int alignmentJSON;
                     Jsonize::from_json_alignment_change(jdata_in, symbolsId, alignmentJSON);
-                    int newIndex;
+                    int newIndex=0;
 
                     if(symbolsId.empty())
                         emit changeAlignment(newIndex, newIndex+1, alignmentJSON);
@@ -395,7 +395,7 @@ void ClientProc::do_read_body() {
                         }
                     }
                 } else {
-                    qDebug() << "Something went wrong" << endl;
+                    qDebug() << "Something went wrong" << Qt::endl;
                     emit opResultFailure("RESPONSE_FAILURE");
                 }
                 fullBody = "";
@@ -408,7 +408,7 @@ void ClientProc::do_read_body() {
             }
         }
         else {
-            qDebug() << ec.message().c_str() << endl;
+            qDebug() << ec.message().c_str() << Qt::endl;
             closeConnection();
         }
     });
@@ -424,14 +424,14 @@ void ClientProc::do_write() {
                              boost::asio::buffer(write_msgs_.front().data(), write_msgs_.front().length()+1),
                              [this](boost::system::error_code ec, std::size_t /*length*/) {
          if (!ec) {
-             qDebug() << "Sent:" << write_msgs_.front().data() << "END" << endl;
+             qDebug() << "Sent:" << write_msgs_.front().data() << "END" << Qt::endl;
              write_msgs_.pop_front();
              if (!write_msgs_.empty()) {
                  do_write();
              }
          }
          else {
-             qDebug() << ec.message().c_str() << endl;
+             qDebug() << ec.message().c_str() << Qt::endl;
              closeConnection();
          }
      });

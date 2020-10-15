@@ -11,7 +11,6 @@
 #include <memory>
 #include "message.h"
 #include <deque>
-//#include "jsonUtility.h"
 #include "symbol.h"
 #include "file.h"
 #include "jsonize.h"
@@ -60,10 +59,6 @@ signals:
     void editorResultSuccess(QString result, std::string filename = "");
     void editorResultFailure(QString result);
     void backToMenuWindow();
-    /*
-    void changeTextUsername(QString text);
-    void changeTextMail(QString mail);
-    */
     void listFileResult(std::vector<File> files);
     void insertSymbol(std::pair<int, wchar_t> tuple, SymbolStyle style);
     void insertSymbols(int firstIndex, std::vector<Symbol> symbols);

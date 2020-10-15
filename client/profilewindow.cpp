@@ -20,7 +20,7 @@ profilewindow::profilewindow(ClientProc* client, int files, QWidget *parent) :
         ui->userImage->setStyleSheet("#userImage{ background-repeat: no-repeat;background-position: center;border-image: url(" + _client->getUsername().left(2) + ".png" + "); }");
     }
     else
-        getImage("https://eu.ui-avatars.com/api/?size=128&rounded=true&background=babdb6&color=e3e8df&name=" + _client->getUsername());
+        getImage("https://eu.ui-avatars.com/api/?size=128&rounded=true&name=" + _client->getUsername());
 
     this->show();
 }
