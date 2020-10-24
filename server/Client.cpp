@@ -17,39 +17,39 @@ int Client::pos_cmp_reverse(std::vector<int> curr_sym_pos, std::pair<int,int> cu
         return 1;
     else if (curr_sym_pos.at(pos_index) == new_sym_pos.at(pos_index)) {
         if (new_sym_pos.size() > pos_index + 1 &&
-            curr_sym_pos.size() <= pos_index + 1) //new_sym_pos[pos_index+1] != null && curr_sym_pos[pos_index+1] == null
-            return 1; // correct position founds
+            curr_sym_pos.size() <= pos_index + 1)
+            return 1;
         else if (new_sym_pos.size() <= pos_index + 1 &&
-                 curr_sym_pos.size() > pos_index + 1) //new_sym_pos[pos_index+1] == null && curr_sym_pos[pos_index+1] != null
-            return -1; //curr_sym_pos > new_sym_pos  -> make another cycle taking the next symbol from symbols
+                 curr_sym_pos.size() > pos_index + 1)
+            return -1;
         else if (new_sym_pos.size() > pos_index + 1 &&
-                 curr_sym_pos.size() > pos_index + 1) //new_sym_pos[pos_index+1] != null && curr_sym_pos[pos_index+1] != null
+                 curr_sym_pos.size() > pos_index + 1)
             return pos_cmp_reverse(curr_sym_pos, curr_sym_id, new_sym_pos,
-                                   new_sym_id, pos_index + 1); //call recursively this function using next index for pos_index
-        else //new_sym_pos[pos_index+1] == null && curr_sym_pos[pos_index+1] == null
+                                   new_sym_id, pos_index + 1);
+        else
             return new_sym_id > curr_sym_id ? 1 : -1;
     } else
-        return -1; //make another cycle taking the next symbol from symbols
+        return -1;
 }
 
 int Client::pos_cmp(std::vector<int> curr_sym_pos, std::pair<int,int> curr_sym_id, std::vector<int> new_sym_pos, std::pair<int,int> new_sym_id, int pos_index) {
     if(curr_sym_pos.at(pos_index) > new_sym_pos.at(pos_index))
-        return 1; //correct position found
+        return 1;
     else if (curr_sym_pos.at(pos_index) == new_sym_pos.at(pos_index)) {
         if (new_sym_pos.size() > pos_index + 1 &&
-            curr_sym_pos.size() <= pos_index + 1) //new_sym_pos[pos_index+1] != null && curr_sym_pos[pos_index+1] == null
-            return -1; //new_sym_pos > curr_sym_pos -> make another cycle taking the next symbol from symbols
+            curr_sym_pos.size() <= pos_index + 1)
+            return -1;
         else if (new_sym_pos.size() <= pos_index + 1 &&
-                 curr_sym_pos.size() > pos_index + 1) //new_sym_pos[pos_index+1] == null && curr_sym_pos[pos_index+1] != null
-            return 1; //correct position found
+                 curr_sym_pos.size() > pos_index + 1)
+            return 1;
         else if (new_sym_pos.size() > pos_index + 1 &&
-                 curr_sym_pos.size() > pos_index + 1) //new_sym_pos[pos_index+1] != null && curr_sym_pos[pos_index+1] != null
+                 curr_sym_pos.size() > pos_index + 1)
             return pos_cmp(curr_sym_pos, curr_sym_id, new_sym_pos,
-                           new_sym_id, pos_index + 1); //call recursively this function using next index for pos_index
-        else //new_sym_pos[pos_index+1] == null && curr_sym_pos[pos_index+1] == null
+                           new_sym_id, pos_index + 1);
+        else
             return new_sym_id.first < curr_sym_id.first ? 1 : -1;
     } else
-        return -1; //make another cycle taking the next symbol from symbols
+        return -1;
 }
 
 int Client::process(int cursor_index, const std::vector<Symbol> &file_symbols, const Symbol &new_symbol) {
